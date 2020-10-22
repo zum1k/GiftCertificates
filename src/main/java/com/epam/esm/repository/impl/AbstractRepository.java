@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractRepository<T> implements Repository<T> {
+    private Connection connection;
     @Override
     public void add(T t) {
 
