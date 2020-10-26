@@ -1,8 +1,12 @@
 package com.epam.esm.bean;
 
+import org.springframework.context.annotation.Configuration;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+
+@Configuration
 public class Certificate {
     private String name;
     private String description;

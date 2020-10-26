@@ -4,6 +4,7 @@ import com.epam.esm.bean.Tag;
 import com.epam.esm.repository.Repository;
 import com.epam.esm.repository.Specification;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class TagRepositoryImpl implements Repository<Tag> {
@@ -22,6 +23,11 @@ public class TagRepositoryImpl implements Repository<Tag> {
 
     @Override
     public List<Tag> find(Specification specification) {
+        return null;
+    }
+
+    @Override
+    public List<Tag> sort(Comparator<Tag> comparator) {
         return null;
     }
 }
