@@ -9,7 +9,7 @@ import java.util.List;
 public interface GiftRepository {
     public long add(GiftCertificate giftCertificate);
 
-    public void remove();
+    public void remove(long id);
 
     public void update(GiftCertificate giftCertificate);
 

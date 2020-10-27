@@ -7,7 +7,7 @@ import java.util.List;
 public interface TagRepository {
     public long add(Tag tag);
 
-    public void delete(long id);
+    public void remove(long id);
 
     public List<Tag> findOne(long id);
 

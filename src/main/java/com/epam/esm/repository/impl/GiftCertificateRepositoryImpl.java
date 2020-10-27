@@ -2,6 +2,7 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.repository.GiftRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -11,17 +12,19 @@ import java.util.List;
 
 @Repository
 public class GiftCertificateRepositoryImpl implements GiftRepository {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     private static final String INSERT_INTO = "INSERT INTO GIFTS VALUES (?, ?, ?, ?,?,?)";
-    private static final String
 
-    @Override
+
     public long add(GiftCertificate giftCertificate) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        return jdbcTemplate.update(INSERT_INTO, );
+        return jdbcTemplate.update(INSERT_INTO, giftCertificate.getName(), giftCertificate.getDescription(),
+                giftCertificate.getPrice(), giftCertificate.getCreateDate(),
+                giftCertificate.getLastUpdateDate(), giftCertificate.getDuration());
     }
 
     @Override
-    public void remove() {
+    public void remove(long id) {
     }
 
     @Override

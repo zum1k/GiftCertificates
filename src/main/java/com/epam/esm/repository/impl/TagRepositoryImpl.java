@@ -14,7 +14,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public void remove(long id) {
 
     }
 
