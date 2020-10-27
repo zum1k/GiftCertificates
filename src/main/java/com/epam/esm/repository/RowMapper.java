@@ -2,6 +2,6 @@ package com.epam.esm.repository;
 
 import java.util.Map;
 
-public interface SqlMapper<T> {
+public interface RowMapper<T> {
     Map<String, SqlQueryParameter> toEntityFields();
 }

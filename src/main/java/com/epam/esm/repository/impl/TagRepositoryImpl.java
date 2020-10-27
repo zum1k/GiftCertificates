@@ -1,33 +1,32 @@
 package com.epam.esm.repository.impl;
 
-import com.epam.esm.bean.Tag;
-import com.epam.esm.repository.Repository;
-import com.epam.esm.repository.Specification;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.TagRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Comparator;
 import java.util.List;
 
-public class TagRepositoryImpl implements Repository<Tag> {
-
+@Repository
+public class TagRepositoryImpl implements TagRepository {
     @Override
-    public void add(Tag tag) {
+    public long add(Tag tag) {
+        return 0;
     }
 
     @Override
-    public void remove(Specification specification) {
+    public void delete(long id) {
+
     }
 
     @Override
-    public void update(Tag tag) {
-    }
-
-    @Override
-    public List<Tag> find(Specification specification) {
+    public List<Tag> findOne(long id) {
         return null;
     }
 
     @Override
-    public List<Tag> sort(Comparator<Tag> comparator) {
+    public List<Tag> findAll() {
         return null;
     }
 }
+
+

@@ -1,4 +1,4 @@
-package com.epam.esm.bean;
+package com.epam.esm.entity;
 
 public class Tag {
     private String name;
