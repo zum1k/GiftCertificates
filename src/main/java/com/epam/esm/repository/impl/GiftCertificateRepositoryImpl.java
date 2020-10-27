@@ -16,7 +16,6 @@ public class GiftCertificateRepositoryImpl implements GiftRepository {
     private JdbcTemplate jdbcTemplate;
     private static final String INSERT_INTO = "INSERT INTO GIFTS VALUES (?, ?, ?, ?,?,?)";
 
-
     public long add(GiftCertificate giftCertificate) {
         return jdbcTemplate.update(INSERT_INTO, giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getCreateDate(),
@@ -25,6 +24,7 @@ public class GiftCertificateRepositoryImpl implements GiftRepository {
 
     @Override
     public void remove(long id) {
+        jdbcTemplate.
     }
 
     @Override
