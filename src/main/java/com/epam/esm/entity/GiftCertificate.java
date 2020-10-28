@@ -18,8 +18,7 @@ public class GiftCertificate {
     private Date lastUpdateDate;
     private long duration;
 
-    public GiftCertificate(int giftId, String name, String description, BigDecimal price, Date createDate, Date lastUpdateDate, long duration) {
-        this.giftId = giftId;
+    public GiftCertificate(String name, String description, BigDecimal price, Date createDate, Date lastUpdateDate, long duration) {      ;
         this.name = name;
         this.description = description;
         this.price = price;
