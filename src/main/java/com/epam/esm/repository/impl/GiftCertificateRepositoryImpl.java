@@ -6,54 +6,51 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public class GiftCertificateRepositoryImpl implements GiftRepository {
+    private static final String INSERT_INTO_QUERY = "INSERT INTO gifts VALUES (?,?,?,?,?,?)";
+    private static final String DELETE_BY_ID_QUERY = "DELETE FROM gifts WHERE gifts_id = ?";
+    private static final String UPDATE_BY_ID_QUERY = "UPDATE gifts set name = ?, set description = ?," +
+            "set price = ?, set last_update_date = ?, set duration = ? WHERE gifts_id = ?";
+    private static final String SELECT_BY_PART_NAME_QUERY = "SELECT gifts.name, gifts.description, gifts.price," +
+            "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE name LIKE ?";
+    private static final String SELECT_BY_PART_DESCRIPTION_QUERY = "SELECT gifts.name, gifts.description, gifts.price," +
+            "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE description LIKE ?";
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-    private static final String INSERT_INTO = "INSERT INTO GIFTS VALUES (?, ?, ?, ?,?,?)";
+    public GiftCertificateRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public long add(GiftCertificate giftCertificate) {
-        return jdbcTemplate.update(INSERT_INTO, giftCertificate.getName(), giftCertificate.getDescription(),
+        return jdbcTemplate.update(INSERT_INTO_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getCreateDate(),
                 giftCertificate.getLastUpdateDate(), giftCertificate.getDuration());
     }
 
     @Override
     public void remove(long id) {
-        jdbcTemplate.
+        jdbcTemplate.update(DELETE_BY_ID_QUERY, id);
     }
 
     @Override
     public void update(GiftCertificate giftCertificate) {
+        jdbcTemplate.update(UPDATE_BY_ID_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
+                giftCertificate.getPrice(), giftCertificate.getLastUpdateDate(), giftCertificate.getDuration());
     }
 
     @Override
-    public List<GiftCertificate> findByName(String name) {
-        return null;
+    public List<GiftCertificate> findByPartName(String partName) {
+        return jdbcTemplate.query(SELECT_BY_PART_NAME_QUERY, new Object[]{partName}, new GiftsMapper());
     }
 
     @Override
-    public List<GiftCertificate> findByCreateDate(Date date) {
-        return null;
+    public List<GiftCertificate> findByDescriptionPart(String descriptionPart) {
+        return jdbcTemplate.query(SELECT_BY_PART_DESCRIPTION_QUERY, new Object[]{descriptionPart}, new GiftsMapper());
     }
 
-    @Override
-    public List<GiftCertificate> findByLastUpdateDate(Date date) {
-        return null;
-    }
-
-    @Override
-    public List<GiftCertificate> findByDuration(int days) {
-        return null;
-    }
-
-    @Override
-    public List<GiftCertificate> sort(Comparator<GiftCertificate> comparator) {
-        return null;
-    }
 }
 

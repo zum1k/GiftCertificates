@@ -4,12 +4,34 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class GiftCertificate {
+    private int giftId;
     private String name;
     private String description;
     private BigDecimal price;
     private Date createDate;
     private Date lastUpdateDate;
     private long duration;
+
+    public GiftCertificate(int giftId, String name, String description, BigDecimal price, Date createDate, Date lastUpdateDate, long duration) {
+        this.giftId = giftId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.duration = duration;
+    }
+    public GiftCertificate(){
+
+    }
+
+    public int getGiftId() {
+        return giftId;
+    }
+
+    public void setGiftId(int giftId) {
+        this.giftId = giftId;
+    }
 
     public String getName() {
         return name;
@@ -58,4 +80,5 @@ public class GiftCertificate {
     public void setDuration(long duration) {
         this.duration = duration;
     }
+
 }

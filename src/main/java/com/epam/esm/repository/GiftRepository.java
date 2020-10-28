@@ -2,8 +2,6 @@ package com.epam.esm.repository;
 
 import com.epam.esm.entity.GiftCertificate;
 
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public interface GiftRepository {
@@ -13,13 +11,8 @@ public interface GiftRepository {
 
     public void update(GiftCertificate giftCertificate);
 
-    public List<GiftCertificate> findByName(String name);
+    public List<GiftCertificate> findByPartName(String partName);
 
-    public List<GiftCertificate> findByCreateDate(Date date);
+    public List<GiftCertificate> findByDescriptionPart(String descriptionPart);
 
-    public List<GiftCertificate> findByLastUpdateDate(Date date);
-
-    public List<GiftCertificate> findByDuration(int days);
-
-    public List<GiftCertificate> sort(Comparator<GiftCertificate> comparator);
 }
