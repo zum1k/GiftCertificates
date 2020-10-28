@@ -20,17 +20,17 @@ public class GiftServiceImpl implements GiftService {
 
     @Override
     public long add(GiftCertificate giftCertificate) {
-        return 0;
+        return giftRepository.add(giftCertificate);
     }
 
     @Override
     public void remove(long id) {
-
+        giftRepository.remove(id);
     }
 
     @Override
     public void update(GiftCertificate giftCertificate) {
-
+        giftRepository.update(giftCertificate);
     }
 
     @Override
