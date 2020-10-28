@@ -1,8 +1,12 @@
 package com.epam.esm.configuration;
 
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -19,8 +23,19 @@ public class DBConfig {
 
         return dataSource;
     }
+
     @Bean
-    public JdbcTemplate jdbcTemplate(){
+    public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public RowMapper<Tag> getRowMapperTag() {
+        return new BeanPropertyRowMapper<>(Tag.class);
+    }
+
+    @Bean
+    public RowMapper<GiftCertificate> getRowMapperGifts() {
+        return new BeanPropertyRowMapper<>(GiftCertificate.class);
     }
 }

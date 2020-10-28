@@ -4,6 +4,7 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.repository.GiftRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,10 +19,13 @@ public class GiftCertificateRepositoryImpl implements GiftRepository {
             "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE name LIKE ?";
     private static final String SELECT_BY_PART_DESCRIPTION_QUERY = "SELECT gifts.name, gifts.description, gifts.price," +
             "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE description LIKE ?";
+
+    private final RowMapper<GiftCertificate> giftMapper;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GiftCertificateRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public GiftCertificateRepositoryImpl(JdbcTemplate jdbcTemplate, RowMapper<GiftCertificate> giftMapper) {
+        this.giftMapper = giftMapper;
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -44,12 +48,12 @@ public class GiftCertificateRepositoryImpl implements GiftRepository {
 
     @Override
     public List<GiftCertificate> findByPartName(String partName) {
-        return jdbcTemplate.query(SELECT_BY_PART_NAME_QUERY, new Object[]{partName}, new GiftsMapper());
+        return jdbcTemplate.query(SELECT_BY_PART_NAME_QUERY, new Object[]{partName}, giftMapper);
     }
 
     @Override
     public List<GiftCertificate> findByDescriptionPart(String descriptionPart) {
-        return jdbcTemplate.query(SELECT_BY_PART_DESCRIPTION_QUERY, new Object[]{descriptionPart}, new GiftsMapper());
+        return jdbcTemplate.query(SELECT_BY_PART_DESCRIPTION_QUERY, new Object[]{descriptionPart}, giftMapper);
     }
 
 }
