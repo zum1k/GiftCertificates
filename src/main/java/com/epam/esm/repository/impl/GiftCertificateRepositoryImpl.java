@@ -20,6 +20,7 @@ public class GiftCertificateRepositoryImpl implements GiftRepository {
             "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE name LIKE ?";
     private static final String SELECT_BY_PART_DESCRIPTION_QUERY = "SELECT gifts.name, gifts.description, gifts.price," +
             "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE description LIKE ?";
+    private static final String SELECT_ALL_QUERY = "SELECT * from gifts";
 
     private final RowMapper<GiftCertificate> giftMapper;
     private final JdbcTemplate jdbcTemplate;
@@ -55,6 +56,11 @@ public class GiftCertificateRepositoryImpl implements GiftRepository {
     @Override
     public List<GiftCertificate> findByDescriptionPart(String descriptionPart) {
         return jdbcTemplate.query(SELECT_BY_PART_DESCRIPTION_QUERY, new Object[]{descriptionPart}, giftMapper);
+    }
+
+    @Override
+    public List<GiftCertificate> findAll() {
+        return jdbcTemplate.query(SELECT_ALL_QUERY, giftMapper);
     }
 
 }

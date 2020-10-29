@@ -22,4 +22,6 @@ public interface GiftService {
 
     public List<GiftCertificate> sortByNameDESC(Comparator<GiftCertificate> comparator);
 
+    public List<GiftCertificate> findAll();
+
 }

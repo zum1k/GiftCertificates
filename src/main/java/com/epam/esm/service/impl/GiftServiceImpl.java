@@ -40,12 +40,12 @@ public class GiftServiceImpl implements GiftService {
 
     @Override
     public List<GiftCertificate> findByPartName(String partName) {
-        return null;
+        return giftRepository.findByPartName(partName);
     }
 
     @Override
     public List<GiftCertificate> findByDescriptionPart(String descriptionPart) {
-        return null;
+        return giftRepository.findByDescriptionPart(descriptionPart);
     }
 
     @Override
@@ -56,5 +56,10 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<GiftCertificate> sortByNameDESC(Comparator<GiftCertificate> comparator) {
         return null;
+    }
+
+    @Override
+    public List<GiftCertificate> findAll() {
+        return giftRepository.findAll();
     }
 }

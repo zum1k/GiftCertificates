@@ -15,4 +15,6 @@ public interface GiftRepository {
 
     public List<GiftCertificate> findByDescriptionPart(String descriptionPart);
 
+    public List<GiftCertificate> findAll();
+
 }
