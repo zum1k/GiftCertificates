@@ -3,6 +3,7 @@ package com.epam.esm.entity;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 @Setter
 @Getter
@@ -14,11 +15,11 @@ public class GiftCertificate {
     private String name;
     private String description;
     private BigDecimal price;
-    private Date createDate;
-    private Date lastUpdateDate;
+    private LocalDate createDate;
+    private LocalDate lastUpdateDate;
     private long duration;
 
-    public GiftCertificate(String name, String description, BigDecimal price, Date createDate, Date lastUpdateDate, long duration) {      ;
+    public GiftCertificate(String name, String description, BigDecimal price, LocalDate createDate, LocalDate lastUpdateDate, long duration) {      ;
         this.name = name;
         this.description = description;
         this.price = price;

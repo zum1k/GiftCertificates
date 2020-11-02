@@ -4,7 +4,7 @@ plugins {
 
 group 'com.epam.esm'
 version '8'
-
+apply plugin: 'war'
 repositories {
     mavenCentral()
 }
@@ -15,9 +15,21 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.9.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '5.2.9.RELEASE'
     compile group: 'org.springframework', name: 'spring-webmvc', version: '5.2.9.RELEASE'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    // https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf-spring5
+    compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-beta4'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14
+    compile group: 'org.slf4j', name: 'slf4j-jdk14', version: '2.0.0-alpha1'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+
+
     implementation 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testImplementation 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-
 }

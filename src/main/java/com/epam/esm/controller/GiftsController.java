@@ -1,31 +1,53 @@
 package com.epam.esm.controller;
 
+
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.service.GiftService;
+import com.epam.esm.entity.dto.GiftCertificateDto;
+import com.epam.esm.service.impl.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@ComponentScan
+@RestController
 public class GiftsController {
-    private static final String MAX_LONG_AS_STRING = "9223372036854775807";
 
-    private GiftService giftService;
+    private final GiftServiceImpl giftService;
 
     @Autowired
-    public GiftsController(GiftService giftService) {
-        this.giftService = giftService;
+    public GiftsController(GiftServiceImpl giftService) {
+     this.giftService = giftService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<GiftCertificate> getGifts() {
+   @RequestMapping(value = "/hello-world", method = RequestMethod.GET,produces = "application/json")
+    public String sayHello() {
+        return "Hello epta!";
+    }
+
+    @ResponseBody
+    @GetMapping("/nope")
+    public String sayNo() {
+        return "No!";
+    }
+
+    @RequestMapping(value = "/certificates", method = RequestMethod.GET)
+    public List<GiftCertificateDto> getGifts() {
         return giftService.findAll();
     }
+
+    @RequestMapping(value = "/gifts", consumes = "application/json", method = RequestMethod.POST)
+    public void addGiftCertificate(@RequestBody GiftCertificateDto dto) {
+        System.out.println(dto.toString());
+//        Map<String, String[]> params = webRequest.getParameterMap();
+//        GiftCertificate giftCertificate = new GiftCertificate(params.get("name"));
+//        return giftService.findAll();
+
+    }
+
     @RequestMapping(method = RequestMethod.POST)
-    public void addGiftCertificate(){
-        //giftService.add()
+    public void updateGiftCertificates() {
+        giftService.update();
     }
 }

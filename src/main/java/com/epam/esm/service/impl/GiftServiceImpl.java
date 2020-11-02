@@ -1,20 +1,25 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.repository.GiftRepository;
+import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.GiftService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.List;
 
-@Service
+
+@Component
 public class GiftServiceImpl implements GiftService {
+    private final TagRepository tagRepository;
     private final GiftRepository giftRepository;
 
     @Autowired
-    public GiftServiceImpl(GiftRepository giftRepository) {
+    public GiftServiceImpl(GiftRepository giftRepository, TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
         this.giftRepository = giftRepository;
     }
 
@@ -61,5 +66,9 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<GiftCertificate> findAll() {
         return giftRepository.findAll();
+    }
+
+    private List<GiftCertificateDto> dtoMapper(List<GiftCertificate> giftCertificates){
+        return null;
     }
 }
