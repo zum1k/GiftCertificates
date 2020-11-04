@@ -2,7 +2,6 @@ package com.epam.esm.controller;
 
 
 import com.epam.esm.entity.dto.GiftCertificateDto;
-import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.service.impl.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,46 +21,35 @@ public class GiftsController {
         this.giftService = giftService;
     }
 
-    @RequestMapping(value = "/hello-world", method = RequestMethod.GET, produces = "application/json")
-    public String sayHello() {
-        return "Hello epta!";
-    }
-
-    @ResponseBody
-    @GetMapping("/nope")
-    public String sayNo() {
-        return "No!";
-    }
-
     @RequestMapping(value = "/certificates", method = RequestMethod.GET)
     public List<GiftCertificateDto> getCertificates() {
         return giftService.findAll();
     }
 
-    @RequestMapping(value = "/certificate", consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "/certificates", consumes = "application/json", method = RequestMethod.POST)
     public void addCertificate(@RequestBody GiftCertificateDto dto) {
-        giftService.add(dto)
+        giftService.add(dto);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "certificates/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDto getCertificate(@PathVariable("id") final long id) {
         return giftService.findById(id);
     }
 
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "certificates/{id}", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public void updateGiftCertificates(@PathVariable("id") final long id, @RequestBody GiftCertificateDto certificateDto) {
         giftService.update(certificateDto);
     }
 
-    @RequestMapping(value = "/tag", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
-    public List<GiftCertificateDto> findByTagName(@RequestBody TagDto tagDto) {
-        return giftService.findByTagName(tagDto.getName());
+    @RequestMapping(value = "/certificates?tag_name={tag_name}", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+    public List<GiftCertificateDto> findByTagName(@PathVariable("tag_name") final String tagName) {
+        return giftService.findByTagName(tagName);
     }
-    @RequestMapping(value = "/certificates?sort=name_asc")
-        public List<GiftCertificateDto> filterASC(){
+
+    @RequestMapping(value = "/certificates?sort=name_asc", method = RequestMethod.GET, produces = "application/json")
+    public List<GiftCertificateDto> filterASC() {
         return giftService.sortByNameASC();
     }
 }

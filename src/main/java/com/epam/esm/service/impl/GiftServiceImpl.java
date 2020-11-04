@@ -49,7 +49,7 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public List<GiftCertificate> sortByNameASC(Comparator<GiftCertificate> comparator) {
+    public List<GiftCertificateDto> sortByNameASC() {
         return null;
     }
 
