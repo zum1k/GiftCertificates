@@ -8,4 +8,8 @@ import lombok.NoArgsConstructor;
 public class TagDto {
     private int id;
     private String name;
+
+    public TagDto(String name) {
+        this.name = name;
+    }
 }

@@ -21,7 +21,7 @@ public class GiftsController {
         this.giftService = giftService;
     }
 
-    @RequestMapping(value = "/certificates", method = RequestMethod.GET)
+    @RequestMapping(value = "/certificates", method = RequestMethod.GET, produces = "application/json")
     public List<GiftCertificateDto> getCertificates() {
         return giftService.findAll();
     }

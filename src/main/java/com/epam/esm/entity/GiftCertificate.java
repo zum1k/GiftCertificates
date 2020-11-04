@@ -13,16 +13,15 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class GiftCertificate {
-    private int giftId;
+    private int iD;
     private String name;
     private String description;
     private BigDecimal price;
     private LocalDate createDate;
     private LocalDate lastUpdateDate;
     private long duration;
-    private List<Tag> tags;
 
-    public GiftCertificate(String name, String description, BigDecimal price, LocalDate createDate, LocalDate lastUpdateDate, long duration) {      ;
+    public GiftCertificate(String name, String description, BigDecimal price, LocalDate createDate, LocalDate lastUpdateDate, long duration) {
         this.name = name;
         this.description = description;
         this.price = price;
