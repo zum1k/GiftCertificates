@@ -71,18 +71,20 @@ public class GiftServiceImpl implements GiftService {
         }
         return null;
     }
-    private GiftCertificate certificateMapper(GiftCertificateDto dto){
-       return new GiftCertificate(dto.getName(), dto.getDescription(),dto.getPrice(),
-                dto.getCreateDate(),dto.getLastUpdateDate(),dto.getDuration());
+
+    private GiftCertificate certificateMapper(GiftCertificateDto dto) {
+        return new GiftCertificate(dto.getName(), dto.getDescription(), dto.getPrice(),
+                dto.getCreateDate(), dto.getLastUpdateDate(), dto.getDuration());
     }
-    private GiftCertificateDto dtoMapper(GiftCertificate certificate, List<Tag> tags){
+
+    private GiftCertificateDto dtoMapper(GiftCertificate certificate, List<Tag> tags) {
 
         return new GiftCertificateDto(certificate.getID(), certificate.getName(), certificate.getDescription(),
-                certificate.getPrice(), certificate.getCreateDate(),certificate.getLastUpdateDate(),
-                certificate.getDuration(),tags)
-
+                certificate.getPrice(), certificate.getCreateDate(), certificate.getLastUpdateDate(),
+                certificate.getDuration(), tags)
     }
-    private TagDto tagMapper(Tag tag){
+
+    private TagDto tagMapper(Tag tag) {
         return new TagDto();
     }
 }
