@@ -60,4 +60,8 @@ public class GiftsController {
     public List<GiftCertificateDto> findByTagName(@RequestBody TagDto tagDto) {
         return giftService.findByTagName(tagDto.getName());
     }
+    @RequestMapping(value = "/certificates?sort=name_asc")
+        public List<GiftCertificateDto> filterASC(){
+        return giftService.sortByNameASC();
+    }
 }

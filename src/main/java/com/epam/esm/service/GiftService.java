@@ -17,11 +17,7 @@ public interface GiftService {
 
     public List<GiftCertificate> findByPartName(String partName);
 
-    public List<GiftCertificate> findByDescriptionPart(String descriptionPart);
-
     public List<GiftCertificate> sortByNameASC(Comparator<GiftCertificate> comparator);
-
-    public List<GiftCertificate> sortByNameDESC(Comparator<GiftCertificate> comparator);
 
     public List<GiftCertificateDto> findAll();
 

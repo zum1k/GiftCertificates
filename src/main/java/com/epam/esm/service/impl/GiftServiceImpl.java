@@ -49,17 +49,7 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public List<GiftCertificate> findByDescriptionPart(String descriptionPart) {
-        return giftRepository.findByDescriptionPart(descriptionPart);
-    }
-
-    @Override
     public List<GiftCertificate> sortByNameASC(Comparator<GiftCertificate> comparator) {
-        return null;
-    }
-
-    @Override
-    public List<GiftCertificate> sortByNameDESC(Comparator<GiftCertificate> comparator) {
         return null;
     }
 
