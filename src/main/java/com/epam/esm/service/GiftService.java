@@ -1,18 +1,19 @@
 package com.epam.esm.service;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.dto.GiftCertificateDto;
 
 import java.util.Comparator;
 import java.util.List;
 
 public interface GiftService {
-    public long add(GiftCertificate giftCertificate);
+    public long add(GiftCertificateDto giftCertificateDto);
 
     public void remove(long id);
 
-    public void update(GiftCertificate giftCertificate);
+    public void update(GiftCertificateDto giftCertificateDto);
 
-    public List<GiftCertificate> findByTagName(String tagName);
+    public List<GiftCertificateDto> findByTagName(String tagName);
 
     public List<GiftCertificate> findByPartName(String partName);
 
@@ -22,6 +23,8 @@ public interface GiftService {
 
     public List<GiftCertificate> sortByNameDESC(Comparator<GiftCertificate> comparator);
 
-    public List<GiftCertificate> findAll();
+    public List<GiftCertificateDto> findAll();
+
+    public GiftCertificateDto findById(long id);
 
 }

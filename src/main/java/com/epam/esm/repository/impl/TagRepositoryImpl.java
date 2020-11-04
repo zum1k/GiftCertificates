@@ -26,11 +26,10 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public void remove(long id) {
-
     }
 
     @Override
-    public List<Tag> findOne(long id) {
+    public Tag findOne(long id) {
         return null;
     }
 

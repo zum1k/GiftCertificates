@@ -5,6 +5,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -18,6 +20,7 @@ public class GiftCertificate {
     private LocalDate createDate;
     private LocalDate lastUpdateDate;
     private long duration;
+    private List<Tag> tags;
 
     public GiftCertificate(String name, String description, BigDecimal price, LocalDate createDate, LocalDate lastUpdateDate, long duration) {      ;
         this.name = name;

@@ -9,7 +9,7 @@ public interface TagRepository {
 
     public void remove(long id);
 
-    public List<Tag> findOne(long id);
+    public Tag findOne(long id);
 
     public List<Tag> findAll();
 }

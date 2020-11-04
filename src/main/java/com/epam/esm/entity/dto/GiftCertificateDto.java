@@ -17,6 +17,5 @@ public class GiftCertificateDto {
     private Date createDate;
     private Date lastUpdateDate;
     private long duration;
-
     private List<TagDto> tags;
 }

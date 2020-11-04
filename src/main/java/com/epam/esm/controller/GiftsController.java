@@ -1,11 +1,12 @@
 package com.epam.esm.controller;
 
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.dto.GiftCertificateDto;
+import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.service.impl.GiftServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +19,10 @@ public class GiftsController {
 
     @Autowired
     public GiftsController(GiftServiceImpl giftService) {
-     this.giftService = giftService;
+        this.giftService = giftService;
     }
 
-   @RequestMapping(value = "/hello-world", method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "/hello-world", method = RequestMethod.GET, produces = "application/json")
     public String sayHello() {
         return "Hello epta!";
     }
@@ -33,21 +34,30 @@ public class GiftsController {
     }
 
     @RequestMapping(value = "/certificates", method = RequestMethod.GET)
-    public List<GiftCertificateDto> getGifts() {
+    public List<GiftCertificateDto> getCertificates() {
         return giftService.findAll();
     }
 
-    @RequestMapping(value = "/gifts", consumes = "application/json", method = RequestMethod.POST)
-    public void addGiftCertificate(@RequestBody GiftCertificateDto dto) {
-        System.out.println(dto.toString());
-//        Map<String, String[]> params = webRequest.getParameterMap();
-//        GiftCertificate giftCertificate = new GiftCertificate(params.get("name"));
-//        return giftService.findAll();
-
+    @RequestMapping(value = "/certificate", consumes = "application/json", method = RequestMethod.POST)
+    public void addCertificate(@RequestBody GiftCertificateDto dto) {
+        giftService.add(dto)
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void updateGiftCertificates() {
-        giftService.update();
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public GiftCertificateDto getCertificate(@PathVariable("id") final long id) {
+        return giftService.findById(id);
+    }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateGiftCertificates(@PathVariable("id") final long id, @RequestBody GiftCertificateDto certificateDto) {
+        giftService.update(certificateDto);
+    }
+
+    @RequestMapping(value = "/tag", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")
+    public List<GiftCertificateDto> findByTagName(@RequestBody TagDto tagDto) {
+        return giftService.findByTagName(tagDto.getName());
     }
 }

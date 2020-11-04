@@ -24,7 +24,7 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public long add(GiftCertificate giftCertificate) {
+    public long add(GiftCertificateDto giftCertificateDto) {
         return giftRepository.add(giftCertificate);
     }
 
@@ -34,12 +34,12 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public void update(GiftCertificate giftCertificate) {
+    public void update(GiftCertificateDto giftCertificateDto) {
         giftRepository.update(giftCertificate);
     }
 
     @Override
-    public List<GiftCertificate> findByTagName(String tagName) {
+    public List<GiftCertificateDto> findByTagName(String tagName) {
         return null;
     }
 
@@ -64,11 +64,20 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
+    public List<GiftCertificateDto> findAll() {
         return giftRepository.findAll();
     }
 
-    private List<GiftCertificateDto> dtoMapper(List<GiftCertificate> giftCertificates){
+    @Override
+    public GiftCertificateDto findById(long id) {
+        return null;
+    }
+
+    private List<GiftCertificateDto> dtoMapper(List<GiftCertificate> giftCertificates) {
+        for (GiftCertificate giftCertificate : giftCertificates) {
+            long id = giftCertificate.getGiftId();
+            tagRepository.findOne(id);
+        }
         return null;
     }
 }
