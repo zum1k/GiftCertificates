@@ -52,4 +52,14 @@ public class GiftsController {
     public List<GiftCertificateDto> filterASC() {
         return giftService.sortByNameASC();
     }
+
+    @RequestMapping(value = "/certificates/{id}", method = RequestMethod.POST, consumes = "application/json")
+    public void deleteCertificateById(@PathVariable("id") final long id) {
+        giftService.remove(id);
+    }
+
+    @RequestMapping(value = "/certificates?name={part_name}", method = RequestMethod.GET, produces = "application/json")
+    public List<GiftCertificateDto> findByPartName(@PathVariable("part_name") final String partName) {
+        return giftService.findByPartName(partName);
+    }
 }

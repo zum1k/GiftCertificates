@@ -44,7 +44,7 @@ public class GiftServiceImpl implements GiftService {
     }
 
     @Override
-    public List<GiftCertificate> findByPartName(String partName) {
+    public List<GiftCertificateDto> findByPartName(String partName) {
         return giftRepository.findByPartName(partName);
     }
 
