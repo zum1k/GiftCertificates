@@ -31,13 +31,13 @@ public class GiftsController {
         giftService.add(dto);
     }
 
-    @RequestMapping(value = "certificates/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/certificates/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDto getCertificate(@PathVariable("id") final long id) {
         return giftService.findById(id);
     }
 
-    @RequestMapping(value = "certificates/{id}", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/certificates/{id}", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public void updateGiftCertificates(@PathVariable("id") final long id, @RequestBody GiftCertificateDto certificateDto) {
         giftService.update(certificateDto);
