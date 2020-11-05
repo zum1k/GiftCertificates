@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class GiftRepositoryImpl implements GiftRepository {
+public class CertificateRepositoryImpl implements GiftRepository {
     private static final String INSERT_INTO_QUERY = "INSERT INTO gifts VALUES (?,?,?,?,?,?)";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM gifts WHERE gifts_id = ?";
     private static final String UPDATE_BY_ID_QUERY = "UPDATE gifts set name = ?, set description = ?," +
@@ -25,7 +25,7 @@ public class GiftRepositoryImpl implements GiftRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GiftRepositoryImpl(JdbcTemplate jdbcTemplate, RowMapper<GiftCertificate> giftMapper) {
+    public CertificateRepositoryImpl(JdbcTemplate jdbcTemplate, RowMapper<GiftCertificate> giftMapper) {
         this.giftMapper = giftMapper;
         this.jdbcTemplate = jdbcTemplate;
     }
