@@ -3,6 +3,8 @@ package com.epam.esm.controller;
 
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.service.impl.GiftServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,17 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @ComponentScan
 @RestController
 @RequestMapping(value = "/certificates")
 public class GiftsController {
-
     private final GiftServiceImpl giftService;
-
-    @Autowired
-    public GiftsController(GiftServiceImpl giftService) {
-        this.giftService = giftService;
-    }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public List<GiftCertificateDto> getCertificates() {
@@ -31,6 +28,7 @@ public class GiftsController {
     }
 
     @RequestMapping(consumes = "application/json", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public void addCertificate(@RequestBody GiftCertificateDto dto) {
         log.info("add certificate");
         giftService.add(dto);

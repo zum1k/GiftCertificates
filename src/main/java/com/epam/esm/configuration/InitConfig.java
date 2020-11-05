@@ -1,12 +1,11 @@
 package com.epam.esm.configuration;
 
-import com.epam.esm.controller.GiftsController;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class InitConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{AppConfig.class};
+        return new Class[]{DBConfig.class};
     }
 
     @Override

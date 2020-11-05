@@ -1,9 +1,8 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.GiftCertificateDto;
-import com.epam.esm.entity.dto.TagDto;
+import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.GiftRepository;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.GiftService;
@@ -12,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,31 +19,37 @@ import java.util.List;
 @Component
 public class GiftServiceImpl implements GiftService {
     private final CertificateMapper certificateMapper;
-    private final GiftRepository giftRepository;
+    private final GiftRepository certificateRepository;
+    private final TagRepository tagRepository;
+
 
     @Autowired
-    public GiftServiceImpl(GiftRepository giftRepository, TagRepository tagRepository, CertificateMapper certificateMapper) {
+    public GiftServiceImpl(GiftRepository giftRepository, TagRepository tagRepository,
+                           CertificateMapper mapper) {
+        this.certificateRepository = giftRepository;
+        this.tagRepository = tagRepository;
+        this.certificateMapper = mapper;
 
-        this.giftRepository = giftRepository;
-        this.certificateMapper = certificateMapper;
     }
 
     @Override
     public long add(GiftCertificateDto giftCertificateDto) {
         log.info("add certificate");
-        return giftRepository.add(giftCertificate);
+        giftCertificateDto.setCreateDate(getCurrentTime());
+        giftCertificateDto.setLastUpdateDate(getCurrentTime());
+        return certificateRepository.add(certificateMapper.toEntity(giftCertificateDto));
     }
 
     @Override
     public void remove(long id) {
         log.info("remove certificate");
-        giftRepository.remove(id);
+        certificateRepository.remove(id);
     }
 
     @Override
     public void update(GiftCertificateDto giftCertificateDto) {
         log.info("update certificate");
-        giftRepository.update(giftCertificate);
+        certificateRepository.update(certificateMapper.toEntity(giftCertificateDto));
     }
 
     @Override
@@ -55,7 +61,7 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<GiftCertificateDto> findByPartName(String partName) {
         log.info("find by part name {}", partName);
-        return giftRepository.findByPartName(partName);
+        return certificateRepository.findByPartName(partName);
     }
 
     @Override
@@ -67,19 +73,24 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<GiftCertificateDto> findAll() {
         log.info("find all");
-        return dtosMapper(giftRepository.findAll());
+        return dtosMapper(certificateRepository.findAll());
     }
 
     @Override
     public GiftCertificateDto findById(long id) {
         return null;
     }
-    private List<GiftCertificateDto> dtosMapper(List<GiftCertificate>certificates){
+
+    private List<GiftCertificateDto> dtosMapper(List<GiftCertificate> certificates) {
         List<GiftCertificateDto> dtos = new ArrayList<>();
-        for (GiftCertificate certificate: certificates){
-            dtos.add(certificateMapper.toDto(certificate));
+        for (GiftCertificate certificate : certificates) {
+            certificate.getCertificateId();
+            dtos.add(certificateMapper.toDto(certificate).setTags();
         }
         return dtos;
     }
 
+    private OffsetDateTime getCurrentTime() {
+        return OffsetDateTime.now();
+    }
 }
