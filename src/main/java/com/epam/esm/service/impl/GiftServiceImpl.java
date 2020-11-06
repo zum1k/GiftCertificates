@@ -28,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GiftServiceImpl implements GiftService {
     private final String CERTIFICATE = "Certificate";
+
     private final CertificateMapper certificateMapper;
     private final TagMapper tagMapper;
     private final CertificateRepository certificateRepository;
@@ -99,7 +100,7 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<GiftCertificateDto> findAll() {
         log.info("find all");
-        if (dtosMapper(certificateRepository.findAll()).isEmpty()) {
+        if (certificateRepository.findAll().isEmpty()) {
             throw new EntityNotFoundException(CERTIFICATE);
         }
         return dtosMapper(certificateRepository.findAll());
@@ -107,6 +108,7 @@ public class GiftServiceImpl implements GiftService {
 
     @Override
     public GiftCertificateDto findById(long id) {
+        log.info("find by id {}", id);
         if (dtosMapper(certificateRepository.findById(id)).isEmpty()) {
             throw new EntityNotFoundException(CERTIFICATE);
         }
@@ -114,6 +116,7 @@ public class GiftServiceImpl implements GiftService {
     }
 
     private List<GiftCertificateDto> dtosMapper(List<GiftCertificate> certificates) {
+        log.info("mapping dtos");
         List<GiftCertificateDto> dtos = new ArrayList<>();
         for (GiftCertificate certificate : certificates) {
             List<Tag> tags = tagRepository.findTagsByCertificateId(certificate.getCertificateId());

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CertificateRepositoryImpl implements CertificateRepository {
-    private static final String INSERT_INTO_QUERY = "INSERT INTO gifts VALUES (?,?,?,?,?,?)";
+    private static final String INSERT_INTO_QUERY = "INSERT INTO gifts(name, description, price, create_date, last_update_date,duration) VALUES(?,?,?,?,?,?)";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM gifts WHERE gifts_id = ?";
     private static final String UPDATE_BY_ID_QUERY = "UPDATE gifts set name = ?, set description = ?," +
             "set price = ?, set last_update_date = ?, set duration = ? WHERE gifts_id = ?";

@@ -28,6 +28,8 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    // https://mvnrepository.com/artifact/org.junit/junit5-engine
+    compile group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
 
     implementation 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'

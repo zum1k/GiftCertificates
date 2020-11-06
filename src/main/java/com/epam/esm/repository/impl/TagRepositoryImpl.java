@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagRepositoryImpl implements TagRepository {
-    private static final String INSERT_INTO_QUERY = "INSERT INTO tags VALUES ?";
+    private static final String INSERT_INTO_QUERY = "INSERT INTO tags(name) VALUES ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM tags WHERE tag_id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * from tags";
     private static final String SELECT_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT tags.tag_id, tags.name from tags JOIN " +
@@ -41,7 +41,7 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public List<Tag> findOne(long id) {
         log.info("find tag by id {}", id);
-        return jdbcTemplate.query(SELECT_BY_ID_QUERY, tagMapper);
+        return jdbcTemplate.query(SELECT_BY_ID_QUERY, tagMapper, id);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class TagRepositoryImpl implements TagRepository {
 
     public List<Tag> findTagsByCertificateId(long certificateId) {
         log.info("find tags by certificate id {}", certificateId);
-        return jdbcTemplate.query(SELECT_ALL_TAGS_BY_CERTIFICATE_ID, tagMapper);
+        return jdbcTemplate.query(SELECT_ALL_TAGS_BY_CERTIFICATE_ID, tagMapper, certificateId);
     }
 
     @Override
     public List<Tag> findByName(String tagName) {
         log.info("find tag by name {}", tagName);
-        return jdbcTemplate.query(SELECT_BY_NAME_QUERY, tagMapper);
+        return jdbcTemplate.query(SELECT_BY_NAME_QUERY, tagMapper, tagName);
     }
 }
 
