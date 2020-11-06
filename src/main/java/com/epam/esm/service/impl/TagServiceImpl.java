@@ -1,6 +1,8 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.EntityAlreadyExists;
+import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -14,29 +16,43 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagServiceImpl implements TagService {
+    private static final int ZERO_NUMBER = 0;
+    private static final String TAG = "Tag";
     private final TagRepository tagRepository;
 
     @Override
     public long add(Tag tag) {
         log.info("add tag");
-        return tagRepository.add(tag);
+        if (tagRepository.findByName(tag.getName()).isEmpty()) {
+            return tagRepository.add(tag);
+        }
+        throw new EntityAlreadyExists(TAG);
     }
 
     @Override
     public void remove(long id) {
         log.info("remove tag {}", id);
+        if (tagRepository.findOne(id).isEmpty()) {
+            throw new EntityNotFoundException(TAG);
+        }
         tagRepository.delete(id);
     }
 
     @Override
     public Tag findOne(long id) {
         log.info("find tag {}", id);
-        return tagRepository.findOne(id);
+        if (tagRepository.findOne(id).isEmpty()) {
+            throw new EntityNotFoundException(TAG);
+        }
+        return tagRepository.findOne(id).get(ZERO_NUMBER);
     }
 
     @Override
     public List<Tag> findAll() {
         log.info("find tags ");
+        if (tagRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(TAG);
+        }
         return tagRepository.findAll();
     }
 }

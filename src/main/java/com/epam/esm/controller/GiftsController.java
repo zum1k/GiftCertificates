@@ -43,7 +43,7 @@ public class GiftsController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public void updateGiftCertificates(@PathVariable("id") final long id, @RequestBody GiftCertificateDto certificateDto) {
-        giftService.update(certificateDto);
+        giftService.update(id,certificateDto);
     }
 
     @RequestMapping(value = "?tag_name={tag_name}", method = RequestMethod.GET, consumes = "application/json", produces = "application/json")

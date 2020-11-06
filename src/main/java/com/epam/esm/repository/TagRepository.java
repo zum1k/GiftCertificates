@@ -9,7 +9,7 @@ public interface TagRepository {
 
     void delete(long id);
 
-    Tag findOne(long id);
+    List<Tag> findOne(long id);
 
     List<Tag> findAll();
 

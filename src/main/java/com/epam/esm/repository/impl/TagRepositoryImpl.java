@@ -39,9 +39,9 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Tag findOne(long id) {
+    public List<Tag> findOne(long id) {
         log.info("find tag by id {}", id);
-        return jdbcTemplate.query(SELECT_BY_ID_QUERY, tagMapper).get(0);
+        return jdbcTemplate.query(SELECT_BY_ID_QUERY, tagMapper);
     }
 
     @Override
