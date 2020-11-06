@@ -45,10 +45,10 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public void update(GiftCertificate giftCertificate) {
+    public void update(long certificateId,GiftCertificate giftCertificate) {
         log.info("update certificate");
         jdbcTemplate.update(UPDATE_BY_ID_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
-                giftCertificate.getPrice(), giftCertificate.getLastUpdateDate(), giftCertificate.getDuration());
+                giftCertificate.getPrice(), giftCertificate.getLastUpdateDate(), giftCertificate.getDuration(), certificateId);
     }
 
     @Override

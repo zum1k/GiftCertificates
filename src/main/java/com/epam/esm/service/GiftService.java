@@ -11,7 +11,7 @@ public interface GiftService {
 
     public void remove(long id);
 
-    public void update(GiftCertificateDto giftCertificateDto);
+    public void update(long certificateId, GiftCertificateDto giftCertificateDto);
 
     public List<GiftCertificateDto> findByTagName(String tagName);
 

@@ -9,7 +9,7 @@ public interface CertificateRepository {
 
     void remove(long id);
 
-    void update(GiftCertificate giftCertificate);
+    void update(long certificateId, GiftCertificate giftCertificate);
 
     List<GiftCertificate> findByPartName(String partName);
 
