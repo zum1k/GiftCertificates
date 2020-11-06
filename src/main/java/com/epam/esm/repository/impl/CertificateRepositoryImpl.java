@@ -2,11 +2,11 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.repository.CertificateRepository;
+import com.epam.esm.repository.rowmapper.CertificateRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             " JOIN tags ON gift_certificate_tag.tag = tags.tag_id WHERE tags.name = ?";
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM gifts WHERE gifts.gifts_id = ?";
 
-    private final RowMapper<GiftCertificate> giftMapper;
+    private final CertificateRowMapper giftMapper;
     private final JdbcTemplate jdbcTemplate;
 
     public long add(GiftCertificate giftCertificate) {
@@ -45,7 +45,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public void update(long certificateId,GiftCertificate giftCertificate) {
+    public void update(long certificateId, GiftCertificate giftCertificate) {
         log.info("update certificate");
         jdbcTemplate.update(UPDATE_BY_ID_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getLastUpdateDate(), giftCertificate.getDuration(), certificateId);

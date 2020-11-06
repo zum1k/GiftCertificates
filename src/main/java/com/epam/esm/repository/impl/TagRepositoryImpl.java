@@ -2,11 +2,11 @@ package com.epam.esm.repository.impl;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.rowmapper.TagRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class TagRepositoryImpl implements TagRepository {
     private static final String SELECT_BY_NAME_QUERY = "SELECT tags.tag_id, tags.name FROM tags WHERE tags.name = ?";
     private static final String SELECT_BY_ID_QUERY = "SELECT tags.tag_id, tags.name FROM tags WHERE tags.tag_id = ?";
 
-    private final RowMapper<Tag> tagMapper;
+    private final TagRowMapper tagMapper;
     private final JdbcTemplate jdbcTemplate;
 
     @Override

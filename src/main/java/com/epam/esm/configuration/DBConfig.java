@@ -28,14 +28,4 @@ public class DBConfig {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-
-    @Bean
-    public RowMapper<Tag> getRowMapperTag() {
-        return new BeanPropertyRowMapper<>(Tag.class);
-    }
-
-    @Bean
-    public RowMapper<GiftCertificate> getRowMapperGifts() {
-        return new BeanPropertyRowMapper<>(GiftCertificate.class);
-    }
 }

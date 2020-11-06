@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 
 import com.epam.esm.entity.dto.GiftCertificateDto;
+import com.epam.esm.service.GiftService;
 import com.epam.esm.service.impl.GiftServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/certificates")
 public class GiftsController {
-    private final GiftServiceImpl giftService;
+    private final GiftService giftService;
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public List<GiftCertificateDto> getCertificates() {

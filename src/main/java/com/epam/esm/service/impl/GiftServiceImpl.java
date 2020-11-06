@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,8 +122,8 @@ public class GiftServiceImpl implements GiftService {
         return dtos;
     }
 
-    private OffsetDateTime getCurrentTime() {
-        return OffsetDateTime.now();
+    private LocalDate getCurrentTime() {
+        return LocalDate.now();
     }
 
     private long addGiftCertificateTag(long giftKey, long tagKey) {
