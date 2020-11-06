@@ -84,6 +84,7 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public GiftCertificateDto findById(long id) {
        if(dtosMapper(certificateRepository.findById(id)).isEmpty()){
+           return new
 
        };
     }
