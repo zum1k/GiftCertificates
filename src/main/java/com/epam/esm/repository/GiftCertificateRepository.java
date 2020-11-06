@@ -1,9 +1,7 @@
 package com.epam.esm.repository;
 
 public interface GiftCertificateRepository {
-    public void delete();
+    void delete(long giftKey, long tagKey);
 
-    public void create();
-
-    public long[] findByGiftTagKeys(long giftKey, long tagKey);
+    long add(long giftKey, long tagKey);
 }

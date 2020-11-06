@@ -3,7 +3,6 @@ package com.epam.esm.controller;
 
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.service.impl.GiftServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,11 +5,15 @@ import com.epam.esm.entity.Tag;
 import java.util.List;
 
 public interface TagRepository {
-    public long add(Tag tag);
+    long add(Tag tag);
 
-    public void remove(long id);
+    void delete(long id);
 
-    public Tag findOne(long id);
+    Tag findOne(long id);
 
-    public List<Tag> findAll();
+    List<Tag> findAll();
+
+    List<Tag> findTagsByCertificateId(long certificateId);
+
+    List<Tag> findByName(String tagName);
 }
