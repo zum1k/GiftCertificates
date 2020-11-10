@@ -12,18 +12,17 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-//TODO need validation
 public class GiftCertificateDto {
 
     private long giftId;
-    @NotNull
-    @Size(min = 2, max = 45)
+    @NotNull(message = "Need to enter name")
+    @Size(min = 2, max = 45, message = "Name size must be in 2 to 45 sumbols range")
     private String name;
-    @NotNull
-    @Size(min = 2, max = 45)
+    @NotNull(message = "Need to enter description")
+    @Size(min = 2, max = 45, message = "Description size must be in 2 to 45 symbols range")
     private String description;
-    @NotNull
-    @Min(1)
+    @NotNull(message = "Need to enter price")
+    @Min(value = 1, message = "Price can't be less than '1'")
     private BigDecimal price;
     private LocalDate createDate;
     private LocalDate lastUpdateDate;

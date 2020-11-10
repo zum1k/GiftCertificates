@@ -10,8 +10,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class TagDto {
     private int id;
-    @NotNull
-    @Size(min = 2, max = 45)
+    @NotNull(message = "Need to enter a name")
+    @Size(min = 2, max = 45, message = "Name size must over 2 and less than 45 symbols")
     private String name;
 
     public TagDto(String name) {
