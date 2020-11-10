@@ -25,7 +25,7 @@ public class TagServiceImpl implements TagService {
     private final TagMapper tagMapper;
 
     @Override
-    public long add(TagDto tag) {
+    public long addTagIfNotExist(TagDto tag) {
         log.info("add tag");
         if (tagRepository.findByName(tag.getName()).isEmpty()) {
             return tagRepository.add(tagMapper.toEntity(tag));
@@ -36,9 +36,6 @@ public class TagServiceImpl implements TagService {
     @Override
     public void remove(long id) {
         log.info("remove tag {}", id);
-        if (tagRepository.findOne(id).isEmpty()) {
-            throw new EntityNotFoundException(TAG);
-        }
         tagRepository.delete(id);
     }
 

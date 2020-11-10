@@ -14,6 +14,4 @@ public interface TagRepository {
     List<Tag> findAll();
 
     List<Tag> findTagsByCertificateId(long certificateId);
-
-    List<Tag> findByName(String tagName);
 }

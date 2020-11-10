@@ -1,6 +1,9 @@
 package com.epam.esm.repository.impl;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.exception.EntityNotAddedException;
+import com.epam.esm.exception.EntityNotDeletedException;
+import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CertificateRepository;
 import com.epam.esm.repository.rowmapper.CertificateRowMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Repository
@@ -27,57 +31,52 @@ public class CertificateRepositoryImpl implements CertificateRepository {
             " gifts.last_update_date, gifts.duration FROM gifts JOIN gift_certificate_tag ON gifts.gifts_id = gift_certificate_tag.gift" +
             " JOIN tags ON gift_certificate_tag.tag = tags.tag_id WHERE tags.name = ?";
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM gifts WHERE gifts.gifts_id = ?";
+    private static final String CERTIFICATE_ENTITY_NAME = "Certificate";
 
     private final CertificateRowMapper giftMapper;
     private final JdbcTemplate jdbcTemplate;
 
-    public long add(GiftCertificate giftCertificate) {
+
+    public GiftCertificate add(GiftCertificate giftCertificate) {
         log.info("add certificate");
-        return jdbcTemplate.update(INSERT_INTO_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
+        int certificateId = jdbcTemplate.update(INSERT_INTO_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getCreateDate(),
                 giftCertificate.getLastUpdateDate(), giftCertificate.getDuration());
+        if (certificateId == 0) {
+            throw new EntityNotAddedException(CERTIFICATE_ENTITY_NAME);
+        }
+        return findById(certificateId);
     }
 
     @Override
-    public void remove(long id) {
+    public GiftCertificate remove(long id) {
         log.info("remove certificate {}", id);
-        jdbcTemplate.update(DELETE_BY_ID_QUERY, id);
+        if (jdbcTemplate.update(DELETE_BY_ID_QUERY, id) == 1) {
+            return findById(id);
+        }
+        throw new EntityNotDeletedException(CERTIFICATE_ENTITY_NAME);
     }
 
     @Override
-    public void update(long certificateId, GiftCertificate giftCertificate) {
+    public GiftCertificate update(long certificateId, GiftCertificate giftCertificate) {
         log.info("update certificate");
         jdbcTemplate.update(UPDATE_BY_ID_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getLastUpdateDate(), giftCertificate.getDuration(), certificateId);
     }
 
     @Override
-    public List<GiftCertificate> findByPartName(String partName) {
-        log.info("find by part name {}", partName);
-        return jdbcTemplate.query(SELECT_BY_PART_NAME_QUERY, new Object[]{partName}, giftMapper);
-    }
-
-    @Override
-    public List<GiftCertificate> findAll() {
+    public List<GiftCertificate> findAll(Map<String, String> parameters) {
         log.info("find all");
         return jdbcTemplate.query(SELECT_ALL_QUERY, giftMapper);
     }
 
     @Override
-    public List<GiftCertificate> sortByNameASC() {
-        log.info("sort by name asc");
-        return jdbcTemplate.query(SELECT_SORT_BY_NAME_ASC_QUERY, giftMapper);
-    }
-
-    @Override
-    public List<GiftCertificate> findByTagName(String tagName) {
-        log.info("find by tag name {}", tagName);
-        return jdbcTemplate.query(SELECT_ALL_BY_TAG_NAME_QUERY, giftMapper);
-    }
-
-    @Override
-    public List<GiftCertificate> findById(long id) {
-        return jdbcTemplate.query(SELECT_BY_ID_QUERY, giftMapper);
+    public GiftCertificate findById(long id) {
+        List<GiftCertificate> giftCertificates = jdbcTemplate.query(SELECT_BY_ID_QUERY, giftMapper);
+        if (giftCertificates.isEmpty()) {
+            throw new EntityNotFoundException(CERTIFICATE_ENTITY_NAME);
+        }
+        return giftCertificates.get(0);
     }
 
 }

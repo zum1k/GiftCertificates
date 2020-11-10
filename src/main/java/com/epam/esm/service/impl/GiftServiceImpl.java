@@ -34,7 +34,7 @@ public class GiftServiceImpl implements GiftService {
     private final CertificateRepository certificateRepository;
     private final TagRepository tagRepository;
     private final GiftCertificateRepository giftCertificateRepository;
-
+//TODO findAll with params, remove tagMapper and tagRepository, use only TagSerivice.class
     @Override
     public long add(GiftCertificateDto giftCertificateDto) {
         log.info("add certificate");

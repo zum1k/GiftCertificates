@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TagDto {
     private int id;
+    //TODO NotNull @Annotation
     private String name;
 
     public TagDto(String name) {

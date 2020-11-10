@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+//TODO need validation
 public class GiftCertificateDto {
     private long giftId;
     private String name;

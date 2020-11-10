@@ -1,5 +1,6 @@
 package com.epam.esm.repository.impl;
 
+import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +14,17 @@ import org.springframework.stereotype.Repository;
 public class GiftCertificateRepositoryImpl implements GiftCertificateRepository {
     private static final String INSERT_INTO_QUERY = "INSERT INTO gift_certificate_tag VALUES (?,?)";
     private static final String DELETE_BY_IDs_QUERY = "DELETE FROM gift_certificate_tag WHERE gift = ? AND tag = ?";
+    private static final String CERTIFICATE = "Certificate";
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void delete(long giftKey, long tagKey) {
         log.info("delete keys {},{}", giftKey, tagKey);
-        jdbcTemplate.update(DELETE_BY_IDs_QUERY, giftKey, tagKey);
+        int deletedRow = jdbcTemplate.update(DELETE_BY_IDs_QUERY, giftKey, tagKey);
+        if(deletedRow == 0){
+            throw new EntityNotFoundException(CERTIFICATE);
+        }
     }
 
     @Override
