@@ -13,5 +13,5 @@ public interface TagRepository {
 
     List<Tag> findAll();
 
-    List<Tag> findTagsByCertificateId(long certificateId);
+    Tag findTagsByCertificateId(long certificateId);
 }

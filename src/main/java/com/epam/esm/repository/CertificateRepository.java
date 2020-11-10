@@ -14,7 +14,7 @@ public interface CertificateRepository {
 
     GiftCertificate update(long certificateId, GiftCertificate giftCertificate);
 
-    List<GiftCertificate> findAll(Map<String, String> parameters);
+    List<GiftCertificate> findAll(Specification specification);
 
     GiftCertificate findById(long id);
 }

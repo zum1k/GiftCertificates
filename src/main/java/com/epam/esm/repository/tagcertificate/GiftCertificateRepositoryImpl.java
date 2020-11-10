@@ -1,4 +1,4 @@
-package com.epam.esm.repository.impl;
+package com.epam.esm.repository.tagcertificate;
 
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.GiftCertificateRepository;

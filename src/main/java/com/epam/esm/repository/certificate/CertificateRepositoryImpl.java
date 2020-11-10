@@ -1,10 +1,11 @@
-package com.epam.esm.repository.impl;
+package com.epam.esm.repository.certificate;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CertificateRepository;
+import com.epam.esm.repository.Specification;
 import com.epam.esm.repository.rowmapper.CertificateRowMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Repository
@@ -26,7 +26,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     private static final String SELECT_BY_PART_NAME_QUERY = "SELECT gifts.name, gifts.description, gifts.price," +
             "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE name LIKE ?";
     private static final String SELECT_ALL_QUERY = "SELECT * from gifts";
-    private static final String SELECT_SORT_BY_NAME_ASC_QUERY = "SELECT * FROM gifts ORDER BY gifts.name ASC";
     private static final String SELECT_ALL_BY_TAG_NAME_QUERY = "SELECT gifts.gifts_id, gifts.name, gifts.description, gifts.price, gifts.create_date," +
             " gifts.last_update_date, gifts.duration FROM gifts JOIN gift_certificate_tag ON gifts.gifts_id = gift_certificate_tag.gift" +
             " JOIN tags ON gift_certificate_tag.tag = tags.tag_id WHERE tags.name = ?";
@@ -65,9 +64,9 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public List<GiftCertificate> findAll(Map<String, String> parameters) {
+    public List<GiftCertificate> findAll(Specification specification) {
         log.info("find all");
-        return jdbcTemplate.query(SELECT_ALL_QUERY, giftMapper);
+        return jdbcTemplate.query(SELECT_ALL_QUERY + specification.toSqlRequest(), giftMapper);
     }
 
     @Override
