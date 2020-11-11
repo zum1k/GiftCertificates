@@ -12,7 +12,7 @@ public class CertificatesByPartDescriptionSpecification implements Specification
 
     @Override
     public String toSqlRequest() {
-        return null;
+        return CERTIFICATES_BY_DESCRIPTION_PART;
     }
 
     @Override
