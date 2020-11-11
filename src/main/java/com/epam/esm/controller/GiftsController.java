@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static com.sun.beans.introspect.PropertyInfo.Name.required;
+
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
@@ -20,7 +22,13 @@ public class GiftsController {
     private final GiftService giftService;
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public List<GiftCertificateDto> findAll(Map<String, String> parameters) {
+
+    public List<GiftCertificateDto> findAll(
+            @RequestParam(required = false) String tagName,
+            @RequestParam(required = false) String partName,
+            @RequestParam(required = false) String partDescription,
+            @RequestParam(required = false) String sortDate
+    ) {
         log.info("get all certificates");
         return giftService.findAll();
     }

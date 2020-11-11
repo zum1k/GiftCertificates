@@ -69,6 +69,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         return jdbcTemplate.query(SELECT_ALL_QUERY + specification.toSqlRequest(), giftMapper);
     }
 
+    public List<GiftCertificate> findAll() {
+        log.info("find all");
+        return jdbcTemplate.query(SELECT_ALL_QUERY, giftMapper);
+    }
+
     @Override
     public GiftCertificate findById(long id) {
         List<GiftCertificate> giftCertificates = jdbcTemplate.query(SELECT_BY_ID_QUERY, giftMapper);
