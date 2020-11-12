@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 
+import com.epam.esm.entity.DateSortType;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftService;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-
-import static com.sun.beans.introspect.PropertyInfo.Name.required;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -27,10 +25,10 @@ public class GiftsController {
             @RequestParam(required = false) String tagName,
             @RequestParam(required = false) String partName,
             @RequestParam(required = false) String partDescription,
-            @RequestParam(required = false) String sortDate
+            @RequestParam(required = false) DateSortType sortDate
     ) {
         log.info("get all certificates");
-        return giftService.findAll();
+        return giftService.findAll(tagName, partName, partDescription, sortDate);
     }
 
     //TODO

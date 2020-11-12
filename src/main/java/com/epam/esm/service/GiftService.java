@@ -1,5 +1,6 @@
 package com.epam.esm.service;
 
+import com.epam.esm.entity.DateSortType;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 
 import java.util.List;
@@ -11,13 +12,7 @@ public interface GiftService {
 
     public void update(long certificateId, GiftCertificateDto giftCertificateDto);
 
-    public List<GiftCertificateDto> findByTagName(String tagName);
-
-    public List<GiftCertificateDto> findByPartName(String partName);
-
-    public List<GiftCertificateDto> sortByNameASC();
-
-    public List<GiftCertificateDto> findAll();
+    public List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type);
 
     public GiftCertificateDto findById(long id);
 }
