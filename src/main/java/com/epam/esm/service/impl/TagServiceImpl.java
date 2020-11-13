@@ -2,7 +2,6 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.exception.EntityAlreadyExists;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.service.TagService;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,27 +25,29 @@ public class TagServiceImpl implements TagService {
     private final TagMapper tagMapper;
 
     @Override
-    public long addTagIfNotExist(TagDto tag) {
+    public TagDto addTagIfNotExist(TagDto tag) {
         log.info("add tag");
-        if (tagRepository.findByName(tag.getName()).isEmpty()) {
-            return tagRepository.add(tagMapper.toEntity(tag));
+        Optional<Tag> tagOptional = tagRepository.findByName(tag.getName());
+        if (tagOptional.isEmpty()) {
+            return tagMapper.toDto(tagRepository.add(tagMapper.toEntity(tag)).get());
         }
-        throw new EntityAlreadyExists(TAG);
+        return tagMapper.toDto(tagOptional.get());
     }
 
     @Override
-    public void remove(long id) {
+    public TagDto remove(long id) {
         log.info("remove tag {}", id);
-        tagRepository.delete(id);
+        return  tagMapper.toDto(tagRepository.remove(id).get());
     }
 
     @Override
     public TagDto findOne(long id) {
         log.info("find tag {}", id);
-        if (tagRepository.findOne(id).isEmpty()) {
+        Optional<Tag> optionalTag = tagRepository.findById(id);
+        if (optionalTag.isEmpty()) {
             throw new EntityNotFoundException(TAG);
         }
-        return tagMapper.toDto(tagRepository.findOne(id).get(ZERO_NUMBER));
+        return tagMapper.toDto(optionalTag.get());
     }
 
     @Override
@@ -55,5 +57,10 @@ public class TagServiceImpl implements TagService {
             throw new EntityNotFoundException(TAG);
         }
         return tagMapper.toDtoList(tagRepository.findAll());
+    }
+
+    @Override
+    public List<TagDto> findAllByCertificateId(long certificateId) {
+        return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(certificateId));
     }
 }

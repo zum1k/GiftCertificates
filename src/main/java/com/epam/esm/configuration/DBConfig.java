@@ -7,9 +7,13 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.sql.DataSource;
+import java.util.Locale;
+
 @Prop
 @Configuration
 public class DBConfig {
@@ -44,10 +48,16 @@ public class DBConfig {
     @Bean(name = "localeResolver")
     public LocaleResolver getLocaleResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setCookieDomain("myAppLocaleCookie");
+        resolver.setDefaultLocale(new Locale("en"));
+        resolver.setCookieName("language");
         // 60 minutes
 
         resolver.setCookieMaxAge(60 * 60);
         return resolver;
+    }
+    public void addInterceptors(InterceptorRegistry interceptorRegistry){
+        LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
+        localeInterceptor.setParamName("lang");
+        interceptorRegistry.addInterceptor(localeInterceptor).addPathPatterns("/*");
     }
 }

@@ -5,11 +5,14 @@ import com.epam.esm.entity.dto.TagDto;
 import java.util.List;
 
 public interface TagService {
-    public long add(TagDto tagDto);
 
-    public void remove(long id);
+    TagDto addTagIfNotExist(TagDto tagDto);
 
-    public TagDto findOne(long id);
+    TagDto remove(long id);
 
-    public List<TagDto> findAll();
+    TagDto findOne(long id);
+
+    List<TagDto> findAll();
+
+    List<TagDto> findAllByCertificateId(long certificateId);
 }

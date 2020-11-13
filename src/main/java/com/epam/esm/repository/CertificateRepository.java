@@ -8,13 +8,17 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface CertificateRepository {
-    GiftCertificate add(GiftCertificate giftCertificate);
+    Optional<GiftCertificate> add(GiftCertificate giftCertificate);
 
-    GiftCertificate remove(long id);
+    Optional<GiftCertificate> remove(long id);
 
-    GiftCertificate update(long certificateId, GiftCertificate giftCertificate);
+    Optional<GiftCertificate> update(GiftCertificate giftCertificate);
 
-    List<GiftCertificate> findAll(Specification specification);
+    List<GiftCertificate> findAllBySpecification(Specification specification);
 
-    GiftCertificate findById(long id);
+    List<GiftCertificate> findAll();
+
+    Optional<GiftCertificate> findById(long id);
+
+
 }

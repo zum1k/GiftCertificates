@@ -6,13 +6,14 @@ import com.epam.esm.entity.dto.GiftCertificateDto;
 import java.util.List;
 
 public interface GiftService {
-    public long add(GiftCertificateDto giftCertificateDto);
+    GiftCertificateDto add(GiftCertificateDto giftCertificateDto);
 
-    public void remove(long id);
+    GiftCertificateDto remove(long id);
 
-    public void update(long certificateId, GiftCertificateDto giftCertificateDto);
+    GiftCertificateDto update(long certificateId, GiftCertificateDto giftCertificateDto);
 
-    public List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type);
+    List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type);
 
-    public GiftCertificateDto findById(long id);
+    GiftCertificateDto findById(long id);
+
 }

@@ -1,18 +1,15 @@
 package com.epam.esm.repository.certificate;
 
 import com.epam.esm.repository.Specification;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class CertificatesByPartDescriptionSpecification implements Specification {
-    private final String CERTIFICATES_BY_DESCRIPTION_PART = " WHERE gifts.description LIKE ?";
     private final String descriptionPart;
-
-    public CertificatesByPartDescriptionSpecification(String descriptionPart) {
-        this.descriptionPart = descriptionPart;
-    }
 
     @Override
     public String toSqlRequest() {
-        return CERTIFICATES_BY_DESCRIPTION_PART;
+        return " WHERE gifts.description LIKE ?";
     }
 
     @Override

@@ -1,18 +1,21 @@
 package com.epam.esm.repository.certificate;
 
+import com.epam.esm.entity.DateSortType;
 import com.epam.esm.repository.Specification;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class CertificatesByDateSpecification implements Specification {
-    private static final String CERTIFICATES_BY_DATE = " AND ORDER BY create_date";
+    private final DateSortType dateSortType;
 
     @Override
     public String toSqlRequest() {
-        return CERTIFICATES_BY_DATE;
+        return " AND ORDER BY create_date " + dateSortType;
     }
 
     @Override
     public Object[] receiveParameters() {
-        return new Object[]{};
+        return new Object[]{dateSortType.getValue()};
     }
 }
 

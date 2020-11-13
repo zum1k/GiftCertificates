@@ -2,6 +2,7 @@ package com.epam.esm.controller.exceptionhandler;
 
 import com.epam.esm.exception.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice // TODO due to respect to http protocol
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+    private MessageSource messageSource;
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException e) {
         return buildNotFoundResponseEntity(e.getMessage());

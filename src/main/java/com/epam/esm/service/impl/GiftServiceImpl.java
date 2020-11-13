@@ -1,27 +1,25 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.entity.DateSortType;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.exception.EntityNotUpdatedException;
 import com.epam.esm.repository.CertificateRepository;
-import com.epam.esm.repository.GiftCertificateRepository;
-import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.Specification;
+import com.epam.esm.repository.certificate.*;
+import com.epam.esm.service.GiftCertificateTagService;
 import com.epam.esm.service.GiftService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
-import com.epam.esm.service.mapper.tag.TagMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,97 +28,86 @@ public class GiftServiceImpl implements GiftService {
     private final String CERTIFICATE = "Certificate";
 
     private final CertificateMapper certificateMapper;
-    private final TagMapper tagMapper;
     private final CertificateRepository certificateRepository;
-    private final TagRepository tagRepository;
-    private final GiftCertificateRepository giftCertificateRepository;
-//TODO findAll with params, remove tagMapper and tagRepository, use only TagSerivice.class
+    private final TagServiceImpl tagService;
+    private final GiftCertificateTagService giftCertificateTagService;
+
+
     @Override
-    public long add(GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
         log.info("add certificate");
         giftCertificateDto.setCreateDate(getCurrentTime());
         giftCertificateDto.setLastUpdateDate(getCurrentTime());
-        long certificateId = certificateRepository.add(certificateMapper.toEntity(giftCertificateDto));
-        for (TagDto tagDto : giftCertificateDto.getTags()) {
-            if (tagRepository.findByName(tagDto.getName()).isEmpty()) {
-                long tagId = tagRepository.add(tagMapper.toEntity(tagDto));
-                addGiftCertificateTag(certificateId, tagId);
-            } else {
-                addGiftCertificateTag(certificateId, tagDto.getId());
+        Optional<GiftCertificate> certificate = certificateRepository.add(certificateMapper.toEntity(giftCertificateDto));
+        if (certificate.isPresent()) {
+            for (TagDto tagDto : giftCertificateDto.getTags()) {
+                long tagId = tagService.addTagIfNotExist(tagDto).getId();
+                giftCertificateTagService.add(certificate.get().getCertificateId(), tagId);
             }
         }
-        return certificateId;
+        return certificate.get();
     }
 
     @Override
-    public void remove(long id) {
+    public GiftCertificateDto remove(long id) {
         log.info("remove certificate by id {}", id);
-        if (dtosMapper(certificateRepository.findById(id)).isEmpty()) {
-            throw new EntityNotDeletedException(CERTIFICATE);
-        }
-        certificateRepository.remove(id);
+        Optional<GiftCertificate> certificateDto = certificateRepository.remove(id);
+        List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateDto.get().getCertificateId());
+        return certificateMapper.toDto(certificateRepository.remove(id).get(), tagDtos);
     }
 
     @Override
-    public void update(long certificateId, GiftCertificateDto giftCertificateDto) {
+    public GiftCertificateDto update(long certificateId, GiftCertificateDto giftCertificateDto) {
         log.info("update certificate");
-        if (dtosMapper(certificateRepository.findById(certificateId)).isEmpty()) {
-            throw new EntityNotUpdatedException(CERTIFICATE);
-        }
-        certificateRepository.update(certificateId, certificateMapper.toEntity(giftCertificateDto));
+        GiftCertificate giftCertificate = certificateMapper.toEntity(giftCertificateDto);
+        giftCertificate.setCertificateId(certificateId);
+        GiftCertificate certificate = certificateRepository.update(giftCertificate).get();
+        List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateId);
+        return certificateMapper.toDto(certificate, tagDtos);
     }
 
     @Override
-    public List<GiftCertificateDto> findByTagName(String tagName) {
-        log.info("find by tag name {}", tagName);
-        if (dtosMapper(certificateRepository.findByTagName(tagName)).isEmpty()) {
-            throw new EntityNotFoundException(CERTIFICATE);
+    public List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type) {
+        List<Specification> specifications = new ArrayList<>();
+        if (tagName != null) {
+            Specification specification = new CertificatesByNameSpecification(tagName);
+            specifications.add(specification);
         }
-        return dtosMapper(certificateRepository.findByTagName(tagName));
-    }
-
-    @Override
-    public List<GiftCertificateDto> findByPartName(String partName) {
-        log.info("find by part name {}", partName);
-        if (dtosMapper(certificateRepository.findByPartName(partName)).isEmpty()) {
-            throw new EntityNotFoundException(CERTIFICATE);
+        if (partName != null) {
+            Specification specification = new CertificatesByPartNameSpecification(partName);
+            specifications.add(specification);
         }
-        return dtosMapper(certificateRepository.findByPartName(partName));
-    }
-
-    @Override
-    public List<GiftCertificateDto> sortByNameASC() {
-        log.info("sort by name ASC");
-        if (dtosMapper(certificateRepository.sortByNameASC()).isEmpty()) {
-            throw new EntityNotFoundException(CERTIFICATE);
+        if (partDescription != null) {
+            Specification specification = new CertificatesByPartDescriptionSpecification(partDescription);
+            specifications.add(specification);
         }
-        return dtosMapper(certificateRepository.sortByNameASC());
-    }
-
-    @Override
-    public List<GiftCertificateDto> findAll() {
-        log.info("find all");
-        if (certificateRepository.findAll().isEmpty()) {
-            throw new EntityNotFoundException(CERTIFICATE);
+        if (type != null) {
+            Specification specification = new CertificatesByDateSpecification(type);
+            specifications.add(specification);
         }
-        return dtosMapper(certificateRepository.findAll());
+        if (specifications.isEmpty()) {
+            return dtosMapper(certificateRepository.findAll());
+        }
+        return dtosMapper(certificateRepository.findAllBySpecification(new SpecificationBuilder(specifications)));
     }
 
     @Override
     public GiftCertificateDto findById(long id) {
         log.info("find by id {}", id);
-        if (dtosMapper(certificateRepository.findById(id)).isEmpty()) {
+        Optional<GiftCertificate> giftCertificateOptional = certificateRepository.findById(id);
+        if (giftCertificateOptional.isEmpty()) {
             throw new EntityNotFoundException(CERTIFICATE);
         }
-        return dtosMapper(certificateRepository.findById(id)).get(0);
+        List<TagDto> tagDtos = tagService.findAllByCertificateId(id);
+        return certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
     }
 
     private List<GiftCertificateDto> dtosMapper(List<GiftCertificate> certificates) {
         log.info("mapping dtos");
         List<GiftCertificateDto> dtos = new ArrayList<>();
         for (GiftCertificate certificate : certificates) {
-            List<Tag> tags = tagRepository.findTagsByCertificateId(certificate.getCertificateId());
-            dtos.add(certificateMapper.toDto(certificate, tagMapper.toDtoList(tags)));
+            List<TagDto> tags = tagService.findAllByCertificateId(certificate.getCertificateId());
+            dtos.add(certificateMapper.toDto(certificate, tags));
         }
         return dtos;
     }
@@ -129,7 +116,4 @@ public class GiftServiceImpl implements GiftService {
         return LocalDate.now();
     }
 
-    private long addGiftCertificateTag(long giftKey, long tagKey) {
-        return giftCertificateRepository.add(giftKey, tagKey);
-    }
 }

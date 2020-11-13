@@ -3,15 +3,18 @@ package com.epam.esm.repository;
 import com.epam.esm.entity.Tag;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TagRepository {
-    long add(Tag tag);
+    Optional<Tag> add(Tag tag);
 
-    void delete(long id);
+    Optional<Tag> remove(long id);
 
-    List<Tag> findOne(long id);
+    Optional<Tag> findByName(String tagName);
+
+    Optional<Tag> findById(long id);
 
     List<Tag> findAll();
 
-    Tag findTagsByCertificateId(long certificateId);
+    List<Tag> findTagsByCertificateId(long certificateId);
 }

@@ -19,7 +19,7 @@ public class GIftCertificateTagServiceImpl implements GiftCertificateTagService 
     }
 
     @Override
-    public int delete(long giftKey, long tagKey) {
+    public int remove(long giftKey, long tagKey) {
         return 0;
     }
 

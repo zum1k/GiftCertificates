@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @ToString
 public class GiftCertificate {
-    private int certificateId;
+    private long certificateId;
     private String name;
     private String description;
     private BigDecimal price;
