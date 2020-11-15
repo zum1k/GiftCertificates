@@ -78,7 +78,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Optional<GiftCertificate> findById(long id) {
         List<GiftCertificate> resultSet = jdbcTemplate.query(SELECT_BY_ID_QUERY, giftMapper, id);
-        return resultSet.size() == 1 ? Optional.ofNullable(resultSet.get(1)) : Optional.empty();
+        return resultSet.size() == 1 ? Optional.of(resultSet.get(0)) : Optional.empty();
     }
 }
 

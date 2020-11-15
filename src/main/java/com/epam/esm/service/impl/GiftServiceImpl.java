@@ -86,8 +86,11 @@ public class GiftServiceImpl implements GiftService {
         if (giftCertificateOptional.isEmpty()) {
             throw new EntityNotFoundException(CERTIFICATE);
         }
+        System.out.println(giftCertificateOptional.get());
         List<TagDto> tagDtos = tagService.findAllByCertificateId(id);
-        return certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
+        GiftCertificateDto dto = certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
+        System.out.println(dto);
+        return dto;
     }
 
     private List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates) {

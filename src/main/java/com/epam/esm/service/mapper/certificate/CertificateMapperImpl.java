@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +26,8 @@ public class CertificateMapperImpl implements CertificateMapper {
         GiftCertificateDto dto = new GiftCertificateDto(certificate.getName(), certificate.getDescription(),
                 certificate.getPrice(), certificate.getDuration(), tags);
         dto.setGiftId(certificate.getCertificateId());
+        dto.setCreateDate(certificate.getCreateDate());
+        dto.setLastUpdateDate(certificate.getLastUpdateDate());
         return dto;
     }
 }

@@ -22,7 +22,7 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
     public void delete(long giftKey, long tagKey) {
         log.info("delete keys {},{}", giftKey, tagKey);
         int deletedRow = jdbcTemplate.update(DELETE_BY_IDs_QUERY, giftKey, tagKey);
-        if(deletedRow == 0){
+        if (deletedRow == 0) {
             throw new EntityNotFoundException(CERTIFICATE);
         }
     }
