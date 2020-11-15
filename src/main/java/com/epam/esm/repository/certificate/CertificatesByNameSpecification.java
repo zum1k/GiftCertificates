@@ -9,8 +9,7 @@ public class CertificatesByNameSpecification implements Specification {
 
     @Override
     public String toSqlRequest() {
-        return " JOIN gift_certificate_tag ON gifts.gifts_id = gift_certificate_tag.gift" +
-                " JOIN tags ON gift_certificate_tag.tag = tags.tag_id WHERE tags.name = ?";
+        return " AND tags.name = ?";
     }
 
     @Override

@@ -31,8 +31,7 @@ public class GiftsController {
         return giftService.findAll(tagName, partName, partDescription, sortDate);
     }
 
-    //TODO
-    @RequestMapping(consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(consumes = "application/json", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDto addCertificate(@RequestBody GiftCertificateDto dto) {
         log.info("add certificate");

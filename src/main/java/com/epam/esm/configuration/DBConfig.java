@@ -1,5 +1,6 @@
 package com.epam.esm.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -14,7 +16,8 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import javax.sql.DataSource;
 import java.util.Locale;
 
-@Prop
+
+@EnableWebMvc
 @Configuration
 public class DBConfig {
     @Bean //TODO in properties.file

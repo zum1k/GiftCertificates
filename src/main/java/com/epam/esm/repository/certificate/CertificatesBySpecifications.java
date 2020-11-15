@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
-public class SpecificationBuilder implements Specification {
+public class CertificatesBySpecifications implements Specification {
     List<Specification> specificationList;
 
     @Override

@@ -23,11 +23,11 @@ public class TagController {
         return tagService.findAll();
     }
 
-    @RequestMapping(consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(consumes = "application/json", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto addTag(@RequestBody TagDto dto) {
         log.info("add tag");
-        return tagService.add(dto);
+        return tagService.addTagIfNotExist(dto);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")

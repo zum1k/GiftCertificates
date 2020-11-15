@@ -24,12 +24,8 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM gifts WHERE gifts_id = ?";
     private static final String UPDATE_BY_ID_QUERY = "UPDATE gifts set name = ?, description = ?," +
             "price = ?, last_update_date = ?,duration = ? WHERE gifts_id = ?";
-    private static final String SELECT_BY_PART_NAME_QUERY = "SELECT gifts.name, gifts.description, gifts.price," +
-            "gifts.create_date,gifts.last_update_date,gifts.duration FROM gifts WHERE name LIKE ?";
-    private static final String SELECT_ALL_QUERY = "SELECT * from gifts";
-    private static final String SELECT_ALL_BY_TAG_NAME_QUERY = "SELECT gifts.gifts_id, gifts.name, gifts.description, gifts.price, gifts.create_date," +
-            " gifts.last_update_date, gifts.duration FROM gifts JOIN gift_certificate_tag ON gifts.gifts_id = gift_certificate_tag.gift" +
-            " JOIN tags ON gift_certificate_tag.tag = tags.tag_id WHERE tags.name = ?";
+    private static final String SELECT_ALL_QUERY = "SELECT DISTINCT gifts.gifts_id, gifts.name, gifts.description, gifts.price, gifts.create_date ,gifts.last_update_date, gifts.duration " +
+            "from gifts JOIN gift_certificate_tag ON gifts.gifts_id = gift_certificate_tag.gift JOIN tags ON gift_certificate_tag.tag = tags.tag_id WHERE 1=1 ";
     private static final String SELECT_BY_ID_QUERY = "SELECT * FROM gifts WHERE gifts.gifts_id = ?";
     private static final String CERTIFICATE_ENTITY_NAME = "Certificate";
 
@@ -82,7 +78,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Optional<GiftCertificate> findById(long id) {
         List<GiftCertificate> resultSet = jdbcTemplate.query(SELECT_BY_ID_QUERY, giftMapper, id);
-        return resultSet.size() == 1 ? Optional.ofNullable(resultSet.get(0)) : Optional.empty();
+        return resultSet.size() == 1 ? Optional.ofNullable(resultSet.get(1)) : Optional.empty();
     }
 }
 

@@ -7,7 +7,7 @@ import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CertificateRepository;
 import com.epam.esm.repository.Specification;
-import com.epam.esm.repository.certificate.*;
+import com.epam.esm.repository.certificate.SpecificationCreator;
 import com.epam.esm.service.GiftCertificateTagService;
 import com.epam.esm.service.GiftService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
@@ -16,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class GiftServiceImpl implements GiftService {
     private final CertificateRepository certificateRepository;
     private final TagServiceImpl tagService;
     private final GiftCertificateTagService giftCertificateTagService;
+    private final SpecificationCreator specificationCreator;
 
 
     @Override
@@ -45,7 +47,7 @@ public class GiftServiceImpl implements GiftService {
                 giftCertificateTagService.add(certificate.get().getCertificateId(), tagId);
             }
         }
-        return certificate.get();
+        return null;
     }
 
     @Override
@@ -68,27 +70,13 @@ public class GiftServiceImpl implements GiftService {
 
     @Override
     public List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type) {
-        List<Specification> specifications = new ArrayList<>();
-        if (tagName != null) {
-            Specification specification = new CertificatesByNameSpecification(tagName);
-            specifications.add(specification);
+        Optional<Specification> optionalSpecification = specificationCreator.receiveSpecification(tagName, partName, partDescription, type);
+        List<GiftCertificateDto> dtos = new ArrayList<>();
+        if (optionalSpecification.isEmpty()) {
+            return toDtos(certificateRepository.findAll());
         }
-        if (partName != null) {
-            Specification specification = new CertificatesByPartNameSpecification(partName);
-            specifications.add(specification);
-        }
-        if (partDescription != null) {
-            Specification specification = new CertificatesByPartDescriptionSpecification(partDescription);
-            specifications.add(specification);
-        }
-        if (type != null) {
-            Specification specification = new CertificatesByDateSpecification(type);
-            specifications.add(specification);
-        }
-        if (specifications.isEmpty()) {
-            return dtosMapper(certificateRepository.findAll());
-        }
-        return dtosMapper(certificateRepository.findAllBySpecification(new SpecificationBuilder(specifications)));
+        return toDtos(certificateRepository.findAllBySpecification(optionalSpecification.get()));
+
     }
 
     @Override
@@ -102,8 +90,7 @@ public class GiftServiceImpl implements GiftService {
         return certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
     }
 
-    private List<GiftCertificateDto> dtosMapper(List<GiftCertificate> certificates) {
-        log.info("mapping dtos");
+    private List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates) {
         List<GiftCertificateDto> dtos = new ArrayList<>();
         for (GiftCertificate certificate : certificates) {
             List<TagDto> tags = tagService.findAllByCertificateId(certificate.getCertificateId());
@@ -112,8 +99,9 @@ public class GiftServiceImpl implements GiftService {
         return dtos;
     }
 
-    private LocalDate getCurrentTime() {
-        return LocalDate.now();
+    private String getCurrentTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSXXX");
+        return ZonedDateTime.now().format(formatter);
     }
 
 }

@@ -15,12 +15,12 @@ public class GiftCertificate {
     private String name;
     private String description;
     private BigDecimal price;
-    private LocalDate createDate;
-    private LocalDate lastUpdateDate;
+    private String createDate;
+    private String lastUpdateDate;
     private long duration;
 
     public GiftCertificate(String name, String description, BigDecimal price,
-                           LocalDate createDate, LocalDate lastUpdateDate, long duration) {
+                           String createDate, String lastUpdateDate, long duration) {
         this.name = name;
         this.description = description;
         this.price = price;

@@ -24,8 +24,8 @@ public class GiftCertificateDto {
     @NotNull(message = "Need to enter price")
     @Min(value = 1, message = "Price can't be less than '1'")
     private BigDecimal price;
-    private LocalDate createDate;
-    private LocalDate lastUpdateDate;
+    private String createDate;
+    private String lastUpdateDate;
     @NotNull
     @Min(1)
     private long duration;

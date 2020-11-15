@@ -10,7 +10,7 @@ public class CertificatesByDateSpecification implements Specification {
 
     @Override
     public String toSqlRequest() {
-        return " AND ORDER BY create_date " + dateSortType;
+        return " ORDER BY gifts.create_date ?";
     }
 
     @Override
