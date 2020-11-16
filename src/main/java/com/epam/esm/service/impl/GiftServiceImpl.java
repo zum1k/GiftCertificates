@@ -63,6 +63,7 @@ public class GiftServiceImpl implements GiftService {
         log.info("update certificate");
         GiftCertificate giftCertificate = certificateMapper.toEntity(giftCertificateDto);
         giftCertificate.setCertificateId(certificateId);
+        giftCertificate.setLastUpdateDate(getCurrentTime());
         GiftCertificate certificate = certificateRepository.update(giftCertificate).get();
         List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateId);
         return certificateMapper.toDto(certificate, tagDtos);
@@ -71,7 +72,6 @@ public class GiftServiceImpl implements GiftService {
     @Override
     public List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type) {
         Optional<Specification> optionalSpecification = specificationCreator.receiveSpecification(tagName, partName, partDescription, type);
-        List<GiftCertificateDto> dtos = new ArrayList<>();
         if (optionalSpecification.isEmpty()) {
             return toDtos(certificateRepository.findAll());
         }

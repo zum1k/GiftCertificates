@@ -13,7 +13,7 @@ public class CertificatesBySpecifications implements Specification {
 
     @Override
     public String toSqlRequest() {
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder(" ");
         for (Specification specification : specificationList) {
             stringBuilder.append(specification.toSqlRequest());
         }

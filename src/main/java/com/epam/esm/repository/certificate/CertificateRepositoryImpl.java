@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.DoubleToIntFunction;
 
 @Slf4j
 @Repository
@@ -66,7 +67,8 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public List<GiftCertificate> findAllBySpecification(Specification specification) {
         log.info("find all with parameters");
-        return jdbcTemplate.query(SELECT_ALL_QUERY + specification.toSqlRequest(), giftMapper, specification.receiveParameters());
+        List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_QUERY + specification.toSqlRequest(), giftMapper, specification.receiveParameters());
+        return certificates;
     }
 
     @Override

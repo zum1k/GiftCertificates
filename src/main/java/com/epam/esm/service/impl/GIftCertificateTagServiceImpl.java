@@ -15,13 +15,12 @@ public class GIftCertificateTagServiceImpl implements GiftCertificateTagService 
 
     @Override
     public long add(long giftKey, long tagKey) {
-        return 0;
+        giftCertificateRepository.add(giftKey, tagKey);
+        return giftCertificateRepository.add(giftKey, tagKey);
     }
 
     @Override
-    public int remove(long giftKey, long tagKey) {
-        return 0;
+    public void remove(long giftKey, long tagKey) {
+        giftCertificateRepository.delete(giftKey, tagKey);
     }
-
-
 }

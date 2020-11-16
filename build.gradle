@@ -33,6 +33,17 @@ dependencies {
     // https://mvnrepository.com/artifact/javax.validation/validation-api
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+    // https://mvnrepository.com/artifact/com.github.database-rider/rider-core
+    compile group: 'com.github.database-rider', name: 'rider-core', version: '1.18.0'
+    // https://mvnrepository.com/artifact/com.github.database-rider/rider-junit5
+    compile group: 'com.github.database-rider', name: 'rider-junit5', version: '1.18.0'
+    // https://mvnrepository.com/artifact/com.github.database-rider/rider-spring
+    compile group: 'com.github.database-rider', name: 'rider-spring', version: '1.18.0'
+
+
+
 
     implementation 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'

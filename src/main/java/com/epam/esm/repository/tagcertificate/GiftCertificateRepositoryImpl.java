@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GiftCertificateRepositoryImpl implements GiftCertificateRepository {
-    private static final String INSERT_INTO_QUERY = "INSERT INTO gift_certificate_tag VALUES (?,?)";
+    private static final String INSERT_INTO_QUERY = "INSERT INTO gift_certificate_tag(gift, tag) VALUES (?,?)";
     private static final String DELETE_BY_IDs_QUERY = "DELETE FROM gift_certificate_tag WHERE gift = ? AND tag = ?";
-    private static final String CERTIFICATE = "Certificate";
+    private static final String CERTIFICATE_TAG = "Certificate_tag";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -23,7 +23,7 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
         log.info("delete keys {},{}", giftKey, tagKey);
         int deletedRow = jdbcTemplate.update(DELETE_BY_IDs_QUERY, giftKey, tagKey);
         if (deletedRow == 0) {
-            throw new EntityNotFoundException(CERTIFICATE);
+            throw new EntityNotFoundException(CERTIFICATE_TAG);
         }
     }
 

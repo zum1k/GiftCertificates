@@ -12,7 +12,7 @@ public class CertificatesByPartNameSpecification implements Specification {
 
     @Override
     public String toSqlRequest() {
-        return " AND gifts.description LIKE ? ";
+        return " AND gifts.name LIKE ?";
     }
 
     @Override
