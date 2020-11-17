@@ -10,12 +10,12 @@ public class CertificatesByDateSpecification implements Specification {
 
     @Override
     public String toSqlRequest() {
-        return " ORDER BY gifts.create_date ?";
+        return "ORDER BY gifts.create_date "+dateSortType.getValue();
     }
 
     @Override
     public Object[] receiveParameters() {
-        return new Object[]{dateSortType.getValue()};
+        return new Object[]{};
     }
 }
 

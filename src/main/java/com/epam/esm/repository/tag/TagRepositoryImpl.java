@@ -9,6 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,7 +23,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagRepositoryImpl implements TagRepository {
-    private static final String INSERT_INTO_QUERY = "INSERT INTO tags(name) VALUES ?";
+    private static final String INSERT_INTO_QUERY = "INSERT INTO tags(name) VALUES :name";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM tags WHERE tag_id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * from tags";
     private static final String SELECT_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT tags.tag_id, tags.name from tags JOIN " +
@@ -29,15 +34,17 @@ public class TagRepositoryImpl implements TagRepository {
 
     private final TagRowMapper tagMapper;
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public Optional<Tag> add(Tag tag) {
-        log.info("add tag {}", tag);
-        int tagId = jdbcTemplate.update(INSERT_INTO_QUERY, tag.getName());
-        if (tagId == 0) {
-            throw new EntityNotAddedException(TAG_ENTITY_NAME);
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource parameters = new MapSqlParameterSource().addValue("name", tag.getName());
+        namedParameterJdbcTemplate.update(INSERT_INTO_QUERY, parameters, holder);
+        if (holder.getKey() != null) {
+            return findById(holder.getKey().longValue());
         }
-        return findById(tagId);
+        throw new EntityNotAddedException(TAG_ENTITY_NAME);
     }
 
     @Override

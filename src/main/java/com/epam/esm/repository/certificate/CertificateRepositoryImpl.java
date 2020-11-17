@@ -11,17 +11,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.DoubleToIntFunction;
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CertificateRepositoryImpl implements CertificateRepository {
-    private static final String INSERT_INTO_QUERY = "INSERT INTO gifts(name, description, price, create_date, last_update_date,duration) VALUES(?,?,?,?,?,?)";
+    private static final String INSERT_INTO_QUERY = "INSERT INTO gifts(name, description, price, create_date, last_update_date,duration) VALUES(:name, :description, :price, :create_date, :last_update_date,:duration)";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM gifts WHERE gifts_id = ?";
     private static final String UPDATE_BY_ID_QUERY = "UPDATE gifts set name = ?, description = ?," +
             "price = ?, last_update_date = ?,duration = ? WHERE gifts_id = ?";
@@ -32,17 +36,22 @@ public class CertificateRepositoryImpl implements CertificateRepository {
 
     private final CertificateRowMapper giftMapper;
     private final JdbcTemplate jdbcTemplate;
-
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public Optional<GiftCertificate> add(GiftCertificate giftCertificate) {
-        log.info("add certificate");
-        int certificateId = jdbcTemplate.update(INSERT_INTO_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
-                giftCertificate.getPrice(), giftCertificate.getCreateDate(),
-                giftCertificate.getLastUpdateDate(), giftCertificate.getDuration());
-        if (certificateId == 0) {
-            throw new EntityNotAddedException(CERTIFICATE_ENTITY_NAME);
+        KeyHolder holder = new GeneratedKeyHolder();
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("name", giftCertificate.getName())
+                .addValue("description", giftCertificate.getDescription())
+                .addValue("price", giftCertificate.getPrice())
+                .addValue("create_date", giftCertificate.getCreateDate())
+                .addValue("last_update_date", giftCertificate.getLastUpdateDate())
+                .addValue("duration", giftCertificate.getDuration());
+        namedParameterJdbcTemplate.update(INSERT_INTO_QUERY, parameters, holder);
+        if (holder.getKey() != null) {
+            return findById(holder.getKey().longValue());
         }
-        return findById(certificateId);
+        throw new EntityNotAddedException(CERTIFICATE_ENTITY_NAME);
     }
 
     @Override
@@ -67,8 +76,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public List<GiftCertificate> findAllBySpecification(Specification specification) {
         log.info("find all with parameters");
-        List<GiftCertificate> certificates = jdbcTemplate.query(SELECT_ALL_QUERY + specification.toSqlRequest(), giftMapper, specification.receiveParameters());
-        return certificates;
+        return jdbcTemplate.query(SELECT_ALL_QUERY + specification.toSqlRequest(), giftMapper, specification.receiveParameters());
     }
 
     @Override
