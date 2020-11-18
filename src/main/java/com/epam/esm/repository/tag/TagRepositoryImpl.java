@@ -50,11 +50,12 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Optional<Tag> remove(long tagId) {
         log.info("delete tag {}", tagId);
+        Optional<Tag> optionalTag = findById(tagId);
         int rows = jdbcTemplate.update(DELETE_BY_ID_QUERY, tagId);
         if (rows == 0) {
             throw new EntityNotDeletedException(TAG_ENTITY_NAME);
         }
-        return findById(tagId);
+        return optionalTag;
     }
 
     @Override

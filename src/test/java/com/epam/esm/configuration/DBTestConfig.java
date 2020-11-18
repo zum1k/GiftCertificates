@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
@@ -29,7 +30,6 @@ public class DBTestConfig {
                 .addScript("db/values.sql")
                 .build();
     }
-
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(h2DataSource());
@@ -42,7 +42,7 @@ public class DBTestConfig {
 
     @Bean
     public TagRepository tagRepository(TagRowMapper tagRowMapper) {
-        return new TagRepositoryImpl(tagRowMapper, jdbcTemplate());
+        return new TagRepositoryImpl(tagRowMapper, jdbcTemplate(), namedParameterJdbcTemplate());
     }
 
     @Bean

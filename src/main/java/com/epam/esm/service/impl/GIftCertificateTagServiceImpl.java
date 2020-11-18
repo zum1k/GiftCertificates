@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GIftCertificateTagServiceImpl implements GiftCertificateTagService {
-    private GiftCertificateRepository giftCertificateRepository;
+    private final GiftCertificateRepository giftCertificateRepository;
 
     @Override
     public long add(long giftKey, long tagKey) {
@@ -20,7 +20,7 @@ public class GIftCertificateTagServiceImpl implements GiftCertificateTagService 
     }
 
     @Override
-    public void remove(long giftKey, long tagKey) {
-        giftCertificateRepository.delete(giftKey, tagKey);
+    public long remove(long giftKey, long tagKey) {
+       return giftCertificateRepository.delete(giftKey, tagKey);
     }
 }

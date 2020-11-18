@@ -57,10 +57,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Optional<GiftCertificate> remove(long id) {
         log.info("remove certificate {}", id);
+        Optional<GiftCertificate> certificate = findById(id);
         if (jdbcTemplate.update(DELETE_BY_ID_QUERY, id) == 0) {
             throw new EntityNotDeletedException(CERTIFICATE_ENTITY_NAME);
         }
-        return findById(id);
+        return certificate;
     }
 
     @Override
