@@ -23,7 +23,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagRepositoryImpl implements TagRepository {
-    private static final String INSERT_INTO_QUERY = "INSERT INTO tags(name) VALUES :name";
+    private static final String INSERT_INTO_QUERY = "INSERT INTO tags(name) VALUES (:name)";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM tags WHERE tag_id = ?";
     private static final String SELECT_ALL_QUERY = "SELECT * from tags";
     private static final String SELECT_ALL_TAGS_BY_CERTIFICATE_ID = "SELECT tags.tag_id, tags.name from tags JOIN " +
@@ -53,7 +53,7 @@ public class TagRepositoryImpl implements TagRepository {
         Optional<Tag> optionalTag = findById(tagId);
         int rows = jdbcTemplate.update(DELETE_BY_ID_QUERY, tagId);
         if (rows == 0) {
-            throw new EntityNotDeletedException(TAG_ENTITY_NAME, entityId1);
+            throw new EntityNotDeletedException(TAG_ENTITY_NAME,tagId);
         }
         return optionalTag;
     }

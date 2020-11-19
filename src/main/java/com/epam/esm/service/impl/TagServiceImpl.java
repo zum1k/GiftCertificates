@@ -44,7 +44,7 @@ public class TagServiceImpl implements TagService {
         log.info("find tag {}", id);
         Optional<Tag> optionalTag = tagRepository.findById(id);
         if (optionalTag.isEmpty()) {
-            throw new EntityNotFoundException(TAG);
+            throw new EntityNotFoundException(TAG, id);
         }
         return tagMapper.toDto(optionalTag.get());
     }

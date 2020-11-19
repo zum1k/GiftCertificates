@@ -1,11 +1,13 @@
 package com.epam.esm.configuration;
 
 import com.epam.esm.repository.CertificateRepository;
+import com.epam.esm.repository.GiftCertificateRepository;
 import com.epam.esm.repository.TagRepository;
 import com.epam.esm.repository.certificate.CertificateRepositoryImpl;
 import com.epam.esm.repository.rowmapper.CertificateRowMapper;
 import com.epam.esm.repository.rowmapper.TagRowMapper;
 import com.epam.esm.repository.tag.TagRepositoryImpl;
+import com.epam.esm.repository.tagcertificate.GiftCertificateRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -43,6 +45,10 @@ public class DBTestConfig {
     @Bean
     public TagRepository tagRepository(TagRowMapper tagRowMapper) {
         return new TagRepositoryImpl(tagRowMapper, jdbcTemplate(), namedParameterJdbcTemplate());
+    }
+    @Bean
+    public GiftCertificateRepository giftCertificateRepository(){
+        return new GiftCertificateRepositoryImpl(jdbcTemplate());
     }
 
     @Bean

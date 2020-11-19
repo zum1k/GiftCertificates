@@ -1,6 +1,7 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.EntityNotAddedException;
+import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.repository.tagcertificate.GiftCertificateRepositoryImpl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -51,5 +52,16 @@ class GiftCertificateTagServiceImplTest {
             service.add(giftId, tagId);
         });
         Mockito.verify(repository).add(Mockito.eq(giftId), Mockito.eq(tagId));
+    }
+    @Test()
+    void shouldNotRemovedRowException() throws EntityNotDeletedException {
+        long giftId = 1;
+        long tagId = 1;
+        Throwable expectedThrown = new EntityNotDeletedException("Not removed", giftId);
+        Mockito.when(repository.remove(Mockito.anyLong(), Mockito.anyLong())).thenThrow(expectedThrown);
+        Assertions.assertThrows(EntityNotDeletedException.class, () -> {
+            service.remove(giftId, tagId);
+        });
+        Mockito.verify(repository).remove(Mockito.eq(giftId), Mockito.eq(tagId));
     }
 }

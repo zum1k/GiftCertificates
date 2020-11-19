@@ -59,7 +59,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         log.info("remove certificate {}", id);
         Optional<GiftCertificate> certificate = findById(id);
         if (jdbcTemplate.update(DELETE_BY_ID_QUERY, id) == 0) {
-            throw new EntityNotDeletedException(CERTIFICATE_ENTITY_NAME, entityId1);
+            throw new EntityNotDeletedException(CERTIFICATE_ENTITY_NAME, id);
         }
         return certificate;
     }
@@ -69,7 +69,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         log.info("update certificate");
         if (jdbcTemplate.update(UPDATE_BY_ID_QUERY, giftCertificate.getName(), giftCertificate.getDescription(),
                 giftCertificate.getPrice(), giftCertificate.getLastUpdateDate(), giftCertificate.getDuration(), giftCertificate.getCertificateId()) == 0) {
-            throw new EntityNotUpdatedException(CERTIFICATE_ENTITY_NAME);
+            throw new EntityNotUpdatedException(CERTIFICATE_ENTITY_NAME, giftCertificate.getCertificateId());
         }
         return findById(giftCertificate.getCertificateId());
     }
