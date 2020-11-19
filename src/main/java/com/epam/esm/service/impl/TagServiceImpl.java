@@ -18,7 +18,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagServiceImpl implements TagService {
-    private static final int ZERO_NUMBER = 0;
     private static final String TAG = "Tag";
 
     private final TagRepository tagRepository;
@@ -37,7 +36,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto remove(long id) {
         log.info("remove tag {}", id);
-        return  tagMapper.toDto(tagRepository.remove(id).get());
+        return tagMapper.toDto(tagRepository.remove(id).get());
     }
 
     @Override

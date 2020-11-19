@@ -1,8 +1,10 @@
 package com.epam.esm.repository.rowmapper;
 
 import com.epam.esm.entity.Tag;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

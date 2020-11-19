@@ -3,13 +3,9 @@ package com.epam.esm.entity;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-@Setter
-@Getter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class GiftCertificate {
     private long certificateId;
     private String name;

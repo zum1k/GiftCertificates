@@ -19,7 +19,7 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public long delete(long giftKey, long tagKey) {
+    public long remove(long giftKey, long tagKey) {
         log.info("delete keys {},{}", giftKey, tagKey);
         int deletedRow = jdbcTemplate.update(DELETE_BY_IDs_QUERY, giftKey, tagKey);
         if (deletedRow == 0) {

@@ -63,7 +63,7 @@ public class CertificateRepositoryImplTest {
     }
 
     @Test
-    void findCertificateById_ShouldReturn_Five_True_Test() {
+    void findCertificateById_ShouldReturn_Two_True_Test() {
         String expectedName = "name2";
         long expectedCertificateId = 2;
         String actualCertificateName = repository.findById(expectedCertificateId).get().getName();

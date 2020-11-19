@@ -1,33 +1,37 @@
 package com.epam.esm.configuration;
 
-import org.springframework.context.MessageSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import javax.sql.DataSource;
-import java.util.Locale;
 
-
-@EnableWebMvc
 @Configuration
+@PropertySource("classpath:database/configuration.properties")
 public class DBConfig {
-    @Bean //TODO in properties.file
+    @Value("${db.url}")
+    private String url;
+
+    @Value("${db.user}")
+    private String user;
+
+    @Value("${db.password}")
+    private String password;
+
+    @Value("${db.driver}")
+    private String driverClassName;
+
+    @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/gift_certificates");
-        dataSource.setUsername("root");
-        dataSource.setPassword("2584170");
-
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(user);
+        dataSource.setPassword(password);
         return dataSource;
     }
 
@@ -36,37 +40,8 @@ public class DBConfig {
         return new JdbcTemplate(dataSource());
     }
 
-    @Bean(name = "messageSource")
-    public MessageSource getMessageResource() {
-        ReloadableResourceBundleMessageSource messageResource = new ReloadableResourceBundleMessageSource();
-
-        // Read i18n/messages_xxx.properties file.
-        // For example: i18n/messages_en.properties
-
-        messageResource.setBasename("classpath:resources/Resource Bundle'exception_messages");
-        messageResource.setDefaultEncoding("UTF-8");
-        return messageResource;
-    }
-
-    @Bean(name = "localeResolver")
-    public LocaleResolver getLocaleResolver() {
-        CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setDefaultLocale(new Locale("en"));
-        resolver.setCookieName("language");
-        // 60 minutes
-
-        resolver.setCookieMaxAge(60 * 60);
-        return resolver;
-    }
-
-    public void addInterceptors(InterceptorRegistry interceptorRegistry) {
-        LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
-        localeInterceptor.setParamName("lang");
-        interceptorRegistry.addInterceptor(localeInterceptor).addPathPatterns("/*");
-    }
-
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource source) {
-        return new NamedParameterJdbcTemplate(source);
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
+        return new NamedParameterJdbcTemplate(dataSource());
     }
 }

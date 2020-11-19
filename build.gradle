@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'jacoco'
 }
 
 group 'com.epam.esm'
@@ -33,11 +34,46 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testImplementation 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
-    testCompile group: 'org.testng', name: 'testng', version: '7.3.0'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.1'
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.6.0'
 
 }
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("build/customJacocoReportDir")
+}
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("build/jacocoHtml")
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
 }

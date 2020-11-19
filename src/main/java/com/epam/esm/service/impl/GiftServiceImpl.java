@@ -4,6 +4,7 @@ import com.epam.esm.entity.DateSortType;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.TagDto;
+import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CertificateRepository;
 import com.epam.esm.repository.Specification;
@@ -26,7 +27,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GiftServiceImpl implements GiftService {
-    private final String CERTIFICATE = "Certificate";
+    private static final String CERTIFICATE = "Certificate";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSXXX");
 
     private final CertificateMapper certificateMapper;
     private final CertificateRepository certificateRepository;
@@ -34,20 +36,20 @@ public class GiftServiceImpl implements GiftService {
     private final GiftCertificateTagService giftCertificateTagService;
     private final SpecificationCreator specificationCreator;
 
-
     @Override
     public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
         log.info("add certificate");
-        giftCertificateDto.setCreateDate(getCurrentTime());
-        giftCertificateDto.setLastUpdateDate(getCurrentTime());
+        giftCertificateDto.setCreateDate(ZonedDateTime.now().format(FORMATTER));
+        giftCertificateDto.setLastUpdateDate(ZonedDateTime.now().format(FORMATTER));
         Optional<GiftCertificate> certificate = certificateRepository.add(certificateMapper.toEntity(giftCertificateDto));
         if (certificate.isPresent()) {
             for (TagDto tagDto : giftCertificateDto.getTags()) {
                 long tagId = tagService.addTagIfNotExist(tagDto).getId();
                 giftCertificateTagService.add(certificate.get().getCertificateId(), tagId);
             }
+            return certificateMapper.toDto(certificate.get(), giftCertificateDto.getTags());
         }
-        return null;
+        throw new EntityNotAddedException(CERTIFICATE);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class GiftServiceImpl implements GiftService {
         log.info("update certificate");
         GiftCertificate giftCertificate = certificateMapper.toEntity(giftCertificateDto);
         giftCertificate.setCertificateId(certificateId);
-        giftCertificate.setLastUpdateDate(getCurrentTime());
+        giftCertificate.setLastUpdateDate(ZonedDateTime.now().format(FORMATTER));
         GiftCertificate certificate = certificateRepository.update(giftCertificate).get();
         List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateId);
         return certificateMapper.toDto(certificate, tagDtos);
@@ -76,7 +78,6 @@ public class GiftServiceImpl implements GiftService {
             return toDtos(certificateRepository.findAll());
         }
         return toDtos(certificateRepository.findAllBySpecification(optionalSpecification.get()));
-
     }
 
     @Override
@@ -87,8 +88,7 @@ public class GiftServiceImpl implements GiftService {
             throw new EntityNotFoundException(CERTIFICATE);
         }
         List<TagDto> tagDtos = tagService.findAllByCertificateId(id);
-        GiftCertificateDto dto = certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
-        return dto;
+        return certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
     }
 
     private List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates) {
@@ -99,10 +99,4 @@ public class GiftServiceImpl implements GiftService {
         }
         return dtos;
     }
-
-    private String getCurrentTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSXXX");
-        return ZonedDateTime.now().format(formatter);
-    }
-
 }

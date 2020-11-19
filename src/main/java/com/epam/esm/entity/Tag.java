@@ -1,12 +1,10 @@
 package com.epam.esm.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Setter
-@Getter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class Tag {
     private int tagId;
     private String name;

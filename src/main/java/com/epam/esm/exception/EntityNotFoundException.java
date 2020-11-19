@@ -1,7 +1,15 @@
 package com.epam.esm.exception;
 
-public class EntityNotFoundException  extends ServiceException{
-    public EntityNotFoundException(String entityName) {
-        super(entityName, "not found");
+import lombok.Getter;
+
+@Getter
+public class EntityNotFoundException extends ServiceException {
+    private final int errorCode = 40404;
+    private final long entityId;
+
+    public EntityNotFoundException(String entityName, long entityId) {
+        super(entityName);
+        this.entityId = entityId;
     }
+
 }

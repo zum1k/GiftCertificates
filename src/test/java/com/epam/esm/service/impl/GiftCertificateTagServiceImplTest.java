@@ -2,27 +2,21 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.repository.tagcertificate.GiftCertificateRepositoryImpl;
-import lombok.RequiredArgsConstructor;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@ExtendWith(MockitoExtension.class)
 class GiftCertificateTagServiceImplTest {
     @InjectMocks
     private GIftCertificateTagServiceImpl service;
     @Mock
     private GiftCertificateRepositoryImpl repository;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     public void shouldAddRowTrue() {
@@ -31,6 +25,7 @@ class GiftCertificateTagServiceImplTest {
         long expectedResult = 1;
         Mockito.when(repository.add(Mockito.anyLong(), Mockito.anyLong())).thenReturn(expectedResult);
         long actualResult = service.add(giftId, tagId);
+        Mockito.verify(repository).add(Mockito.eq(giftId), Mockito.eq(tagId));
         Assert.assertEquals(expectedResult, actualResult);
     }
 
@@ -39,18 +34,22 @@ class GiftCertificateTagServiceImplTest {
         long giftId = 1;
         long tagId = 1;
         long expectedResult = 1;
-        Mockito.when(repository.delete(Mockito.anyLong(), Mockito.anyLong())).thenReturn(expectedResult);
+        Mockito.when(repository.remove(Mockito.anyLong(), Mockito.anyLong())).thenReturn(expectedResult);
         long actualResult = service.remove(giftId, tagId);
+        Mockito.verify(repository).remove(Mockito.eq(giftId), Mockito.eq(tagId));
         Assert.assertEquals(expectedResult, actualResult);
     }
 
 
-    @org.junit.Test(expected = EntityNotAddedException.class)
+    @Test()
     void shouldNotAddRowException() throws EntityNotAddedException {
         Throwable expectedThrown = new EntityNotAddedException("Not added");
         long giftId = 1;
         long tagId = 1;
         Mockito.when(repository.add(Mockito.anyLong(), Mockito.anyLong())).thenThrow(expectedThrown);
-        service.add(giftId, tagId);
+        Assertions.assertThrows(EntityNotAddedException.class, () -> {
+            service.add(giftId, tagId);
+        });
+        Mockito.verify(repository).add(Mockito.eq(giftId), Mockito.eq(tagId));
     }
 }

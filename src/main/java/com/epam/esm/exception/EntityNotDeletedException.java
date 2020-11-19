@@ -1,7 +1,14 @@
 package com.epam.esm.exception;
 
-public class EntityNotDeletedException extends ServiceException{
-    public EntityNotDeletedException(String entityName) {
-        super(entityName, "not deleted");
+import lombok.Getter;
+
+@Getter
+public class EntityNotDeletedException extends ServiceException {
+    private final int errorCode = 40003;
+    private final long entityId;
+
+    public EntityNotDeletedException(String entityName, long entityId) {
+        super(entityName);
+        this.entityId = entityId;
     }
 }

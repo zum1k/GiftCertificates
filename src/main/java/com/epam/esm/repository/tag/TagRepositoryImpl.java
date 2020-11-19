@@ -53,7 +53,7 @@ public class TagRepositoryImpl implements TagRepository {
         Optional<Tag> optionalTag = findById(tagId);
         int rows = jdbcTemplate.update(DELETE_BY_ID_QUERY, tagId);
         if (rows == 0) {
-            throw new EntityNotDeletedException(TAG_ENTITY_NAME);
+            throw new EntityNotDeletedException(TAG_ENTITY_NAME, entityId1);
         }
         return optionalTag;
     }
@@ -67,7 +67,7 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Optional<Tag> findById(long id) {
         List<Tag> resultSet = jdbcTemplate.query(SELECT_BY_ID_QUERY, tagMapper, id);
-        return resultSet.size() == 1 ? Optional.ofNullable(resultSet.get(0)) : Optional.empty();
+        return resultSet.size() == 1 ? Optional.of(resultSet.get(0)) : Optional.empty();
     }
 
     @Override
