@@ -59,6 +59,15 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Optional<TagDto> findByName(TagDto tagDto) {
+        Optional<Tag> optionalTag = tagRepository.findByName(tagDto.getName());
+        if (optionalTag.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(tagMapper.toDto(optionalTag.get()));
+    }
+
+    @Override
     public List<TagDto> findAllByCertificateId(long certificateId) {
         return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(certificateId));
     }

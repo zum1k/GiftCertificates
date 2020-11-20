@@ -67,6 +67,13 @@ public class GiftServiceImpl implements GiftService {
         giftCertificate.setCertificateId(certificateId);
         giftCertificate.setLastUpdateDate(ZonedDateTime.now().format(FORMATTER));
         GiftCertificate certificate = certificateRepository.update(giftCertificate).get();
+        for (TagDto tagDto : giftCertificateDto.getTags()) {
+            Optional<TagDto> optionalTagDto = tagService.findByName(tagDto);
+            if (optionalTagDto.isEmpty()) {
+                long tagId = tagService.addTagIfNotExist(tagDto).getId();
+                giftCertificateTagService.add(certificate.getCertificateId(), tagId);
+            }
+        }
         List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateId);
         return certificateMapper.toDto(certificate, tagDtos);
     }
