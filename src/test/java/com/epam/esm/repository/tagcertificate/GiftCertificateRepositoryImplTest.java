@@ -18,17 +18,17 @@ class GiftCertificateRepositoryImplTest {
 
     @Test
     void deleteRow_ShouldReturn_True_Test() {
-        long giftId = 1;
-        long tagId = 1;
+        long giftId = 2;
+        long tagId = 2;
         long actualRow  = repository.remove(giftId, tagId);
         Assertions.assertTrue(actualRow > 0);
     }
 
     @Test
     void addRow_ShouldReturn_True_Test() {
-        long giftId = 1;
-        long tagId = 1;
-        long actualRow  = repository.remove(giftId, tagId);
+        long giftId = 2;
+        long tagId = 2;
+        long actualRow  = repository.add(giftId, tagId);
         Assertions.assertTrue(actualRow > 0);
     }
 }

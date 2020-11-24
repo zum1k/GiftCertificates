@@ -34,7 +34,7 @@ public class GiftsController {
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDto addCertificate(@RequestBody @Validated GiftCertificateDto dto) {
+    public GiftCertificateDto addCertificate(@Validated @RequestBody  GiftCertificateDto dto) {
         log.info("add certificate");
         return giftService.add(dto);
     }

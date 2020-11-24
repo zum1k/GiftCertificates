@@ -9,7 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class CertificatesBySpecifications implements Specification {
-    List<Specification> specificationList;
+    private final List<Specification> specificationList;
 
     @Override
     public String toSqlRequest() {

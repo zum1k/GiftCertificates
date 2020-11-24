@@ -20,10 +20,10 @@ class TagRepositoryImplTest {
     @Test
     void addTag_ShouldReturn_True_Test() {
         Tag tag = new Tag("tag11");
-        int expectedId = tagRepository.findAll().size() + 1;
+        int expectedSize = tagRepository.findAll().size() + 1;
         tagRepository.add(tag);
         int actualResult = tagRepository.findAll().size();
-        Assertions.assertEquals(expectedId, actualResult);
+        Assertions.assertEquals(expectedSize, actualResult);
     }
 
     @Test

@@ -57,7 +57,7 @@ public class GiftServiceImpl implements GiftService {
         log.info("remove certificate by id {}", id);
         Optional<GiftCertificate> certificateDto = certificateRepository.remove(id);
         List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateDto.get().getCertificateId());
-        return certificateMapper.toDto(certificateRepository.remove(id).get(), tagDtos);
+        return certificateMapper.toDto(certificateDto.get(), tagDtos);
     }
 
     @Override
