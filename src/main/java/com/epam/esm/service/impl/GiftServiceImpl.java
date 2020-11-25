@@ -98,7 +98,7 @@ public class GiftServiceImpl implements GiftService {
         return certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
     }
 
-    private List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates) {
+    List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates) {
         List<GiftCertificateDto> dtos = new ArrayList<>();
         for (GiftCertificate certificate : certificates) {
             List<TagDto> tags = tagService.findAllByCertificateId(certificate.getCertificateId());

@@ -53,6 +53,7 @@ class GiftCertificateTagServiceImplTest {
         });
         Mockito.verify(repository).add(Mockito.eq(giftId), Mockito.eq(tagId));
     }
+
     @Test()
     void shouldNotRemovedRowException() throws EntityNotDeletedException {
         long giftId = 1;

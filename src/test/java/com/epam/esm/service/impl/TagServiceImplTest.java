@@ -89,6 +89,7 @@ class TagServiceImplTest {
         TagDto resultTag = service.findOne(1);
         Assertions.assertEquals(tagDto, resultTag);
     }
+
     @Test
     void findOne_ShouldReturnException_Test() throws EntityNotFoundException {
         long expectedTagId = 1L;
@@ -126,12 +127,13 @@ class TagServiceImplTest {
         Assertions.assertEquals(expectedName, actualName);
 
     }
+
     @Test
-    void findByName_ShouldReturnEmpty_True_Test(){
+    void findByName_ShouldReturnEmpty_True_Test() {
         String expectedName = "name1";
         TagDto tagDto = new TagDto("name1");
         Mockito.when(repository.findByName(expectedName)).thenReturn(Optional.empty());
-        Optional<TagDto>tagOptional = service.findByName(tagDto);
+        Optional<TagDto> tagOptional = service.findByName(tagDto);
         Assertions.assertNotNull(tagOptional);
 
     }
