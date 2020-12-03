@@ -1,24 +1,19 @@
 package com.epam.esm.repository.tag;
 
-import com.epam.esm.configuration.DBTestConfig;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.repository.TagRepository;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
+//@ContextConfiguration(classes = {DBTestConfig.class})
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {DBTestConfig.class})
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class TagRepositoryImplTest {
     private final TagRepository tagRepository;
 
     @Test
     void addTag_ShouldReturn_True_Test() {
+        //TODO
         Tag tag = new Tag("tag11");
         int expectedSize = tagRepository.findAll().size() + 1;
         tagRepository.add(tag);
@@ -28,6 +23,7 @@ class TagRepositoryImplTest {
 
     @Test
     void removeTag_ShouldReturn_True_Test() {
+        //TODO
         long tagId = 1;
         int expectedId = tagRepository.findAll().size() - 1;
         tagRepository.remove(tagId);
@@ -61,4 +57,12 @@ class TagRepositoryImplTest {
         int actualSizeOfTags = tagRepository.findTagsByCertificateId(certificateId).size();
         Assertions.assertTrue(actualSizeOfTags > 0);
     }
+
+    //<editor-fold defaultstate="collapsed" desc="delombok">
+    @Autowired
+    @SuppressWarnings("all")
+    public TagRepositoryImplTest(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+    //</editor-fold>
 }

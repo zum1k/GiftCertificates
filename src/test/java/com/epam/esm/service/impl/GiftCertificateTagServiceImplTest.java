@@ -3,7 +3,6 @@ package com.epam.esm.service.impl;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.repository.tagcertificate.GiftCertificateRepositoryImpl;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class GiftCertificateTagServiceImplTest {
@@ -27,7 +28,7 @@ class GiftCertificateTagServiceImplTest {
         Mockito.when(repository.add(Mockito.anyLong(), Mockito.anyLong())).thenReturn(expectedResult);
         long actualResult = service.add(giftId, tagId);
         Mockito.verify(repository).add(Mockito.eq(giftId), Mockito.eq(tagId));
-        Assert.assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
@@ -38,7 +39,7 @@ class GiftCertificateTagServiceImplTest {
         Mockito.when(repository.remove(Mockito.anyLong(), Mockito.anyLong())).thenReturn(expectedResult);
         long actualResult = service.remove(giftId, tagId);
         Mockito.verify(repository).remove(Mockito.eq(giftId), Mockito.eq(tagId));
-        Assert.assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult, actualResult);
     }
 
 

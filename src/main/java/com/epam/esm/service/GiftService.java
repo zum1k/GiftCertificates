@@ -43,7 +43,7 @@ public interface GiftService {
      * @return List of {@code GiftCertificateDto} satisfying to parameters.
      */
 
-    List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type);
+    List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type, int pageLimit, int pageOffset);
 
     /**
      * Finds gift certificate by its id.

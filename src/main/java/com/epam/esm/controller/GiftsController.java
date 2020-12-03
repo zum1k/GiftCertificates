@@ -5,36 +5,34 @@ import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping(value = "/certificates")
+@RequestMapping("/certificates")
 public class GiftsController {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(GiftsController.class);
+
     private final GiftService giftService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<GiftCertificateDto> findAll(
-            @RequestParam(required = false) String tagName,
-            @RequestParam(required = false) String partName,
-            @RequestParam(required = false) String partDescription,
-            @RequestParam(required = false) DateSortType sortDate
-    ) {
+    public List<GiftCertificateDto> findAll(@RequestParam(required = false) String tagName, @RequestParam(required = false) String partName, @RequestParam(required = false) String partDescription, @RequestParam(required = false) DateSortType sortDate) {
         log.info("get all certificates");
         return giftService.findAll(tagName, partName, partDescription, sortDate);
     }
 
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDto addCertificate(@Validated @RequestBody  GiftCertificateDto dto) {
+    public GiftCertificateDto addCertificate(@Validated @RequestBody GiftCertificateDto dto) {
         log.info("add certificate");
         return giftService.add(dto);
     }

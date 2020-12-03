@@ -1,13 +1,9 @@
-package com.epam.esm.repository.certificate;
-
-import com.epam.esm.repository.Specification;
-import lombok.AllArgsConstructor;
+package com.epam.esm.repository.specifications;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@AllArgsConstructor
 public class CertificatesBySpecifications implements Specification {
     private final List<Specification> specificationList;
 
@@ -28,4 +24,11 @@ public class CertificatesBySpecifications implements Specification {
         }
         return parameters.toArray();
     }
+
+    //<editor-fold defaultstate="collapsed" desc="delombok">
+    @SuppressWarnings("all")
+    public CertificatesBySpecifications(final List<Specification> specificationList) {
+        this.specificationList = specificationList;
+    }
+    //</editor-fold>
 }

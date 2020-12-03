@@ -1,4 +1,4 @@
-package com.epam.esm.repository;
+package com.epam.esm.repository.tag;
 
 import com.epam.esm.entity.Tag;
 
@@ -12,7 +12,7 @@ public interface TagRepository {
 
     Optional<Tag> findByName(String tagName);
 
-    Optional<Tag> findById(long id);
+    Tag findById(long id);
 
     List<Tag> findAll();
 

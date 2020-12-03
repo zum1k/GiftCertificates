@@ -1,22 +1,43 @@
 package com.epam.esm.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@NoArgsConstructor
+@EntityListeners({AuditDateEntityListener.class})
+@Entity
 @Data
-public class GiftCertificate {
-    private long certificateId;
+@NoArgsConstructor
+@Table(name = "gifts")
+public class GiftCertificate implements AuditEntity {
+    @Id
+    @GeneratedValue
+    private long id;
     private String name;
     private String description;
+    @Column(name = "price")
     private BigDecimal price;
-    private String createDate;
-    private String lastUpdateDate;
+    @Column(name = "create_date")
+    private ZonedDateTime createDate;
+    @Column(name = "last_update_date")
+    private ZonedDateTime lastUpdateDate;
+    @Column(name = "duration")
     private long duration;
 
-    public GiftCertificate(String name, String description, BigDecimal price,
-                           String createDate, String lastUpdateDate, long duration) {
+    @ManyToMany
+    @JoinTable(
+            name = "gifts_tags",
+            joinColumns = @JoinColumn(name = "gift_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
+    public GiftCertificate(String name, String description, BigDecimal price, ZonedDateTime createDate, ZonedDateTime lastUpdateDate, long duration) {
         this.name = name;
         this.description = description;
         this.price = price;

@@ -4,18 +4,21 @@ import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.service.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping(value = "/tags")
+@RequestMapping("/tags")
 public class TagController {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(TagController.class);
+
     private final TagService tagService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,5 +48,4 @@ public class TagController {
         log.info("get tag {}", id);
         return tagService.remove(id);
     }
-
 }

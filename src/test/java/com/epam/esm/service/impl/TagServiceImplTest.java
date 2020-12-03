@@ -5,7 +5,7 @@ import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.service.mapper.tag.TagMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

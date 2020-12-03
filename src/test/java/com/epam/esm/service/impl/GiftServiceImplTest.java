@@ -9,8 +9,8 @@ import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.exception.EntityNotUpdatedException;
 import com.epam.esm.repository.certificate.CertificateRepositoryImpl;
-import com.epam.esm.repository.certificate.SpecificationCreator;
-import com.epam.esm.service.mapper.certificate.CertificateMapperImpl;
+import com.epam.esm.repository.specifications.SpecificationCreator;
+import com.epam.esm.service.mapper.certificate.CertificateMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ class GiftServiceImplTest {
     @Mock
     private CertificateRepositoryImpl repository;
     @Mock
-    private CertificateMapperImpl mapper;
+    private CertificateMapper mapper;
     @Mock
     private TagServiceImpl tagService;
     @Mock
@@ -45,8 +45,8 @@ class GiftServiceImplTest {
     void addCertificate_ShouldReturnCertificate_True_test() {
         String expectedName = "name1";
         GiftCertificate certificate = new GiftCertificate(expectedName, "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(1L);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(1L);
         long giftId = 1L;
         long tagId = 1L;
 
@@ -65,15 +65,15 @@ class GiftServiceImplTest {
 
         String actualName = service.add(certificateDto).getName();
 
-        Assertions.assertEquals(expectedName, actualName);
+        Assertions.assertEquals(certificate, actualName);
     }
 
     @Test()
     void addCertificate_ShouldReturnException_Test() throws EntityNotAddedException {
         String expectedName = "name1";
         GiftCertificate certificate = new GiftCertificate(expectedName, "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(1L);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(1L);
         TagDto tagDto = new TagDto("name1");
         tagDto.setId(1);
         List<TagDto> dtos = Collections.singletonList(tagDto);
@@ -94,8 +94,8 @@ class GiftServiceImplTest {
     void removeCertificate_ShouldReturnCertificateDto_True_Test() {
         long expectedCertificateID = 1L;
         GiftCertificate certificate = new GiftCertificate("name1", "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(expectedCertificateID);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(expectedCertificateID);
         TagDto tagDto = new TagDto("name1");
         tagDto.setId(1);
         List<TagDto> dtos = Collections.singletonList(tagDto);
@@ -131,8 +131,8 @@ class GiftServiceImplTest {
         GiftCertificateDto certificateDto = new GiftCertificateDto("name1", "description1", new BigDecimal("100.10"),
                 10, tagDtos);
         GiftCertificate certificate = new GiftCertificate("name1", "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(1L);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(1L);
 
         Mockito.when(mapper.toEntity(Mockito.any(GiftCertificateDto.class))).thenReturn(certificate);
         Mockito.when(repository.update(Mockito.any(GiftCertificate.class))).thenReturn(Optional.of(certificate));
@@ -155,8 +155,8 @@ class GiftServiceImplTest {
         GiftCertificateDto certificateDto = new GiftCertificateDto("name1", "description1", new BigDecimal("100.10"),
                 10, tagDtos);
         GiftCertificate certificate = new GiftCertificate("name1", "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(1L);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(1L);
 
         Mockito.when(mapper.toEntity(Mockito.any(GiftCertificateDto.class))).thenReturn(certificate);
         Mockito.when(repository.update(certificate)).thenThrow(expectedThrown);
@@ -176,12 +176,12 @@ class GiftServiceImplTest {
         long expectedCertificateId = 1L;
         GiftCertificateDto certificateDto = new GiftCertificateDto("name1",
                 "description1", new BigDecimal("100.10"), 10, tagDtos);
-        certificateDto.setCreateDate(LocalDateTime.now().toString());
-        certificateDto.setLastUpdateDate(LocalDateTime.now().toString());
+        certificateDto.setCreateDate(ZonedDateTime.now().withFixedOffsetZone());
+        certificateDto.setLastUpdateDate(ZonedDateTime.now().withFixedOffsetZone());
         List<GiftCertificateDto> certificateDtoList = Arrays.asList(certificateDto);
         GiftCertificate certificate = new GiftCertificate("name1", "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(expectedCertificateId);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(expectedCertificateId);
         List<GiftCertificate> certificateList = Arrays.asList(certificate);
 
         Mockito.when(tagService.findAllByCertificateId(expectedCertificateId)).thenReturn(tagDtos);
@@ -204,12 +204,12 @@ class GiftServiceImplTest {
         List<TagDto> tagDtos = Arrays.asList(tagDto);
         GiftCertificateDto certificateDto = new GiftCertificateDto("name1",
                 "description1", new BigDecimal("100.10"), 10, tagDtos);
-        certificateDto.setCreateDate(LocalDateTime.now().toString());
-        certificateDto.setLastUpdateDate(LocalDateTime.now().toString());
+        certificateDto.setCreateDate(ZonedDateTime.now().withFixedOffsetZone());
+        certificateDto.setLastUpdateDate(ZonedDateTime.now().withFixedOffsetZone());
         List<GiftCertificateDto> certificateDtoList = Arrays.asList(certificateDto);
         GiftCertificate certificate = new GiftCertificate("name1", "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(expectedCertificateId);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(expectedCertificateId);
         List<GiftCertificate> certificateList = Arrays.asList(certificate);
 
         Mockito.when(creator.receiveSpecification(tagName, partName, partDescription, type)).thenReturn(Optional.empty());
@@ -227,8 +227,8 @@ class GiftServiceImplTest {
     void findById_ShouldReturnCertificateDto_Test() {
         long expectedCertificateId = 1L;
         GiftCertificate certificate = new GiftCertificate("name1", "description1", new BigDecimal("100.10"),
-                LocalDateTime.now().toString(), LocalDateTime.now().toString(), 10);
-        certificate.setCertificateId(expectedCertificateId);
+                ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 10);
+        certificate.setId(expectedCertificateId);
         TagDto tagDto = new TagDto("name1");
         tagDto.setId(1);
         List<TagDto> tagDtos = Collections.singletonList(tagDto);

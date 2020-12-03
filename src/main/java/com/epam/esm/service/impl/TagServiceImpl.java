@@ -3,23 +3,21 @@ package com.epam.esm.service.impl;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.repository.TagRepository;
+import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.tag.TagMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagServiceImpl implements TagService {
+    //<editor-fold defaultstate="collapsed" desc="delombok">
+    @SuppressWarnings("all")
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TagServiceImpl.class);
+    //</editor-fold>
     private static final String TAG = "Tag";
-
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
 
@@ -71,4 +69,13 @@ public class TagServiceImpl implements TagService {
     public List<TagDto> findAllByCertificateId(long certificateId) {
         return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(certificateId));
     }
+
+    //<editor-fold defaultstate="collapsed" desc="delombok">
+    @Autowired
+    @SuppressWarnings("all")
+    public TagServiceImpl(final TagRepository tagRepository, final TagMapper tagMapper) {
+        this.tagRepository = tagRepository;
+        this.tagMapper = tagMapper;
+    }
+    //</editor-fold>
 }
