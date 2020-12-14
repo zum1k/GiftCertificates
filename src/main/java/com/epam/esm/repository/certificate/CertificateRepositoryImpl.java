@@ -1,6 +1,7 @@
 package com.epam.esm.repository.certificate;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,8 +80,11 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Optional<GiftCertificate> findById(long id) {
         GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);
-        entityManager.detach(certificate);
-        return Optional.of(certificate);
+        if(certificate!=null){
+            entityManager.detach(certificate);
+            return Optional.of(certificate);
+        }
+        throw new EntityNotFoundException("Entity not found ", id);
     }
 }
 

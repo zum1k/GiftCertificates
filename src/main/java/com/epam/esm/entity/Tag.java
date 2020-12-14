@@ -21,7 +21,7 @@ public class Tag implements AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
-    private int tagId;
+    private long tagId;
     @Column(name = "name")
     private String name;
     @Column(name = "create_date")
