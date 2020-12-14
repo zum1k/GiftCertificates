@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GiftCertificateDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">giftsertificates</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.entity.dto</a> &gt; <span class="el_source">GiftCertificateDto.java</span></div><h1>GiftCertificateDto.java</h1><pre class="source lang-java linenums">package com.epam.esm.entity.dto;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.List;
+
+<span class="nc bnc" id="L13" title="All 58 branches missed.">@Data</span>
+public class GiftCertificateDto {
+<span class="nc" id="L15">    private long giftId;</span>
+    @NotNull(message = &quot;Need to enter name&quot;)
+    @Size(min = 2, max = 45, message = &quot;Name size must be in 2 to 45 sumbols range&quot;)
+<span class="nc" id="L18">    private String name;</span>
+    @NotNull(message = &quot;Need to enter description&quot;)
+    @Size(min = 2, max = 45, message = &quot;Description size must be in 2 to 45 symbols range&quot;)
+<span class="nc" id="L21">    private String description;</span>
+    @NotNull(message = &quot;Need to enter price&quot;)
+    @Min(value = 1, message = &quot;Price can\'t be less than \'1\'&quot;)
+<span class="nc" id="L24">    private BigDecimal price;</span>
+<span class="nc" id="L25">    private ZonedDateTime createDate;</span>
+<span class="nc" id="L26">    private ZonedDateTime lastUpdateDate;</span>
+    @NotNull
+    @Min(1)
+<span class="nc" id="L29">    private long duration;</span>
+<span class="nc" id="L30">    private List&lt;TagDto&gt; tags;</span>
+
+<span class="nc" id="L32">    public GiftCertificateDto(String name, String description, BigDecimal price, long duration, List&lt;TagDto&gt; tags) {</span>
+<span class="nc" id="L33">        this.name = name;</span>
+<span class="nc" id="L34">        this.description = description;</span>
+<span class="nc" id="L35">        this.price = price;</span>
+<span class="nc" id="L36">        this.duration = duration;</span>
+<span class="nc" id="L37">        this.tags = tags;</span>
+<span class="nc" id="L38">    }</span>
+<span class="nc" id="L39">    public GiftCertificateDto(){}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

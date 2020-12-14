@@ -1,8 +1,9 @@
 package com.epam.esm.repository.tag;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.specifications.TagsByNameCriteriaSpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,16 +42,13 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public Optional<Tag> findByName(String tagName) {
+    public Optional<Tag> findTagByName(CriteriaSpecification<Tag> specification) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> criteriaQuery = builder.createQuery(Tag.class);
-
         Root<Tag> tagRoot = criteriaQuery.from(Tag.class);
-        Predicate tagNamePredicate = builder.equal(tagRoot.get("name"), tagName);
-        criteriaQuery.where(tagNamePredicate);
-
+        criteriaQuery.where(specification.toPredicate(tagRoot, builder));
         TypedQuery<Tag> query = entityManager.createQuery(criteriaQuery);
-        return Optional.of(query.getSingleResult());
+        return query.getResultStream().findFirst();
     }
 
     @Override
@@ -60,17 +58,19 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public List<Tag> findAll() {
+    public List<Tag> findAll(int page, int pageSize) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> query = builder.createQuery(Tag.class);
         Root<Tag> rootEntry = query.from(Tag.class);
         CriteriaQuery<Tag> all = query.select(rootEntry);
         TypedQuery<Tag> allQuery = entityManager.createQuery(all);
+        allQuery.setFirstResult((page-1) * pageSize);
+        allQuery.setMaxResults(pageSize);
         return allQuery.getResultList();
     }
 
     @Override
-    public List<Tag> findTagsByCertificateId(long certificateId) {
+    public List<Tag> findTagsByCertificateId(CriteriaSpecification<Tag> specification) {
         return null;
     }
 }

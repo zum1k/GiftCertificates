@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // @ContextConfiguration(classes = {DBTestConfig.class})
 @ExtendWith(SpringExtension.class)
 public class CertificateRepositoryImplTest {
-    private final CertificateRepository repository;
+    /*private final CertificateRepository repository;
 
     @Test
     void findAll_ShouldReturn_Five_True_Test() {
@@ -61,12 +61,5 @@ public class CertificateRepositoryImplTest {
         String actualCertificateName = repository.findById(expectedCertificateId).get().getName();
         assertEquals(expectedName, actualCertificateName);
     }
-
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @Autowired
-    @SuppressWarnings("all")
-    public CertificateRepositoryImplTest(final CertificateRepository repository) {
-        this.repository = repository;
-    }
-    //</editor-fold>
+*/
 }

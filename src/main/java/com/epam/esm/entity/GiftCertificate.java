@@ -1,13 +1,16 @@
 package com.epam.esm.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+
+import static javax.swing.text.html.HTML.Tag.SELECT;
 
 @EntityListeners({AuditDateEntityListener.class})
 @Entity
@@ -16,9 +19,12 @@ import java.util.Set;
 @Table(name = "gifts")
 public class GiftCertificate implements AuditEntity {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "gift_id")
+    private long giftId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
     @Column(name = "price")
     private BigDecimal price;
@@ -28,21 +34,15 @@ public class GiftCertificate implements AuditEntity {
     private ZonedDateTime lastUpdateDate;
     @Column(name = "duration")
     private long duration;
-
-    @ManyToMany
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "gifts_tags",
             joinColumns = @JoinColumn(name = "gift_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tag> tags = new HashSet<>();
-
-    public GiftCertificate(String name, String description, BigDecimal price, ZonedDateTime createDate, ZonedDateTime lastUpdateDate, long duration) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.duration = duration;
-    }
+    private Set<Tag>tags = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gifts")
+    private Set<Order> orders = new HashSet<>();
 }

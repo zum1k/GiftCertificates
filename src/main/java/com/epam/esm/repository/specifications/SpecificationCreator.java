@@ -1,33 +1,25 @@
 package com.epam.esm.repository.specifications;
 
-import com.epam.esm.entity.DateSortType;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.dto.RequestParametersDto;
+import com.epam.esm.repository.CriteriaSpecification;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+import java.util.ArrayList;
+import java.util.List;
 @Service
 public class SpecificationCreator {
-    public Optional<Specification> receiveSpecification(String tagName, String partName, String partDescription, DateSortType type) {
-//        List<Specification> specifications = new ArrayList<>();
-//        if (tagName != null) {
-//            Specification specification = new CertificatesByNameSpecification(tagName);
-//            specifications.add(specification);
-//        }
-//        if (partName != null) {
-//            Specification specification = new CertificatesByPartNameSpecification(partName);
-//            specifications.add(specification);
-//        }
-//        if (partDescription != null) {
-//            Specification specification = new CertificatesByPartDescriptionSpecification(partDescription);
-//            specifications.add(specification);
-//        }
-//        if (type != null) {
-//            Specification specification = new CertificatesByDateSpecification(type);
-//            specifications.add(specification);
-//        }
-//        if (specifications.isEmpty()) {
-//            return Optional.empty();
-//        }
-        return null; // Optional.of(new CertificatesBySpecifications(specifications));
+    public List<CriteriaSpecification<GiftCertificate>> createSpecifications(RequestParametersDto dto){
+        List<CriteriaSpecification<GiftCertificate>> specifications = new ArrayList<>();
+        if(dto.getTagName()!=null){
+            specifications.add(new CertificatesByTagNameCriteriaSpecification(dto.getTagName()));
+        }
+        if(dto.getPartName()!=null){
+            specifications.add(new CertificatesByPartNameCriteriaSpecification(dto.getPartName()));
+        }
+        if(dto.getPartDescription()!=null){
+            specifications.add(new CertificatesByPartDescriptionCriteriaSpecification(dto.getPartDescription()));
+        }
+        return specifications;
     }
 }

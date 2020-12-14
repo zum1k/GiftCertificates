@@ -17,7 +17,16 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    testImplementation 'org.projectlombok:lombok:1.18.16'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    compile "org.mapstruct:mapstruct:1.2.0.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
+    // If you are using mapstruct in test code
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.24.Final'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
@@ -28,10 +37,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jacoco/org.jacoco.agent
     testCompile group: 'org.jacoco', name: 'org.jacoco.agent', version: '0.8.6'
     testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.6.0'
-    implementation 'org.projectlombok:lombok:1.18.16'
-    annotationProcessor 'org.projectlombok:lombok:1.18.16'
-    testImplementation 'org.projectlombok:lombok:1.18.16'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

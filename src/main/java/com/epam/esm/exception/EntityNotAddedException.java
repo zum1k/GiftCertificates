@@ -7,10 +7,8 @@ public class EntityNotAddedException extends ServiceException {
         super(entityName);
     }
 
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @SuppressWarnings("all")
     public int getErrorCode() {
         return this.errorCode;
     }
-    //</editor-fold>
+
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">giftsertificates</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.controller.exceptionhandler</a> &gt; <span class="el_source">RestExceptionHandler.java</span></div><h1>RestExceptionHandler.java</h1><pre class="source lang-java linenums">package com.epam.esm.controller.exceptionhandler;
+
+import com.epam.esm.exception.*;
+import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@ControllerAdvice
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+    private final MessageSource messageSource;
+
+    @ExceptionHandler(EntityAlreadyExists.class)
+    protected ResponseEntity&lt;Object&gt; handleEntityAlreadyExists(EntityAlreadyExists exception, WebRequest request) {
+<span class="nc" id="L19">        String message = messageSource.getMessage(&quot;exception.entity-already-exists&quot;, new Object[] {}, request.getLocale());</span>
+<span class="nc" id="L20">        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage() + &quot; &quot; + message, exception.getError_code());</span>
+<span class="nc" id="L21">        return new ResponseEntity&lt;&gt;(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);</span>
+    }
+
+    @ExceptionHandler(EntityNotAddedException.class)
+    protected ResponseEntity&lt;Object&gt; handleEntityNotAdded(EntityNotAddedException exception, WebRequest request) {
+<span class="nc" id="L26">        String message = messageSource.getMessage(&quot;exception.entity-not-added&quot;, new Object[] {}, request.getLocale());</span>
+<span class="nc" id="L27">        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage() + &quot; &quot; + message, exception.getErrorCode());</span>
+<span class="nc" id="L28">        return new ResponseEntity&lt;&gt;(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);</span>
+    }
+
+    @ExceptionHandler(EntityNotDeletedException.class)
+    protected ResponseEntity&lt;Object&gt; handleEntityNotDeleted(EntityNotDeletedException exception, WebRequest request) {
+<span class="nc" id="L33">        String message = messageSource.getMessage(&quot;exception.entity-not-deleted&quot;, new Object[] {}, request.getLocale());</span>
+<span class="nc" id="L34">        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage() + &quot; &quot; + exception.getEntityId() + &quot; &quot; + message, exception.getErrorCode());</span>
+<span class="nc" id="L35">        return new ResponseEntity&lt;&gt;(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);</span>
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity&lt;Object&gt; handleEntityNotFound(EntityNotFoundException exception, WebRequest request) {
+<span class="nc" id="L40">        String message = messageSource.getMessage(&quot;exception.entity-not-found&quot;, new Object[] {}, request.getLocale());</span>
+<span class="nc" id="L41">        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage() + &quot; &quot; + exception.getEntityId() + &quot; &quot; + message, exception.getErrorCode());</span>
+<span class="nc" id="L42">        return new ResponseEntity&lt;&gt;(errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);</span>
+    }
+
+    @ExceptionHandler(EntityNotUpdatedException.class)
+    protected ResponseEntity&lt;Object&gt; handleEntityNotUpdated(EntityNotUpdatedException exception, WebRequest request) {
+<span class="nc" id="L47">        String message = messageSource.getMessage(&quot;exception.entity-not-updated&quot;, new Object[] {}, request.getLocale());</span>
+<span class="nc" id="L48">        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage() + &quot; &quot; + exception.getEntityId() + &quot; &quot; + message, exception.getErrorCode());</span>
+<span class="nc" id="L49">        return new ResponseEntity&lt;&gt;(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);</span>
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity&lt;Object&gt; handleRuntimeException(RuntimeException exception, WebRequest request) {
+<span class="nc" id="L54">        String message = messageSource.getMessage(&quot;Something wrong&quot;, new Object[] {}, request.getLocale());</span>
+<span class="nc" id="L55">        ErrorResponse response = new ErrorResponse(message, 50001);</span>
+<span class="nc" id="L56">        return new ResponseEntity&lt;&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+    }
+
+    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;delombok&quot;&gt;
+    @SuppressWarnings(&quot;all&quot;)
+<span class="nc" id="L61">    public RestExceptionHandler(final MessageSource messageSource) {</span>
+<span class="nc" id="L62">        this.messageSource = messageSource;</span>
+<span class="nc" id="L63">    }</span>
+    //&lt;/editor-fold&gt;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

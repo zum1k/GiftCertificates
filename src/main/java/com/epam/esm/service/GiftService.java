@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.entity.DateSortType;
+import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 
 import java.util.List;
@@ -36,14 +36,10 @@ public interface GiftService {
     /**
      * Finds all gift certificates by specific query.
      *
-     * @param tagName         to find {@code GiftCertificate} by {@code Tag}'s name.
-     * @param partName        to find {@code GiftCertificate} by {@code GiftCertificate}'s name part.
-     * @param partDescription to find {@code GiftCertificate} by {@code GiftCertificate}'s description part.
-     * @param type            to sort {@code GiftCertificate} by {@code GiftCertificate}'s create_date ASC/DESC.
      * @return List of {@code GiftCertificateDto} satisfying to parameters.
      */
 
-    List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type, int pageLimit, int pageOffset);
+    List<GiftCertificateDto> findAll(RequestParametersDto dto);
 
     /**
      * Finds gift certificate by its id.

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">giftsertificates</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.repository.tag</a> &gt; <span class="el_source">TagRepositoryImpl.java</span></div><h1>TagRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.epam.esm.repository.tag;
+
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.exception.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.Optional;
+
+<span class="nc" id="L21">@Slf4j</span>
+@Repository
+<span class="nc" id="L23">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+public class TagRepositoryImpl implements TagRepository {
+    @PersistenceContext
+    private final EntityManager entityManager;
+
+    @Override
+    public Optional&lt;Tag&gt; add(Tag tag) {
+<span class="nc" id="L30">        entityManager.persist(tag);</span>
+<span class="nc" id="L31">        entityManager.flush();</span>
+<span class="nc" id="L32">        return Optional.of(tag);</span>
+    }
+
+    @Override
+    public Optional&lt;Tag&gt; remove(long id) {
+<span class="nc" id="L37">        Tag tag = entityManager.find(Tag.class, id);</span>
+<span class="nc" id="L38">        entityManager.remove(tag);</span>
+<span class="nc" id="L39">        entityManager.getTransaction().commit();</span>
+<span class="nc" id="L40">        return Optional.of(tag);</span>
+    }
+
+    @Override
+    public Optional&lt;Tag&gt; findByName(String tagName) {
+<span class="nc" id="L45">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="nc" id="L46">        CriteriaQuery&lt;Tag&gt; criteriaQuery = builder.createQuery(Tag.class);</span>
+
+<span class="nc" id="L48">        Root&lt;Tag&gt; tagRoot = criteriaQuery.from(Tag.class);</span>
+<span class="nc" id="L49">        Predicate tagNamePredicate = builder.equal(tagRoot.get(&quot;name&quot;), tagName);</span>
+<span class="nc" id="L50">        criteriaQuery.where(tagNamePredicate);</span>
+
+<span class="nc" id="L52">        TypedQuery&lt;Tag&gt; query = entityManager.createQuery(criteriaQuery);</span>
+<span class="nc" id="L53">        return Optional.of(query.getSingleResult());</span>
+    }
+
+    @Override
+    public Tag findById(long id) {
+<span class="nc" id="L58">        Tag tag = entityManager.find(Tag.class, id);</span>
+<span class="nc" id="L59">        return Optional.ofNullable(tag).orElseThrow(() -&gt; new EntityNotFoundException(&quot;not found&quot;, id));</span>
+    }
+
+    @Override
+    public List&lt;Tag&gt; findAll() {
+<span class="nc" id="L64">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="nc" id="L65">        CriteriaQuery&lt;Tag&gt; query = builder.createQuery(Tag.class);</span>
+<span class="nc" id="L66">        Root&lt;Tag&gt; rootEntry = query.from(Tag.class);</span>
+<span class="nc" id="L67">        CriteriaQuery&lt;Tag&gt; all = query.select(rootEntry);</span>
+<span class="nc" id="L68">        TypedQuery&lt;Tag&gt; allQuery = entityManager.createQuery(all);</span>
+<span class="nc" id="L69">        return allQuery.getResultList();</span>
+    }
+
+    @Override
+    public List&lt;Tag&gt; findTagsByCertificateId(long certificateId) {
+<span class="nc" id="L74">        return null;</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

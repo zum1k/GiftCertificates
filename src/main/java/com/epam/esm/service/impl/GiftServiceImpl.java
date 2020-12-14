@@ -1,113 +1,91 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.DateSortType;
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.GiftCertificateDto;
+import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotAddedException;
+import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.exception.EntityNotUpdatedException;
+import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.certificate.CertificateRepository;
 import com.epam.esm.repository.specifications.SpecificationCreator;
 import com.epam.esm.service.GiftService;
+import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
+import com.epam.esm.service.mapper.tag.TagMapper;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class GiftServiceImpl implements GiftService {
-    @SuppressWarnings("all")
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GiftServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GiftServiceImpl.class);
     private static final String CERTIFICATE = "Certificate";
-    private final CertificateMapper certificateMapper;
-    private final CertificateRepository certificateRepository;
-    private final TagServiceImpl tagService;
-    private final GiftCertificateTagService giftCertificateTagService;
-    private final SpecificationCreator specificationCreator;
+    private final CertificateMapper mapper;
+    private final CertificateRepository repository;
+    private final TagService tagService;
+    private final SpecificationCreator creator;
+    private final TagMapper tagMapper;
 
+
+    @Transactional
     @Override
     public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
-        log.info("add certificate");
-        giftCertificateDto.setCreateDate(ZonedDateTime.now().withFixedOffsetZone());
-        giftCertificateDto.setLastUpdateDate(ZonedDateTime.now().withFixedOffsetZone());
-        Optional<GiftCertificate> certificate = certificateRepository.add(certificateMapper.toEntity(giftCertificateDto));
-        if (certificate.isPresent()) {
-            for (TagDto tagDto : giftCertificateDto.getTags()) {
-                long tagId = tagService.addTagIfNotExist(tagDto).getId();
-                giftCertificateTagService.add(certificate.get().getId(), tagId);
-            }
-            return certificateMapper.toDto(certificate.get(), giftCertificateDto.getTags());
+        Set<Tag> tags = new HashSet<>();
+        for (TagDto tag : giftCertificateDto.getTags()) {
+            tags.add(tagMapper.toEntity(tagService.addTagIfNotExist(tag)));
         }
-        throw new EntityNotAddedException(CERTIFICATE);
+        GiftCertificate certificate = mapper.toEntity(giftCertificateDto);
+        certificate.setTags(tags);
+        Optional<GiftCertificate> optional = repository.add(certificate);
+        return mapper.toDto(optional.orElseThrow(() -> new EntityNotAddedException(CERTIFICATE)));
     }
 
     @Override
     public GiftCertificateDto remove(long id) {
         log.info("remove certificate by id {}", id);
-        Optional<GiftCertificate> certificateDto = certificateRepository.remove(id);
-        List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateDto.get().getId());
-        return certificateMapper.toDto(certificateDto.get(), tagDtos);
+        Optional<GiftCertificate> optional = repository.remove(id);
+        return mapper.toDto(optional.orElseThrow(() -> new EntityNotDeletedException("not removed", id)));
+
     }
 
     @Override
     public GiftCertificateDto update(long certificateId, GiftCertificateDto giftCertificateDto) {
         log.info("update certificate");
-        GiftCertificate giftCertificate = certificateMapper.toEntity(giftCertificateDto);
-        giftCertificate.setId(certificateId);
-        giftCertificate.setLastUpdateDate(ZonedDateTime.now().withFixedOffsetZone());
-        GiftCertificate certificate = certificateRepository.update(giftCertificate).get();
-        for (TagDto tagDto : giftCertificateDto.getTags()) {
-            Optional<TagDto> optionalTagDto = tagService.findByName(tagDto);
-            if (optionalTagDto.isEmpty()) {
-                long tagId = tagService.addTagIfNotExist(tagDto).getId();
-                giftCertificateTagService.add(certificate.getId(), tagId);
-            }
-        }
-        List<TagDto> tagDtos = tagService.findAllByCertificateId(certificateId);
-        return certificateMapper.toDto(certificate, tagDtos);
+        giftCertificateDto.setGiftId(certificateId);
+        Optional<GiftCertificate> optional = repository.update(mapper.toEntity(giftCertificateDto));
+        return mapper.toDto(optional.orElseThrow(() -> new EntityNotUpdatedException(CERTIFICATE, certificateId)));
+
     }
 
     @Override
-    public List<GiftCertificateDto> findAll(String tagName, String partName, String partDescription, DateSortType type) {
-        Optional<Specification> optionalSpecification = specificationCreator.receiveSpecification(tagName, partName, partDescription, type);
-        if (optionalSpecification.isEmpty()) {
-            return toDtos(certificateRepository.findAll());
+    public List<GiftCertificateDto> findAll(RequestParametersDto dto) {
+        log.info("find gifts");
+        List<CriteriaSpecification<GiftCertificate>> specifications = creator.createSpecifications(dto);
+        if (specifications.isEmpty()) {
+            return mapper.toDtos(repository.findAll(dto.getPage(), dto.getPageLimit()));
         }
-        return null; // toDtos(certificateRepository.findAllBySpecification(optionalSpecification.get()));
+        return mapper.toDtos(repository.findAllBySpecification(specifications, dto.getPage(), dto.getPageLimit()));
     }
 
     @Override
     public GiftCertificateDto findById(long id) {
         log.info("find by id {}", id);
-        Optional<GiftCertificate> giftCertificateOptional = certificateRepository.findById(id);
-        if (giftCertificateOptional.isEmpty()) {
-            throw new EntityNotFoundException(CERTIFICATE);
-        }
-        List<TagDto> tagDtos = tagService.findAllByCertificateId(id);
-        return certificateMapper.toDto(giftCertificateOptional.get(), tagDtos);
+        Optional<GiftCertificate> optional = repository.findById(id);
+        return mapper.toDto(optional.orElseThrow(() -> new EntityNotFoundException("not found", id)));
+
     }
 
-    List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates) {
-        List<GiftCertificateDto> dtos = new ArrayList<>();
-        for (GiftCertificate certificate : certificates) {
-            List<TagDto> tags = tagService.findAllByCertificateId(certificate.getId());
-            dtos.add(certificateMapper.toDto(certificate, tags));
-        }
-        return dtos;
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @Autowired
-    @SuppressWarnings("all")
-    public GiftServiceImpl(final CertificateMapper certificateMapper, final CertificateRepository certificateRepository, final TagServiceImpl tagService, final GiftCertificateTagService giftCertificateTagService, final SpecificationCreator specificationCreator) {
-        this.certificateMapper = certificateMapper;
-        this.certificateRepository = certificateRepository;
-        this.tagService = tagService;
-        this.giftCertificateTagService = giftCertificateTagService;
-        this.specificationCreator = specificationCreator;
-    }
-    //</editor-fold>
 }

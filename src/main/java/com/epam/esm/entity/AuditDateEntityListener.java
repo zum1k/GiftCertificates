@@ -8,7 +8,7 @@ public class AuditDateEntityListener {
 
     @PrePersist
     public void onCreate(AuditEntity auditEntity) {
-        ZonedDateTime currentTime = ZonedDateTime.now();
+        ZonedDateTime currentTime = ZonedDateTime.now().withFixedOffsetZone();
         if (auditEntity.getCreateDate() == null) {
             auditEntity.setCreateDate(currentTime);
         }

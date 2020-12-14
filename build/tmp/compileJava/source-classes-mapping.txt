@@ -1,0 +1,98 @@
+com/epam/esm/entity/GiftCertificate.java
+ com.epam.esm.entity.GiftCertificate
+com/epam/esm/service/impl/UserServiceImpl.java
+ com.epam.esm.service.impl.UserServiceImpl
+com/epam/esm/repository/user/UserRepository.java
+ com.epam.esm.repository.user.UserRepository
+com/epam/esm/service/impl/GiftServiceImpl.java
+ com.epam.esm.service.impl.GiftServiceImpl
+com/epam/esm/configuration/WebConfig.java
+ com.epam.esm.configuration.WebConfig
+com/epam/esm/service/mapper/certificate/CertificateMapper.java
+ com.epam.esm.service.mapper.certificate.CertificateMapper
+com/epam/esm/entity/AuditEntity.java
+ com.epam.esm.entity.AuditEntity
+com/epam/esm/repository/order/OrderRepositoryImpl.java
+ com.epam.esm.repository.order.OrderRepositoryImpl
+com/epam/esm/service/TagService.java
+ com.epam.esm.service.TagService
+com/epam/esm/service/impl/TagServiceImpl.java
+ com.epam.esm.service.impl.TagServiceImpl
+com/epam/esm/repository/certificate/CertificateRepository.java
+ com.epam.esm.repository.certificate.CertificateRepository
+com/epam/esm/entity/AuditDateEntityListener.java
+ com.epam.esm.entity.AuditDateEntityListener
+com/epam/esm/exception/EntityNotUpdatedException.java
+ com.epam.esm.exception.EntityNotUpdatedException
+com/epam/esm/entity/DateSortType.java
+ com.epam.esm.entity.DateSortType
+com/epam/esm/entity/Tag.java
+ com.epam.esm.entity.Tag
+com/epam/esm/repository/specifications/TagsByCertificateIdCriteriaSpecifications.java
+ com.epam.esm.repository.specifications.TagsByCertificateIdCriteriaSpecifications
+com/epam/esm/entity/dto/RequestParametersDto.java
+ com.epam.esm.entity.dto.RequestParametersDto
+com/epam/esm/exception/ErrorResponse.java
+ com.epam.esm.exception.ErrorResponse
+com/epam/esm/entity/dto/TagDto.java
+ com.epam.esm.entity.dto.TagDto
+com/epam/esm/repository/specifications/SpecificationCreator.java
+ com.epam.esm.repository.specifications.SpecificationCreator
+com/epam/esm/controller/UserController.java
+ com.epam.esm.controller.UserController
+com/epam/esm/exception/ServiceException.java
+ com.epam.esm.exception.ServiceException
+com/epam/esm/repository/CriteriaSpecification.java
+ com.epam.esm.repository.CriteriaSpecification
+com/epam/esm/controller/GiftsController.java
+ com.epam.esm.controller.GiftsController
+com/epam/esm/entity/Order.java
+ com.epam.esm.entity.Order
+com/epam/esm/controller/exceptionhandler/RestExceptionHandler.java
+ com.epam.esm.controller.exceptionhandler.RestExceptionHandler
+com/epam/esm/exception/EntityNotDeletedException.java
+ com.epam.esm.exception.EntityNotDeletedException
+com/epam/esm/controller/TagController.java
+ com.epam.esm.controller.TagController
+com/epam/esm/service/impl/OrderServiceImpl.java
+ com.epam.esm.service.impl.OrderServiceImpl
+com/epam/esm/exception/EntityAlreadyExists.java
+ com.epam.esm.exception.EntityAlreadyExists
+com/epam/esm/Application.java
+ com.epam.esm.Application
+com/epam/esm/repository/specifications/CertificatesByTagNameCriteriaSpecification.java
+ com.epam.esm.repository.specifications.CertificatesByTagNameCriteriaSpecification
+com/epam/esm/service/UserService.java
+ com.epam.esm.service.UserService
+com/epam/esm/entity/dto/GiftCertificateDto.java
+ com.epam.esm.entity.dto.GiftCertificateDto
+com/epam/esm/repository/specifications/CertificatesByPartNameCriteriaSpecification.java
+ com.epam.esm.repository.specifications.CertificatesByPartNameCriteriaSpecification
+com/epam/esm/service/GiftService.java
+ com.epam.esm.service.GiftService
+com/epam/esm/entity/User.java
+ com.epam.esm.entity.User
+com/epam/esm/repository/specifications/OrdersByUserIDCriteriaSpecification.java
+ com.epam.esm.repository.specifications.OrdersByUserIDCriteriaSpecification
+com/epam/esm/repository/specifications/CertificatesByPartDescriptionCriteriaSpecification.java
+ com.epam.esm.repository.specifications.CertificatesByPartDescriptionCriteriaSpecification
+com/epam/esm/service/mapper/tag/TagMapper.java
+ com.epam.esm.service.mapper.tag.TagMapper
+com/epam/esm/service/OrderService.java
+ com.epam.esm.service.OrderService
+com/epam/esm/repository/tag/TagRepository.java
+ com.epam.esm.repository.tag.TagRepository
+com/epam/esm/exception/EntityNotFoundException.java
+ com.epam.esm.exception.EntityNotFoundException
+com/epam/esm/exception/EntityNotAddedException.java
+ com.epam.esm.exception.EntityNotAddedException
+com/epam/esm/repository/order/OrderRepository.java
+ com.epam.esm.repository.order.OrderRepository
+com/epam/esm/repository/user/UserRepositoryImpl.java
+ com.epam.esm.repository.user.UserRepositoryImpl
+com/epam/esm/repository/specifications/TagsByNameCriteriaSpecifications.java
+ com.epam.esm.repository.specifications.TagsByNameCriteriaSpecifications
+com/epam/esm/repository/certificate/CertificateRepositoryImpl.java
+ com.epam.esm.repository.certificate.CertificateRepositoryImpl
+com/epam/esm/repository/tag/TagRepositoryImpl.java
+ com.epam.esm.repository.tag.TagRepositoryImpl

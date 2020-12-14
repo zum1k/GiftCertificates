@@ -3,32 +3,38 @@ package com.epam.esm.service.impl;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.specifications.TagsByCertificateIdCriteriaSpecifications;
+import com.epam.esm.repository.specifications.TagsByNameCriteriaSpecifications;
 import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.tag.TagMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class TagServiceImpl implements TagService {
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @SuppressWarnings("all")
+
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TagServiceImpl.class);
-    //</editor-fold>
+
     private static final String TAG = "Tag";
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
-
+    @Transactional
     @Override
     public TagDto addTagIfNotExist(TagDto tag) {
         log.info("add tag");
-        Optional<Tag> tagOptional = tagRepository.findByName(tag.getName());
+        Optional<TagDto> tagOptional = findByName(tag);
         if (tagOptional.isEmpty()) {
             return tagMapper.toDto(tagRepository.add(tagMapper.toEntity(tag)).get());
         }
-        return tagMapper.toDto(tagOptional.get());
+        return tagOptional.get();
     }
 
     @Override
@@ -40,25 +46,24 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto findOne(long id) {
         log.info("find tag {}", id);
-        Optional<Tag> optionalTag = tagRepository.findById(id);
-        if (optionalTag.isEmpty()) {
-            throw new EntityNotFoundException(TAG, id);
-        }
-        return tagMapper.toDto(optionalTag.get());
+        Tag tag = tagRepository.findById(id);
+        return tagMapper.toDto(tag);
     }
 
     @Override
-    public List<TagDto> findAll() {
+    public List<TagDto> findAll() { //TODO
         log.info("find tags ");
-        if (tagRepository.findAll().isEmpty()) {
-            throw new EntityNotFoundException(TAG);
+        if (tagRepository.findAll(1, 3).isEmpty()) {
+            throw new EntityNotFoundException(TAG, 0);
         }
-        return tagMapper.toDtoList(tagRepository.findAll());
+        return tagMapper.toDtoList(tagRepository.findAll(1, 3));
     }
 
     @Override
     public Optional<TagDto> findByName(TagDto tagDto) {
-        Optional<Tag> optionalTag = tagRepository.findByName(tagDto.getName());
+        log.info("find by name {}", tagDto.getName());
+        CriteriaSpecification<Tag> specification = new TagsByNameCriteriaSpecifications(tagDto.getName());
+        Optional<Tag> optionalTag = tagRepository.findTagByName(specification);
         if (optionalTag.isEmpty()) {
             return Optional.empty();
         }
@@ -67,15 +72,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<TagDto> findAllByCertificateId(long certificateId) {
-        return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(certificateId));
+        CriteriaSpecification<Tag> specification = new TagsByCertificateIdCriteriaSpecifications(certificateId);
+        return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(specification));
     }
-
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @Autowired
-    @SuppressWarnings("all")
-    public TagServiceImpl(final TagRepository tagRepository, final TagMapper tagMapper) {
-        this.tagRepository = tagRepository;
-        this.tagMapper = tagMapper;
-    }
-    //</editor-fold>
 }

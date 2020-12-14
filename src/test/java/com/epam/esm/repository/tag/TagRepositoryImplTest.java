@@ -9,7 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 //@ContextConfiguration(classes = {DBTestConfig.class})
 @ExtendWith(SpringExtension.class)
 class TagRepositoryImplTest {
-    private final TagRepository tagRepository;
+  /*  private final TagRepository tagRepository;
 
     @Test
     void addTag_ShouldReturn_True_Test() {
@@ -64,5 +64,5 @@ class TagRepositoryImplTest {
     public TagRepositoryImplTest(final TagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
-    //</editor-fold>
+    //</editor-fold>*/
 }

@@ -1,5 +1,8 @@
 package com.epam.esm.exception;
 
+import lombok.Getter;
+
+@Getter
 public class EntityNotUpdatedException extends ServiceException {
     private final int errorCode = 40004;
     private final long entityId;
@@ -8,16 +11,4 @@ public class EntityNotUpdatedException extends ServiceException {
         super(entityName);
         this.entityId = entityId;
     }
-
-    //<editor-fold defaultstate="collapsed" desc="delombok">
-    @SuppressWarnings("all")
-    public int getErrorCode() {
-        return this.errorCode;
-    }
-
-    @SuppressWarnings("all")
-    public long getEntityId() {
-        return this.entityId;
-    }
-    //</editor-fold>
 }

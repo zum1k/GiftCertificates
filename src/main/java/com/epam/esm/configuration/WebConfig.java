@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -37,6 +38,11 @@ public class WebConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
         messageSource.setFallbackToSystemLocale(true);
         return messageSource;
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslator() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 
     @Bean

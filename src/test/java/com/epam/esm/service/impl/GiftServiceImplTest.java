@@ -1,34 +1,11 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.DateSortType;
-import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.dto.GiftCertificateDto;
-import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.exception.EntityNotAddedException;
-import com.epam.esm.exception.EntityNotDeletedException;
-import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.exception.EntityNotUpdatedException;
-import com.epam.esm.repository.certificate.CertificateRepositoryImpl;
-import com.epam.esm.repository.specifications.SpecificationCreator;
-import com.epam.esm.service.mapper.certificate.CertificateMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class GiftServiceImplTest {
-    @InjectMocks
+ /*   @InjectMocks
     private GiftServiceImpl service;
     @Mock
     private CertificateRepositoryImpl repository;
@@ -36,8 +13,6 @@ class GiftServiceImplTest {
     private CertificateMapper mapper;
     @Mock
     private TagServiceImpl tagService;
-    @Mock
-    private GIftCertificateTagServiceImpl giftCertificateTagService;
     @Mock
     private SpecificationCreator creator;
 
@@ -252,5 +227,5 @@ class GiftServiceImplTest {
             service.findById(expectedCertificateID);
         });
         Mockito.verify(repository).findById(Mockito.eq(expectedCertificateID));
-    }
+    }*/
 }

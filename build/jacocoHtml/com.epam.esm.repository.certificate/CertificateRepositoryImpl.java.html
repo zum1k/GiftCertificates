@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CertificateRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">giftsertificates</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.repository.certificate</a> &gt; <span class="el_source">CertificateRepositoryImpl.java</span></div><h1>CertificateRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.epam.esm.repository.certificate;
+
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.repository.CriteriaSpecification;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+import java.util.Optional;
+
+<span class="nc" id="L20">@Slf4j</span>
+@Repository
+<span class="nc" id="L22">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+public class CertificateRepositoryImpl implements CertificateRepository {
+    @PersistenceContext
+    private final EntityManager entityManager;
+
+    @Override
+    public Optional&lt;GiftCertificate&gt; add(GiftCertificate certificate) {
+<span class="nc" id="L29">        entityManager.persist(certificate);</span>
+<span class="nc" id="L30">        entityManager.flush();</span>
+<span class="nc" id="L31">        return Optional.of(certificate);</span>
+    }
+
+    @Override
+    public Optional&lt;GiftCertificate&gt; remove(long id) {
+<span class="nc" id="L36">        GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
+<span class="nc" id="L37">        entityManager.remove(certificate);</span>
+<span class="nc" id="L38">        entityManager.getTransaction().commit();</span>
+<span class="nc" id="L39">        return Optional.of(certificate);</span>
+    }
+
+    @Override
+    public Optional&lt;GiftCertificate&gt; update(GiftCertificate giftCertificate) {
+<span class="nc" id="L44">        entityManager.detach(giftCertificate);</span>
+<span class="nc" id="L45">        entityManager.getTransaction().begin();</span>
+<span class="nc" id="L46">        entityManager.merge(giftCertificate);</span>
+<span class="nc" id="L47">        entityManager.getTransaction().commit();</span>
+<span class="nc" id="L48">        return Optional.of(giftCertificate);</span>
+    }
+
+    @Override
+    public List&lt;GiftCertificate&gt; findAllBySpecification(CriteriaSpecification&lt;GiftCertificate&gt; specification) {
+<span class="nc" id="L53">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="nc" id="L54">        CriteriaQuery&lt;GiftCertificate&gt; criteriaQuery = builder.createQuery(GiftCertificate.class);</span>
+
+<span class="nc" id="L56">        Root&lt;GiftCertificate&gt; tagRoot = criteriaQuery.from(GiftCertificate.class);</span>
+<span class="nc" id="L57">        Predicate predicate = specification.toPredicate(tagRoot, builder);</span>
+<span class="nc" id="L58">        criteriaQuery.where(predicate);</span>
+
+<span class="nc" id="L60">        TypedQuery&lt;GiftCertificate&gt; query = entityManager.createQuery(criteriaQuery);</span>
+<span class="nc" id="L61">        return query.getResultList();</span>
+    }
+
+    @Override
+    public List&lt;GiftCertificate&gt; findAll() {
+<span class="nc" id="L66">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="nc" id="L67">        CriteriaQuery&lt;GiftCertificate&gt; query = builder.createQuery(GiftCertificate.class);</span>
+<span class="nc" id="L68">        Root&lt;GiftCertificate&gt; rootEntry = query.from(GiftCertificate.class);</span>
+<span class="nc" id="L69">        CriteriaQuery&lt;GiftCertificate&gt; all = query.select(rootEntry);</span>
+<span class="nc" id="L70">        TypedQuery&lt;GiftCertificate&gt; allQuery = entityManager.createQuery(all);</span>
+<span class="nc" id="L71">        return allQuery.getResultList();</span>
+    }
+
+    @Override
+    public Optional&lt;GiftCertificate&gt; findById(long id) {
+<span class="nc" id="L76">        GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
+<span class="nc" id="L77">        entityManager.detach(certificate);</span>
+<span class="nc" id="L78">        return Optional.of(certificate);</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

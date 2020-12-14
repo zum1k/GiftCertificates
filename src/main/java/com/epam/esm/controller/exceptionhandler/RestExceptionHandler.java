@@ -51,7 +51,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception, WebRequest request) {
-        String message = messageSource.getMessage("Something wrong", new Object[] {}, request.getLocale());
+        String message = messageSource.getMessage("exception.something-wrong", new Object[] {}, request.getLocale());
         ErrorResponse response = new ErrorResponse(message, 50001);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

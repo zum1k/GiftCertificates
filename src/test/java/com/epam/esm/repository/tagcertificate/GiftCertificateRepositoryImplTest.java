@@ -9,7 +9,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 //@ContextConfiguration(classes = {DBTestConfig.class})
 @ExtendWith(SpringExtension.class)
 class GiftCertificateRepositoryImplTest {
-    private final GiftCertificateRepositoryImpl repository;
+/*    private final GiftCertificateRepositoryImpl repository;
 
     @Test
     void deleteRow_ShouldReturn_True_Test() {
@@ -33,5 +33,5 @@ class GiftCertificateRepositoryImplTest {
     public GiftCertificateRepositoryImplTest(final GiftCertificateRepositoryImpl repository) {
         this.repository = repository;
     }
-    //</editor-fold>
+    //</editor-fold>*/
 }

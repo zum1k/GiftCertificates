@@ -1,6 +1,7 @@
 package com.epam.esm.repository.tag;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.repository.CriteriaSpecification;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +11,11 @@ public interface TagRepository {
 
     Optional<Tag> remove(long id);
 
-    Optional<Tag> findByName(String tagName);
+    Optional<Tag> findTagByName(CriteriaSpecification<Tag> specification);
 
     Tag findById(long id);
 
-    List<Tag> findAll();
+    List<Tag> findAll(int page, int pageSize);
 
-    List<Tag> findTagsByCertificateId(long certificateId);
+    List<Tag> findTagsByCertificateId(CriteriaSpecification<Tag> specification);
 }

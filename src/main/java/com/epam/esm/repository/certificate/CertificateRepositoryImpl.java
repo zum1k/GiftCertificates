@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,25 +50,29 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     }
 
     @Override
-    public List<GiftCertificate> findAllBySpecification(CriteriaSpecification<GiftCertificate> specification) {
+    public List<GiftCertificate> findAllBySpecification(List<CriteriaSpecification<GiftCertificate>> specifications, int page, int pageSize) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> criteriaQuery = builder.createQuery(GiftCertificate.class);
-
-        Root<GiftCertificate> tagRoot = criteriaQuery.from(GiftCertificate.class);
-        Predicate predicate = specification.toPredicate(tagRoot, builder);
-        criteriaQuery.where(predicate);
+        Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
+        List<Predicate> predicates = new ArrayList<>();
+        specifications.forEach(o -> predicates.add(o.toPredicate(root, builder)));
+        criteriaQuery.where(predicates.toArray(new Predicate[]{}));
 
         TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
+        query.setFirstResult((page - 1) * pageSize);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
+    public List<GiftCertificate> findAll(int page, int pageSize) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<GiftCertificate> query = builder.createQuery(GiftCertificate.class);
         Root<GiftCertificate> rootEntry = query.from(GiftCertificate.class);
         CriteriaQuery<GiftCertificate> all = query.select(rootEntry);
         TypedQuery<GiftCertificate> allQuery = entityManager.createQuery(all);
+        allQuery.setFirstResult((page - 1) * pageSize);
+        allQuery.setMaxResults(pageSize);
         return allQuery.getResultList();
     }
 

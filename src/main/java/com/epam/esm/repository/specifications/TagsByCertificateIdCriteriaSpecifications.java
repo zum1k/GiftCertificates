@@ -16,7 +16,7 @@ public class TagsByCertificateIdCriteriaSpecifications implements CriteriaSpecif
 
     @Override
     public Predicate toPredicate(Root<Tag> root, CriteriaBuilder criteriaBuilder) {
-        Join<Tag, GiftCertificate> join = root.join("certificates");
-        return criteriaBuilder.equal(join.get("id"), certificateId);
+        Join<Tag, GiftCertificate> join = root.join("gifts");
+        return criteriaBuilder.equal(join.get("gift_id"), certificateId);
     }
 }

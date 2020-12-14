@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -16,8 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/tags")
 public class TagController {
-
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(TagController.class);
 
     private final TagService tagService;
 
