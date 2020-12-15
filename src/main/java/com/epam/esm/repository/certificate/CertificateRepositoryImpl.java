@@ -23,6 +23,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CertificateRepositoryImpl implements CertificateRepository {
+    private static final String ENTITY_NAME = "Certificate";
     @PersistenceContext
     private final EntityManager entityManager;
 
@@ -36,9 +37,12 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Optional<GiftCertificate> remove(long id) {
         GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);
-        entityManager.remove(certificate);
-        entityManager.getTransaction().commit();
-        return Optional.of(certificate);
+        if(certificate!=null) {
+            entityManager.remove(certificate);
+            entityManager.getTransaction().commit();
+            return Optional.of(certificate);
+        }
+        throw new EntityNotFoundException(ENTITY_NAME, id);
     }
 
     @Override
@@ -58,7 +62,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         List<Predicate> predicates = new ArrayList<>();
         specifications.forEach(o -> predicates.add(o.toPredicate(root, builder)));
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
-
         TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
         query.setFirstResult((page - 1) * pageSize);
         query.setMaxResults(pageSize);
@@ -80,7 +83,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     @Override
     public Optional<GiftCertificate> findById(long id) {
         GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);
-        if(certificate!=null){
+        if (certificate != null) {
             entityManager.detach(certificate);
             return Optional.of(certificate);
         }

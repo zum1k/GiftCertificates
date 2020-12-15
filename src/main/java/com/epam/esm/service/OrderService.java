@@ -1,18 +1,19 @@
 package com.epam.esm.service;
 
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
 
 import java.util.List;
 
 public interface OrderService {
 
-    Order createOrder(long userId, List<Long> giftIds);
+    OrderDto createOrder(OrderDto dto);
 
-    Order removeOrder(long orderId);
+    OrderDto removeOrder(long orderId);
 
-    List<Order> findUserOrders(long userId, RequestParametersDto dto);
+    List<OrderDto> findUserOrders(long userId, RequestParametersDto dto);
 
-    List<Order> findAll(RequestParametersDto dto);
+    List<OrderDto> findAll(RequestParametersDto dto);
 
 }

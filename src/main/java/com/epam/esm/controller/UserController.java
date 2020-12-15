@@ -4,6 +4,7 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.GiftCertificateDto;
+import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +34,9 @@ public class UserController {
     }
     @RequestMapping(value = "/{id}/orders",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Order addOrder(long id, List<Long> giftIds) {
-        log.info("add order {}", id);
-        return orderService.createOrder(id, giftIds);
+    public OrderDto addOrder(@Validated @RequestBody OrderDto dto) {
+        log.info("add order {}", dto.getUserId());
+        return orderService.createOrder(dto);
     }
     @RequestMapping(method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

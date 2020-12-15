@@ -57,7 +57,7 @@ public class GiftServiceImpl implements GiftService {
     public GiftCertificateDto remove(long id) {
         log.info("remove certificate by id {}", id);
         Optional<GiftCertificate> optional = repository.remove(id);
-        return mapper.toDto(optional.orElseThrow(() -> new EntityNotDeletedException("not removed", id)));
+        return mapper.toDto(optional.orElseThrow(() -> new EntityNotDeletedException(CERTIFICATE, id)));
 
     }
 
@@ -84,7 +84,7 @@ public class GiftServiceImpl implements GiftService {
     public GiftCertificateDto findById(long id) {
         log.info("find by id {}", id);
         Optional<GiftCertificate> optional = repository.findById(id);
-        return mapper.toDto(optional.orElseThrow(() -> new EntityNotFoundException("not found", id)));
+        return mapper.toDto(optional.orElseThrow(() -> new EntityNotFoundException(CERTIFICATE, id)));
 
     }
 

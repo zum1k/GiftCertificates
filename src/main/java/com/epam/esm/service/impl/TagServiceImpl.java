@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.TagDto;
+import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.specifications.TagsByCertificateIdCriteriaSpecifications;
@@ -36,11 +37,12 @@ public class TagServiceImpl implements TagService {
         }
         return tagOptional.get();
     }
-
+    @Transactional
     @Override
     public TagDto remove(long id) {
         log.info("remove tag {}", id);
-        return tagMapper.toDto(tagRepository.remove(id).get());
+        Optional<Tag> tagOptional = tagRepository.remove(id);
+        return tagMapper.toDto(tagOptional.orElseThrow(()-> new EntityNotDeletedException(TAG, id)));
     }
 
     @Override

@@ -21,6 +21,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagRepositoryImpl implements TagRepository {
+    private final static String ENTITY_NAME = "Tag";
     @PersistenceContext
     private final EntityManager entityManager;
 
@@ -34,9 +35,11 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public Optional<Tag> remove(long id) {
         Tag tag = entityManager.find(Tag.class, id);
-        entityManager.remove(tag);
-        entityManager.getTransaction().commit();
-        return Optional.of(tag);
+        if(tag!=null) {
+            entityManager.remove(tag);
+            return Optional.of(tag);
+        }
+        throw new EntityNotFoundException(ENTITY_NAME,id);
     }
 
     @Override
@@ -52,7 +55,7 @@ public class TagRepositoryImpl implements TagRepository {
             entityManager.detach(tag);
             return tag;
         }
-        throw new EntityNotFoundException("Tag", id);
+        throw new EntityNotFoundException(ENTITY_NAME, id);
     }
 
     @Override

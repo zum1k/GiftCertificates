@@ -12,6 +12,8 @@ com/epam/esm/service/mapper/certificate/CertificateMapper.java
  com.epam.esm.service.mapper.certificate.CertificateMapper
 com/epam/esm/entity/AuditEntity.java
  com.epam.esm.entity.AuditEntity
+com/epam/esm/entity/dto/OrderDto.java
+ com.epam.esm.entity.dto.OrderDto
 com/epam/esm/repository/order/OrderRepositoryImpl.java
  com.epam.esm.repository.order.OrderRepositoryImpl
 com/epam/esm/service/TagService.java
@@ -44,6 +46,8 @@ com/epam/esm/exception/ServiceException.java
  com.epam.esm.exception.ServiceException
 com/epam/esm/repository/CriteriaSpecification.java
  com.epam.esm.repository.CriteriaSpecification
+com/epam/esm/service/mapper/order/OrderMapper.java
+ com.epam.esm.service.mapper.order.OrderMapper
 com/epam/esm/controller/GiftsController.java
  com.epam.esm.controller.GiftsController
 com/epam/esm/entity/Order.java

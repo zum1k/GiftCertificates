@@ -1,6 +1,7 @@
 package com.epam.esm.repository.user;
 
 import com.epam.esm.entity.User;
+import com.epam.esm.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> find(long id) {
         User user = entityManager.find(User.class, id);
-        entityManager.detach(user);
-        return Optional.of(user);
+        if (user != null) {
+            entityManager.detach(user);
+            return Optional.of(user);
+        }
+        throw new EntityNotFoundException("Tag", id);
     }
 
     @Override
