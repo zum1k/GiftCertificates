@@ -23,8 +23,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserService userService;
-    private OrderService orderService;
+    private final UserService userService;
+    private final OrderService orderService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -32,7 +32,8 @@ public class UserController {
         log.info("find user {}", id);
         return userService.findUser(id);
     }
-    @RequestMapping(value = "/{id}/orders",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}/orders",method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public OrderDto addOrder(@Validated @RequestBody OrderDto dto) {
         log.info("add order {}", dto.getUserId());

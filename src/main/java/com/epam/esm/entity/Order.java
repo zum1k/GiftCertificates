@@ -21,10 +21,13 @@ public class Order implements AuditEntity {
     @Column(name = "order_id")
     private long orderId;
     private BigDecimal price;
+    @Column(name = "purchase_date")
     private ZonedDateTime purchaseDate;
+    @Column(name="create_date")
     private ZonedDateTime createDate;
+    @Column(name = "last_update_date")
     private ZonedDateTime lastUpdateDate;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

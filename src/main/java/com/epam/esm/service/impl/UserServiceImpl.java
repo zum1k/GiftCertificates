@@ -17,12 +17,13 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class UserServiceImpl implements UserService {
+    private static final String ENTITY_NAME = "USER";
     private final UserRepository repository;
 
     @Override
     public User findUser(long id) {
         log.info("find user by id {}", id);
-        return repository.find(id).orElseThrow(() -> new EntityNotFoundException("not found", id));
+        return repository.find(id).orElseThrow(() -> new EntityNotFoundException(ENTITY_NAME, id));
     }
 
     @Override

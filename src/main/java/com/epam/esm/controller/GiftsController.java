@@ -23,7 +23,6 @@ public class GiftsController { //TODO
     @RequestMapping(method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<GiftCertificateDto> findAll(RequestParametersDto dto) {
-
         log.info("find all certificates");
         return giftService.findAll(dto);
     }

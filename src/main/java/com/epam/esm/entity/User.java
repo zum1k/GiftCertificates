@@ -3,6 +3,7 @@ package com.epam.esm.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 
 import javax.persistence.*;
@@ -25,20 +26,28 @@ public class User implements AuditEntity {
     private long userId;
     @NotNull(message = "Need to enter email")
     @Size(min =15, max = 45, message = "Email size must be in 13 to 45 symbols range")
+    @Column(name = "email")
     private String email;
     @NotNull(message = "Need to enter password")
     @Size(min = 9, max = 23, message = "Password size must be in 9 to 23 symbols range")
+    @Column(name = "password")
     private String password;
     @NotNull(message = "Need to enter first name")
     @Size(min = 2, max = 45, message = " First name size must be in 2 to 45 symbols range")
+    @Column(name = "first_name")
     private String firstName;
     @NotNull(message = "Need to enter last name")
+    @Column(name = "last_name")
     @Size(min = 3, max = 45, message = "Last name size must be in 2 to 45 symbols range")
     private String lastName;
+    @Column(name = "create_date")
     private ZonedDateTime createDate;
+    @Column(name = "last_update_date")
     private ZonedDateTime lastUpdateDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ToString.Exclude
     private Set<Order> orders = new HashSet<>();
 
 }

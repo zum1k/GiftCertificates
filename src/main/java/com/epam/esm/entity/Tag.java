@@ -5,17 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @EntityListeners({AuditDateEntityListener.class})
 @Entity
 @Table(name = "tags")
-@Getter
-@Setter
-@EqualsAndHashCode(exclude = "certificate")
 @AllArgsConstructor
-@ToString(exclude = "certificate")
+@Data
 @NoArgsConstructor
 public class Tag implements AuditEntity {
     @Id
@@ -28,7 +24,8 @@ public class Tag implements AuditEntity {
     private ZonedDateTime createDate;
     @Column(name = "last_update_date")
     private ZonedDateTime lastUpdateDate;
-
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
     private Set<GiftCertificate> certificate = new HashSet<>();
 }
