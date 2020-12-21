@@ -10,15 +10,16 @@ import java.time.ZonedDateTime;
 @Data
 @NoArgsConstructor
 public class TagDto {
-    private int id;
-    @NotNull(message = "Need to enter a name")
-    @Size(min = 2, max = 45, message = "Name size must over 2 and less than 45 symbols")
-    private String name;
-    private ZonedDateTime createDate;
-    private ZonedDateTime lastUpdateDate;
+  private int id;
 
-    public TagDto(String name) {
-        this.name = name;
-    }
+  @NotNull(message = "Need to enter a name")
+  @Size(min = 2, max = 45, message = "Name size must over 2 and less than 45 symbols")
+  private String name;
 
+  private ZonedDateTime createDate;
+  private ZonedDateTime lastUpdateDate;
+
+  public TagDto(String name) {
+    this.name = name;
+  }
 }

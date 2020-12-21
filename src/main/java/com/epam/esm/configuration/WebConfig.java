@@ -28,42 +28,44 @@ import java.nio.charset.StandardCharsets;
 @EnableTransactionManagement
 @PropertySource("classpath:message_source/configuration.properties")
 public class WebConfig implements WebMvcConfigurer {
-    @Value("${message_source.baseName}")
-    private String baseNames;
+  @Value("${message_source.baseName}")
+  private String baseNames;
 
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames(baseNames);
-        messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
-        messageSource.setFallbackToSystemLocale(true);
-        return messageSource;
-    }
+  @Bean
+  public MessageSource messageSource() {
+    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    messageSource.setBasenames(baseNames);
+    messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
+    messageSource.setFallbackToSystemLocale(true);
+    return messageSource;
+  }
 
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslator() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+  @Bean
+  public PersistenceExceptionTranslationPostProcessor exceptionTranslator() {
+    return new PersistenceExceptionTranslationPostProcessor();
+  }
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
+  @Bean
+  public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+    return new PropertySourcesPlaceholderConfigurer();
+  }
 
-    @Bean
-    public PlatformTransactionManager getTransactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory);
-        return transactionManager;
-    }
+  @Bean
+  public PlatformTransactionManager getTransactionManager(
+      EntityManagerFactory entityManagerFactory) {
+    JpaTransactionManager transactionManager = new JpaTransactionManager();
+    transactionManager.setEntityManagerFactory(entityManagerFactory);
+    return transactionManager;
+  }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setPackagesToScan("com.epam.esm");
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
-        return entityManagerFactoryBean;
-    }
+  @Bean
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
+        new LocalContainerEntityManagerFactoryBean();
+    entityManagerFactoryBean.setDataSource(dataSource);
+    entityManagerFactoryBean.setPackagesToScan("com.epam.esm");
+    JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
+    return entityManagerFactoryBean;
+  }
 }

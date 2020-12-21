@@ -17,39 +17,52 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/certificates")
-public class GiftsController { //TODO
-    private final GiftService giftService;
+public class GiftsController { // TODO
+  private final GiftService giftService;
 
-    @RequestMapping(method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<GiftCertificateDto> findAll(RequestParametersDto dto) {
-        log.info("find all certificates");
-        return giftService.findAll(dto);
-    }
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public List<GiftCertificateDto> findAll(RequestParametersDto dto) {
+    log.info("find all certificates");
+    return giftService.findAll(dto);
+  }
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDto addCertificate(@Validated @RequestBody GiftCertificateDto dto) {
-        log.info("add certificate");
-        return giftService.add(dto);
-    }
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public GiftCertificateDto addCertificate(@Validated @RequestBody GiftCertificateDto dto) {
+    log.info("add certificate");
+    return giftService.add(dto);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto findCertificateById(@PathVariable("id") final long id) {
-        log.info("get certificate {}", id);
-        return giftService.findById(id);
-    }
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public GiftCertificateDto findCertificateById(@PathVariable("id") final long id) {
+    log.info("get certificate {}", id);
+    return giftService.findById(id);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto updateGiftCertificates(@PathVariable("id") final long id, @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
-        return giftService.update(id, certificateDto);
-    }
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.PUT,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public GiftCertificateDto updateGiftCertificates(
+      @PathVariable("id") final long id,
+      @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
+    return giftService.update(id, certificateDto);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteCertificateById(@PathVariable("id") final long id) {
-        giftService.remove(id);
-    }
-
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.DELETE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
+  public void deleteCertificateById(@PathVariable("id") final long id) {
+    giftService.remove(id);
+  }
 }

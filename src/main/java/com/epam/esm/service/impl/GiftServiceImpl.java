@@ -11,7 +11,7 @@ import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.exception.EntityNotUpdatedException;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.certificate.CertificateRepository;
-import com.epam.esm.repository.specifications.SpecificationCreator;
+import com.epam.esm.repository.specification.SpecificationCreator;
 import com.epam.esm.service.GiftService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
@@ -79,7 +79,7 @@ public class GiftServiceImpl implements GiftService {
         }
         return mapper.toDtos(repository.findAllBySpecification(specifications, dto.getPage(), dto.getPageLimit()));
     }
-
+    @Transactional
     @Override
     public GiftCertificateDto findById(long id) {
         log.info("find by id {}", id);

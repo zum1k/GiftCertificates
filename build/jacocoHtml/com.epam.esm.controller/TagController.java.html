@@ -9,44 +9,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-@Slf4j
-<span class="nc" id="L15">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="nc" id="L15">@Slf4j</span>
+<span class="nc" id="L16">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 @RestController
 @RequestMapping(&quot;/tags&quot;)
 public class TagController {
 
-<span class="nc" id="L20">    private static final Logger log = org.slf4j.LoggerFactory.getLogger(TagController.class);</span>
+  private final TagService tagService;
 
-    private final TagService tagService;
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public List&lt;TagDto&gt; findAll() {
+<span class="nc" id="L26">    log.info(&quot;get tags&quot;);</span>
+<span class="nc" id="L27">    return tagService.findAll();</span>
+  }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List&lt;TagDto&gt; findAll() {
-<span class="nc" id="L27">        log.info(&quot;get tags&quot;);</span>
-<span class="nc" id="L28">        return tagService.findAll();</span>
-    }
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public TagDto addTag(@RequestBody TagDto dto) {
+<span class="nc" id="L36">    log.info(&quot;add tag&quot;);</span>
+<span class="nc" id="L37">    return tagService.addTagIfNotExist(dto);</span>
+  }
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public TagDto addTag(@RequestBody TagDto dto) {
-<span class="nc" id="L34">        log.info(&quot;add tag&quot;);</span>
-<span class="nc" id="L35">        return tagService.addTagIfNotExist(dto);</span>
-    }
+  @RequestMapping(
+      value = &quot;/{id}&quot;,
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public TagDto findTagById(@PathVariable(&quot;id&quot;) final long id) {
+<span class="nc" id="L46">    log.info(&quot;get tag {}&quot;, id);</span>
+<span class="nc" id="L47">    return tagService.findOne(id);</span>
+  }
 
-    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto findTagById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L41">        log.info(&quot;get tag {}&quot;, id);</span>
-<span class="nc" id="L42">        return tagService.findOne(id);</span>
-    }
-
-    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto deleteTagById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L48">        log.info(&quot;get tag {}&quot;, id);</span>
-<span class="nc" id="L49">        return tagService.remove(id);</span>
-    }
+  @RequestMapping(
+      value = &quot;/{id}&quot;,
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public TagDto deleteTagById(@PathVariable(&quot;id&quot;) final long id) {
+<span class="nc" id="L56">    log.info(&quot;get tag {}&quot;, id);</span>
+<span class="nc" id="L57">    return tagService.remove(id);</span>
+  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

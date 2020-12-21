@@ -5,13 +5,12 @@ import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
-import com.epam.esm.repository.specifications.TagsByCertificateIdCriteriaSpecifications;
-import com.epam.esm.repository.specifications.TagsByNameCriteriaSpecifications;
+import com.epam.esm.repository.specification.TagsByCertificateIdCriteriaSpecifications;
+import com.epam.esm.repository.specification.TagsByNameCriteriaSpecifications;
 import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.tag.TagMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

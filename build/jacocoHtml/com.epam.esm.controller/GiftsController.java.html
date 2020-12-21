@@ -5,55 +5,65 @@ import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.service.GiftService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Valid
-@Slf4j
-<span class="nc" id="L20">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="nc" id="L16">@Slf4j</span>
+<span class="nc" id="L17">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 @RestController
 @RequestMapping(&quot;/certificates&quot;)
-public class GiftsController { //TODO
-<span class="nc" id="L24">    private static final Logger log = org.slf4j.LoggerFactory.getLogger(GiftsController.class);</span>
-    private final GiftService giftService;
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List&lt;GiftCertificateDto&gt; findAll(@Validated(RequestParametersDto.class) RequestParametersDto dto) {
-<span class="nc" id="L29">        log.info(&quot;find all certificates&quot;);</span>
-<span class="nc" id="L30">        return giftService.findAll(dto);</span>
-    }
+public class GiftsController { // TODO
+  private final GiftService giftService;
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificateDto addCertificate(@Validated @RequestBody GiftCertificateDto dto) {
-<span class="nc" id="L36">        log.info(&quot;add certificate&quot;);</span>
-<span class="nc" id="L37">        return giftService.add(dto);</span>
-    }
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public List&lt;GiftCertificateDto&gt; findAll(RequestParametersDto dto) {
+<span class="nc" id="L26">    log.info(&quot;find all certificates&quot;);</span>
+<span class="nc" id="L27">    return giftService.findAll(dto);</span>
+  }
 
-    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto findCertificateById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L43">        log.info(&quot;get certificate {}&quot;, id);</span>
-<span class="nc" id="L44">        return giftService.findById(id);</span>
-    }
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public GiftCertificateDto addCertificate(@Validated @RequestBody GiftCertificateDto dto) {
+<span class="nc" id="L36">    log.info(&quot;add certificate&quot;);</span>
+<span class="nc" id="L37">    return giftService.add(dto);</span>
+  }
 
-    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto updateGiftCertificates(@PathVariable(&quot;id&quot;) final long id, @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
-<span class="nc" id="L50">        return giftService.update(id, certificateDto);</span>
-    }
+  @RequestMapping(
+      value = &quot;/{id}&quot;,
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public GiftCertificateDto findCertificateById(@PathVariable(&quot;id&quot;) final long id) {
+<span class="nc" id="L46">    log.info(&quot;get certificate {}&quot;, id);</span>
+<span class="nc" id="L47">    return giftService.findById(id);</span>
+  }
 
-    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteCertificateById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L55">        giftService.remove(id);</span>
-<span class="nc" id="L56">    }</span>
+  @RequestMapping(
+      value = &quot;/{id}&quot;,
+      method = RequestMethod.PUT,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public GiftCertificateDto updateGiftCertificates(
+      @PathVariable(&quot;id&quot;) final long id,
+      @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
+<span class="nc" id="L58">    return giftService.update(id, certificateDto);</span>
+  }
 
+  @RequestMapping(
+      value = &quot;/{id}&quot;,
+      method = RequestMethod.DELETE,
+      consumes = MediaType.APPLICATION_JSON_VALUE)
+  public void deleteCertificateById(@PathVariable(&quot;id&quot;) final long id) {
+<span class="nc" id="L66">    giftService.remove(id);</span>
+<span class="nc" id="L67">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

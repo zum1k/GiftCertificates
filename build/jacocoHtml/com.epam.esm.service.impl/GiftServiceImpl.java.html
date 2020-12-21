@@ -1,64 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GiftServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">giftsertificates</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.service.impl</a> &gt; <span class="el_source">GiftServiceImpl.java</span></div><h1>GiftServiceImpl.java</h1><pre class="source lang-java linenums">package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
+import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.exception.EntityNotUpdatedException;
+import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.certificate.CertificateRepository;
+import com.epam.esm.repository.specification.SpecificationCreator;
 import com.epam.esm.service.GiftService;
+import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
+import com.epam.esm.service.mapper.tag.TagMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-<span class="nc" id="L20">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="nc" id="L31">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 @Service
 public class GiftServiceImpl implements GiftService {
-<span class="nc" id="L23">    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(GiftServiceImpl.class);</span>
+<span class="nc" id="L34">    private static final Logger log = LoggerFactory.getLogger(GiftServiceImpl.class);</span>
     private static final String CERTIFICATE = &quot;Certificate&quot;;
     private final CertificateMapper mapper;
     private final CertificateRepository repository;
+    private final TagService tagService;
+    private final SpecificationCreator creator;
+    private final TagMapper tagMapper;
 
+
+    @Transactional
     @Override
     public GiftCertificateDto add(GiftCertificateDto giftCertificateDto) {
-<span class="nc" id="L30">        log.info(&quot;add certificate&quot;);</span>
-<span class="nc" id="L31">        Optional&lt;GiftCertificate&gt; optional = repository.add(mapper.toEntity(giftCertificateDto));</span>
-<span class="nc" id="L32">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotAddedException(CERTIFICATE)));</span>
+<span class="nc" id="L46">        Set&lt;Tag&gt; tags = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        for (TagDto tag : giftCertificateDto.getTags()) {</span>
+<span class="nc" id="L48">            tags.add(tagMapper.toEntity(tagService.addTagIfNotExist(tag)));</span>
+<span class="nc" id="L49">        }</span>
+<span class="nc" id="L50">        GiftCertificate certificate = mapper.toEntity(giftCertificateDto);</span>
+<span class="nc" id="L51">        certificate.setTags(tags);</span>
+<span class="nc" id="L52">        Optional&lt;GiftCertificate&gt; optional = repository.add(certificate);</span>
+<span class="nc" id="L53">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotAddedException(CERTIFICATE)));</span>
     }
 
     @Override
     public GiftCertificateDto remove(long id) {
-<span class="nc" id="L37">        log.info(&quot;remove certificate by id {}&quot;, id);</span>
-<span class="nc" id="L38">        Optional&lt;GiftCertificate&gt; optional = repository.remove(id);</span>
-<span class="nc" id="L39">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotDeletedException(&quot;not removed&quot;, id)));</span>
+<span class="nc" id="L58">        log.info(&quot;remove certificate by id {}&quot;, id);</span>
+<span class="nc" id="L59">        Optional&lt;GiftCertificate&gt; optional = repository.remove(id);</span>
+<span class="nc" id="L60">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotDeletedException(CERTIFICATE, id)));</span>
 
     }
 
     @Override
     public GiftCertificateDto update(long certificateId, GiftCertificateDto giftCertificateDto) {
-<span class="nc" id="L45">        log.info(&quot;update certificate&quot;);</span>
-<span class="nc" id="L46">        giftCertificateDto.setGiftId(certificateId);</span>
-<span class="nc" id="L47">        Optional&lt;GiftCertificate&gt; optional = repository.update(mapper.toEntity(giftCertificateDto));</span>
-<span class="nc" id="L48">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotUpdatedException(CERTIFICATE, certificateId)));</span>
+<span class="nc" id="L66">        log.info(&quot;update certificate&quot;);</span>
+<span class="nc" id="L67">        giftCertificateDto.setGiftId(certificateId);</span>
+<span class="nc" id="L68">        Optional&lt;GiftCertificate&gt; optional = repository.update(mapper.toEntity(giftCertificateDto));</span>
+<span class="nc" id="L69">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotUpdatedException(CERTIFICATE, certificateId)));</span>
 
     }
 
     @Override
     public List&lt;GiftCertificateDto&gt; findAll(RequestParametersDto dto) {
-<span class="nc" id="L54">        return null;</span>
+<span class="nc" id="L75">        log.info(&quot;find gifts&quot;);</span>
+<span class="nc" id="L76">        List&lt;CriteriaSpecification&lt;GiftCertificate&gt;&gt; specifications = creator.createSpecifications(dto);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (specifications.isEmpty()) {</span>
+<span class="nc" id="L78">            return mapper.toDtos(repository.findAll(dto.getPage(), dto.getPageLimit()));</span>
+        }
+<span class="nc" id="L80">        return mapper.toDtos(repository.findAllBySpecification(specifications, dto.getPage(), dto.getPageLimit()));</span>
     }
-
+    @Transactional
     @Override
     public GiftCertificateDto findById(long id) {
-<span class="nc" id="L59">        log.info(&quot;find by id {}&quot;, id);</span>
-<span class="nc" id="L60">        Optional&lt;GiftCertificate&gt; optional = repository.findById(id);</span>
-<span class="nc" id="L61">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotFoundException(&quot;not found&quot;, id)));</span>
+<span class="nc" id="L85">        log.info(&quot;find by id {}&quot;, id);</span>
+<span class="nc" id="L86">        Optional&lt;GiftCertificate&gt; optional = repository.findById(id);</span>
+<span class="nc" id="L87">        return mapper.toDto(optional.orElseThrow(() -&gt; new EntityNotFoundException(CERTIFICATE, id)));</span>
 
     }
 

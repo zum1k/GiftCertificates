@@ -1,10 +1,12 @@
-package com.epam.esm.repository.specifications;
+package com.epam.esm.repository.specification;
 
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.User;
 import com.epam.esm.repository.CriteriaSpecification;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -14,6 +16,6 @@ public class OrdersByUserIDCriteriaSpecification implements CriteriaSpecificatio
 
     @Override
     public Predicate toPredicate(Root<Order> root, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.equal(root.get("user_id"), userId);
+        return criteriaBuilder.equal(root.get("user").get("userId"), userId);
     }
 }

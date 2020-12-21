@@ -3,11 +3,11 @@ package com.epam.esm.entity;
 import java.time.ZonedDateTime;
 
 public interface AuditEntity {
-    ZonedDateTime getCreateDate();
+  ZonedDateTime getCreateDate();
 
-    void setCreateDate(ZonedDateTime time);
+  void setCreateDate(ZonedDateTime time);
 
-    ZonedDateTime getLastUpdateDate();
+  ZonedDateTime getLastUpdateDate();
 
-    void setLastUpdateDate(ZonedDateTime time);
+  void setLastUpdateDate(ZonedDateTime time);
 }

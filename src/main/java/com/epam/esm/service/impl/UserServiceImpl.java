@@ -5,6 +5,7 @@ import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.user.UserRepository;
+import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

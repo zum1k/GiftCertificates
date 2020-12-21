@@ -9,18 +9,22 @@ import java.util.stream.Stream;
 <span class="nc" id="L9">@AllArgsConstructor</span>
 @Getter
 public enum DateSortType {
-<span class="nc" id="L12">    ASC(&quot;ASC&quot;), DESC(&quot;DESC&quot;);</span>
-<span class="nc" id="L13">    private final String value;</span>
+<span class="nc" id="L12">  ASC(&quot;ASC&quot;),</span>
+<span class="nc" id="L13">  DESC(&quot;DESC&quot;);</span>
+<span class="nc" id="L14">  private final String value;</span>
 
-    /**
-     * Convert value from JSON to Enum.
-     *
-     * @param jsonValue -- from JSON object
-     * @return enum value
-     */
-    @JsonCreator
-    public static DateSortType fromJsonValue(String jsonValue) {
-<span class="nc" id="L23">        return Stream.of(values()).filter(title -&gt; title.getValue().equals(jsonValue)).findFirst().orElse(null);</span>
-    }
+  /**
+   * Convert value from JSON to Enum.
+   *
+   * @param jsonValue -- from JSON object
+   * @return enum value
+   */
+  @JsonCreator
+  public static DateSortType fromJsonValue(String jsonValue) {
+<span class="nc" id="L24">    return Stream.of(values())</span>
+<span class="nc" id="L25">        .filter(title -&gt; title.getValue().equals(jsonValue))</span>
+<span class="nc" id="L26">        .findFirst()</span>
+<span class="nc" id="L27">        .orElse(null);</span>
+  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

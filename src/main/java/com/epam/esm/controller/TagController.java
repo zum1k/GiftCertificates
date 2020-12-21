@@ -18,33 +18,42 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagService tagService;
+  private final TagService tagService;
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<TagDto> findAll() {
-        log.info("get tags");
-        return tagService.findAll();
-    }
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public List<TagDto> findAll() {
+    log.info("get tags");
+    return tagService.findAll();
+  }
 
-    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public TagDto addTag(@RequestBody TagDto dto) {
-        log.info("add tag");
-        return tagService.addTagIfNotExist(dto);
-    }
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public TagDto addTag(@RequestBody TagDto dto) {
+    log.info("add tag");
+    return tagService.addTagIfNotExist(dto);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto findTagById(@PathVariable("id") final long id) {
-        log.info("get tag {}", id);
-        return tagService.findOne(id);
-    }
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public TagDto findTagById(@PathVariable("id") final long id) {
+    log.info("get tag {}", id);
+    return tagService.findOne(id);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto deleteTagById(@PathVariable("id") final long id) {
-        log.info("get tag {}", id);
-        return tagService.remove(id);
-    }
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public TagDto deleteTagById(@PathVariable("id") final long id) {
+    log.info("get tag {}", id);
+    return tagService.remove(id);
+  }
 }

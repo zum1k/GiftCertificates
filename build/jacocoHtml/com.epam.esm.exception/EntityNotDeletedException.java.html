@@ -12,5 +12,9 @@ public class EntityNotDeletedException extends ServiceException {
 <span class="nc" id="L12">        super(entityName);</span>
 <span class="nc" id="L13">        this.entityId = entityId;</span>
 <span class="nc" id="L14">    }</span>
+
+    public int getErrorCode() {
+<span class="nc" id="L17">        return this.errorCode;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -5,17 +5,22 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-<span class="nc bnc" id="L8" title="All 16 branches missed.">@Data</span>
-<span class="nc" id="L9">@NoArgsConstructor</span>
+import java.time.ZonedDateTime;
+
+<span class="nc bnc" id="L10" title="All 32 branches missed.">@Data</span>
+<span class="nc" id="L11">@NoArgsConstructor</span>
 public class TagDto {
-<span class="nc" id="L11">    private int id;</span>
-    @NotNull(message = &quot;Need to enter a name&quot;)
-    @Size(min = 2, max = 45, message = &quot;Name size must over 2 and less than 45 symbols&quot;)
-<span class="nc" id="L14">    private String name;</span>
+<span class="nc" id="L13">  private int id;</span>
 
-<span class="nc" id="L16">    public TagDto(String name) {</span>
-<span class="nc" id="L17">        this.name = name;</span>
-<span class="nc" id="L18">    }</span>
+  @NotNull(message = &quot;Need to enter a name&quot;)
+  @Size(min = 2, max = 45, message = &quot;Name size must over 2 and less than 45 symbols&quot;)
+<span class="nc" id="L17">  private String name;</span>
 
+<span class="nc" id="L19">  private ZonedDateTime createDate;</span>
+<span class="nc" id="L20">  private ZonedDateTime lastUpdateDate;</span>
+
+<span class="nc" id="L22">  public TagDto(String name) {</span>
+<span class="nc" id="L23">    this.name = name;</span>
+<span class="nc" id="L24">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
