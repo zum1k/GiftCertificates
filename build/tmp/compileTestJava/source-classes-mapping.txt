@@ -4,9 +4,11 @@ com/epam/esm/repository/certificate/CertificateRepositoryImplTest.java
  com.epam.esm.repository.certificate.CertificateRepositoryImplTest
 com/epam/esm/repository/tag/TagRepositoryImplTest.java
  com.epam.esm.repository.tag.TagRepositoryImplTest
+com/epam/esm/service/impl/UserServiceImplTest.java
+ com.epam.esm.service.impl.UserServiceImplTest
 com/epam/esm/service/impl/TagServiceImplTest.java
  com.epam.esm.service.impl.TagServiceImplTest
-com/epam/esm/service/impl/GiftCertificateTagServiceImplTest.java
- com.epam.esm.service.impl.GiftCertificateTagServiceImplTest
 com/epam/esm/service/impl/GiftServiceImplTest.java
  com.epam.esm.service.impl.GiftServiceImplTest
+com/epam/esm/service/impl/OrderServiceImplTest.java
+ com.epam.esm.service.impl.OrderServiceImplTest

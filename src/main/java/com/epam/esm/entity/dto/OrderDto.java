@@ -1,7 +1,9 @@
 package com.epam.esm.entity.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -9,9 +11,10 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class OrderDto {
+public class OrderDto extends RepresentationModel<OrderDto> {
   private long orderId;
 
   @NotNull()

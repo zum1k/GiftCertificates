@@ -1,15 +1,18 @@
 package com.epam.esm.entity.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class TagDto {
+public class TagDto extends RepresentationModel<TagDto> {
   private int id;
 
   @NotNull(message = "Need to enter a name")

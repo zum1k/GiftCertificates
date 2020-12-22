@@ -1,6 +1,8 @@
 package com.epam.esm.entity.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -9,8 +11,10 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class GiftCertificateDto {
+public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
   private long giftId;
 
   @NotNull(message = "Need to enter name")

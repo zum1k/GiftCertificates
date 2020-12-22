@@ -34,6 +34,18 @@ public class UserController {
     return userService.findUser(id);
   }
 
+
+  @RequestMapping(
+          value = "/{id}/orders/{orderId}",
+          method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public User findUser(@PathVariable("id") final long id,
+                       @PathVariable("id") final long orderId) {
+    log.info("find order by id {}", orderId);
+    return userService.findUser(id, order_id);
+  }
+
   @RequestMapping(
       value = "/{id}/orders",
       method = RequestMethod.POST,

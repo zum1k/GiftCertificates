@@ -6,8 +6,11 @@ import com.epam.esm.service.GiftService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +45,11 @@ public class GiftsController { // TODO
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public GiftCertificateDto findCertificateById(@PathVariable("id") final long id) {
+  public ResponseEntity<GiftCertificateDto> findCertificateById(@PathVariable("id") final long id) {
     log.info("get certificate {}", id);
-    return giftService.findById(id);
+    GiftCertificateDto dto = giftService.findById(id);
+    addLinks(dto);
+    return ResponseEntity.ok().body(dto);
   }
 
   @RequestMapping(
@@ -64,5 +69,19 @@ public class GiftsController { // TODO
       consumes = MediaType.APPLICATION_JSON_VALUE)
   public void deleteCertificateById(@PathVariable("id") final long id) {
     giftService.remove(id);
+  }
+
+  private void addLinks(GiftCertificateDto certificateDto) {
+    certificateDto
+        .getTags()
+        .forEach(
+            tagDto -> {
+              long tagId = tagDto.getId();
+              Link tagLink =
+                  WebMvcLinkBuilder.linkTo(
+                          WebMvcLinkBuilder.methodOn(TagController.class).findTagById(tagId))
+                      .withRel("tag");
+              tagDto.add(tagLink);
+            });
   }
 }

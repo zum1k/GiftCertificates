@@ -8,12 +8,13 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-<span class="nc" id="L15">@Slf4j</span>
-<span class="nc" id="L16">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="nc" id="L16">@Slf4j</span>
+<span class="nc" id="L17">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 @RestController
 @RequestMapping(&quot;/tags&quot;)
 public class TagController {
@@ -22,9 +23,9 @@ public class TagController {
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public List&lt;TagDto&gt; findAll() {
-<span class="nc" id="L26">    log.info(&quot;get tags&quot;);</span>
-<span class="nc" id="L27">    return tagService.findAll();</span>
+  public ResponseEntity&lt;List&lt;TagDto&gt;&gt; findAll() {
+<span class="nc" id="L27">    log.info(&quot;get tags&quot;);</span>
+<span class="nc" id="L28">    return ResponseEntity.ok(tagService.findAll());</span>
   }
 
   @RequestMapping(
@@ -33,8 +34,8 @@ public class TagController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public TagDto addTag(@RequestBody TagDto dto) {
-<span class="nc" id="L36">    log.info(&quot;add tag&quot;);</span>
-<span class="nc" id="L37">    return tagService.addTagIfNotExist(dto);</span>
+<span class="nc" id="L37">    log.info(&quot;add tag&quot;);</span>
+<span class="nc" id="L38">    return tagService.addTagIfNotExist(dto);</span>
   }
 
   @RequestMapping(
@@ -43,8 +44,8 @@ public class TagController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public TagDto findTagById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L46">    log.info(&quot;get tag {}&quot;, id);</span>
-<span class="nc" id="L47">    return tagService.findOne(id);</span>
+<span class="nc" id="L47">    log.info(&quot;get tag {}&quot;, id);</span>
+<span class="nc" id="L48">    return tagService.findOne(id);</span>
   }
 
   @RequestMapping(
@@ -53,8 +54,8 @@ public class TagController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public TagDto deleteTagById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L56">    log.info(&quot;get tag {}&quot;, id);</span>
-<span class="nc" id="L57">    return tagService.remove(id);</span>
+<span class="nc" id="L57">    log.info(&quot;get tag {}&quot;, id);</span>
+<span class="nc" id="L58">    return tagService.remove(id);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

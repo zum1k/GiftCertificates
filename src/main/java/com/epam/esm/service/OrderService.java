@@ -15,5 +15,4 @@ public interface OrderService {
     List<OrderDto> findUserOrders(long userId, RequestParametersDto dto);
 
     List<OrderDto> findAll(RequestParametersDto dto);
-
 }

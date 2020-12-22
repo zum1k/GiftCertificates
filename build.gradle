@@ -23,6 +23,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '2.4.1'
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.2'
     compile "org.mapstruct:mapstruct:1.2.0.Final"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
     // If you are using mapstruct in test code
