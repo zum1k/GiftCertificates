@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.tag;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.RequestParametersDto;
@@ -9,7 +9,6 @@ import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.specification.TagsByCertificateIdCriteriaSpecifications;
 import com.epam.esm.repository.specification.TagsByNameCriteriaSpecifications;
 import com.epam.esm.repository.tag.TagRepository;
-import com.epam.esm.service.TagService;
 import com.epam.esm.service.mapper.tag.TagMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

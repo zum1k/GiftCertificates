@@ -1,4 +1,4 @@
-package com.epam.esm.service;
+package com.epam.esm.service.user;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;

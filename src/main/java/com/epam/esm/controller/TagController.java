@@ -3,7 +3,7 @@ package com.epam.esm.controller;
 import com.epam.esm.controller.resource.tag.TagLinkModifier;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

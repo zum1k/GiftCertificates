@@ -1,4 +1,4 @@
-package com.epam.esm.service;
+package com.epam.esm.service.order;
 
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;

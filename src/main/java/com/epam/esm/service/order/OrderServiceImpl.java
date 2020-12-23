@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.order;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
@@ -11,9 +11,8 @@ import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.order.OrderRepository;
 import com.epam.esm.repository.specification.OrdersByUserIDCriteriaSpecification;
-import com.epam.esm.service.GiftService;
-import com.epam.esm.service.OrderService;
-import com.epam.esm.service.UserService;
+import com.epam.esm.service.certificate.GiftService;
+import com.epam.esm.service.user.UserService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
 import com.epam.esm.service.mapper.order.OrderMapper;
 import com.epam.esm.service.mapper.user.UserMapper;

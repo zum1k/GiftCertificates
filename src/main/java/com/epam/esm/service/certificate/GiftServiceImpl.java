@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.certificate;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
@@ -12,8 +12,7 @@ import com.epam.esm.exception.EntityNotUpdatedException;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.certificate.CertificateRepository;
 import com.epam.esm.repository.specification.SpecificationCreator;
-import com.epam.esm.service.GiftService;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.tag.TagService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
 import com.epam.esm.service.mapper.tag.TagMapper;
 import lombok.RequiredArgsConstructor;
