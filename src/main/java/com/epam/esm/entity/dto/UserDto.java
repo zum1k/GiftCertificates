@@ -14,7 +14,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class UserDto extends RepresentationModel<TagDto> {
+public class UserDto extends RepresentationModel<UserDto> {
   private long userId;
 
   @NotNull(message = "Need to enter email")

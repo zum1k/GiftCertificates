@@ -8,12 +8,14 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {TagMapper.class})
+@Mapper(
+    componentModel = "spring",
+    uses = {TagMapper.class})
 public interface CertificateMapper {
-    @Mapping(target = "orders", ignore = true)
-    GiftCertificate toEntity(GiftCertificateDto dto);
+  @Mapping(target = "orders", ignore = true)
+  GiftCertificate toEntity(GiftCertificateDto dto);
 
-    GiftCertificateDto toDto(GiftCertificate certificate);
+  GiftCertificateDto toDto(GiftCertificate certificate);
 
-    List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates);
+  List<GiftCertificateDto> toDtos(List<GiftCertificate> certificates);
 }

@@ -2,6 +2,8 @@ com/epam/esm/controller/resource/certificate/GiftCertificateLinkModifier.java
  com.epam.esm.controller.resource.certificate.GiftCertificateLinkModifier
 com/epam/esm/repository/specification/CertificatesByPartNameCriteriaSpecification.java
  com.epam.esm.repository.specification.CertificatesByPartNameCriteriaSpecification
+com/epam/esm/controller/resource/user/UserLinkModifier.java
+ com.epam.esm.controller.resource.user.UserLinkModifier
 com/epam/esm/entity/GiftCertificate.java
  com.epam.esm.entity.GiftCertificate
 com/epam/esm/service/impl/UserServiceImpl.java
@@ -26,6 +28,8 @@ com/epam/esm/repository/order/OrderRepositoryImpl.java
  com.epam.esm.repository.order.OrderRepositoryImpl
 com/epam/esm/service/TagService.java
  com.epam.esm.service.TagService
+com/epam/esm/service/mapper/user/UserMapper.java
+ com.epam.esm.service.mapper.user.UserMapper
 com/epam/esm/service/impl/TagServiceImpl.java
  com.epam.esm.service.impl.TagServiceImpl
 com/epam/esm/repository/certificate/CertificateRepository.java
@@ -36,6 +40,8 @@ com/epam/esm/exception/EntityNotUpdatedException.java
  com.epam.esm.exception.EntityNotUpdatedException
 com/epam/esm/entity/DateSortType.java
  com.epam.esm.entity.DateSortType
+com/epam/esm/entity/dto/UserDto.java
+ com.epam.esm.entity.dto.UserDto
 com/epam/esm/entity/Tag.java
  com.epam.esm.entity.Tag
 com/epam/esm/controller/resource/order/OrderLinkModifier.java

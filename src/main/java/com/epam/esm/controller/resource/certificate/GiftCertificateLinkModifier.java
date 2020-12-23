@@ -24,7 +24,7 @@ public class GiftCertificateLinkModifier implements DtoLinkModifier<GiftCertific
     long dtoId = giftCertificateDto.getGiftId();
     Link dtoLink = WebMvcLinkBuilder.linkTo(controller.findCertificateById(dtoId)).withSelfRel();
     Link deleteLink =
-        WebMvcLinkBuilder.linkTo(controller.deleteCertificateById(dtoId)).withSelfRel();
+        WebMvcLinkBuilder.linkTo(controller.deleteCertificateById(dtoId)).withRel("delete gift");
     Link allLink = WebMvcLinkBuilder.linkTo(controller).withRel("gifts");
     giftCertificateDto.add(dtoLink, deleteLink, allLink);
     giftCertificateDto.getTags().forEach(tagLinkModifier::withTagLocation);

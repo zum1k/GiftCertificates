@@ -5,6 +5,7 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
+import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
@@ -15,6 +16,7 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
 import com.epam.esm.service.mapper.order.OrderMapper;
+import com.epam.esm.service.mapper.user.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
   private final GiftService giftService;
   private final CertificateMapper certificateMapper;
   private final UserService userService;
+  private final UserMapper userMapper;
 
   @Transactional
   @Override
@@ -52,7 +55,8 @@ public class OrderServiceImpl implements OrderService {
       certificates.add(certificateMapper.toEntity(giftService.findById(gift.getGiftId())));
     }
     order.setGifts(certificates);
-    order.setUser(userService.findUser(id));
+    UserDto user = userService.findUser(id);
+    order.setUser(userMapper.toEntity(user));
     return mapper.toDto(
         repository.add(order).orElseThrow(() -> new EntityNotAddedException(ORDER)));
   }
@@ -76,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
   public OrderDto findOrderById(long userId, long orderId) {
     log.info("find user {} order by {}", userId, orderId);
     Optional<Order> optionalOrder = repository.findOrder(orderId);
-    if (optionalOrder.isEmpty()){
+    if (optionalOrder.isEmpty()) {
       throw new EntityNotFoundException(ORDER, orderId);
     }
     return null;

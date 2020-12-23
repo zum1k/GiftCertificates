@@ -2,10 +2,10 @@ package com.epam.esm.controller;
 
 import com.epam.esm.controller.resource.order.OrderLinkModifier;
 import com.epam.esm.controller.resource.user.UserLinkModifier;
-import com.epam.esm.entity.Tag;
-import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
+import com.epam.esm.entity.dto.TagDto;
+import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +27,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
   private final UserLinkModifier linkModifier;
+  private final OrderLinkModifier orderLinkModifier;
   private final UserService userService;
   private final OrderService orderService;
 
@@ -33,9 +36,11 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public User findUser(@PathVariable("id") final long id) {
+  public ResponseEntity<UserDto> findUser(@PathVariable("id") final long id) {
     log.info("find user {}", id);
-    return userService.findUser(id);
+    UserDto userDto = userService.findUser(id);
+    linkModifier.withTagLocation(userDto);
+    return ResponseEntity.ok().body(userDto);
   }
 
   @RequestMapping(
@@ -44,11 +49,14 @@ public class UserController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public OrderDto addOrder(
+  public ResponseEntity<OrderDto> addOrder(
       @PathVariable("id") final long id, @Validated @RequestBody OrderDto dto) {
     log.info("add order {}", id);
-    System.out.println("here");
-    return orderService.createOrder(id, dto);
+    OrderDto orderDto = orderService.createOrder(id, dto);
+    long dtoId = orderDto.getOrderId();
+    URI resourceUri =
+        ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
+    return ResponseEntity.created(resourceUri).build();
   }
 
   @RequestMapping(
@@ -59,14 +67,18 @@ public class UserController {
   public ResponseEntity<OrderDto> orderById(
       @PathVariable("user_id") final long userId, @PathVariable("order_id") final long orderId) {
     log.info("find user {} order by {}", userId, orderId);
-    return ResponseEntity.ok().body(orderService.findOrderById(userId, orderId));
+    OrderDto orderDto = orderService.findOrderById(userId, orderId);
+    orderLinkModifier.withTagLocation(orderDto);
+    return ResponseEntity.ok().body(orderDto);
   }
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public List<User> findAll(RequestParametersDto dto) {
+  public ResponseEntity<List<UserDto>> findAll(RequestParametersDto dto) {
     log.info("find all users");
-    return userService.findAll(dto);
+    List<UserDto> userDtos = userService.findAll(dto);
+    linkModifier.allWithPagination(userDtos, dto);
+    return ResponseEntity.ok().body(userDtos);
   }
 
   @RequestMapping(
@@ -74,10 +86,12 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public List<OrderDto> ordersByUserId(
+  public ResponseEntity<List<OrderDto>> ordersByUserId(
       @PathVariable("id") final long id, RequestParametersDto dto) {
     log.info("find all orders by user id {}", id);
-    return orderService.findUserOrders(id, dto);
+    List<OrderDto> orderDtos = orderService.findUserOrders(id, dto);
+    orderLinkModifier.allWithPagination(orderDtos, dto);
+    return ResponseEntity.ok().body(orderDtos);
   }
 
   @RequestMapping(
@@ -85,7 +99,7 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public Tag getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(
+  public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(
       @PathVariable("id") long id) {
     log.info("find most widely used tag");
     return userService.findWidelyUsedTagByAllOrdersCost(id);

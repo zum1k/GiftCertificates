@@ -5,20 +5,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @EntityListeners({AuditDateEntityListener.class})
 @Data
 @NoArgsConstructor
 @Table(name = "users")
 @Entity
-public class User extends RepresentationModel<User> implements AuditEntity {
+public class User implements AuditEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
