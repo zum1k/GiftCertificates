@@ -6,7 +6,7 @@ import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.exception.EntityNotAddedException;
-import com.epam.esm.exception.EntityNotDeletedException;
+import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.order.OrderRepository;
 import com.epam.esm.repository.specification.OrdersByUserIDCriteriaSpecification;
@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,19 +58,11 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public OrderDto removeOrder(long orderId) {
-    log.info("remove order by id {}", orderId);
-    return mapper.toDto(
-        repository
-            .remove(orderId)
-            .orElseThrow(() -> new EntityNotDeletedException(ORDER, orderId)));
-  }
-
-  @Override
   public List<OrderDto> findUserOrders(long userId, RequestParametersDto dto) {
     log.info("find user {} orders ", userId);
     CriteriaSpecification<Order> specification = new OrdersByUserIDCriteriaSpecification(userId);
-    List<Order> orders = repository.findAllBySpecification(specification, dto.getPage(), dto.getPageLimit());
+    List<Order> orders =
+        repository.findAllBySpecification(specification, dto.getPage(), dto.getPageLimit());
     return mapper.toDtos(orders);
   }
 
@@ -77,6 +70,16 @@ public class OrderServiceImpl implements OrderService {
   public List<OrderDto> findAll(RequestParametersDto dto) {
     log.info("find orders");
     return mapper.toDtos(repository.findAll(dto.getPage(), dto.getPageLimit()));
+  }
+
+  @Override
+  public OrderDto findOrderById(long userId, long orderId) {
+    log.info("find user {} order by {}", userId, orderId);
+    Optional<Order> optionalOrder = repository.findOrder(orderId);
+    if (optionalOrder.isEmpty()){
+      throw new EntityNotFoundException(ORDER, orderId);
+    }
+    return null;
   }
 
   private BigDecimal calculateOrderCost(List<GiftCertificateDto> gifts) {

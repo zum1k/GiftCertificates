@@ -18,4 +18,6 @@ public interface TagRepository {
     List<Tag> findAll(int page, int pageSize);
 
     List<Tag> findTagsByCertificateId(CriteriaSpecification<Tag> specification);
+
+    List<Tag> findAll();
 }

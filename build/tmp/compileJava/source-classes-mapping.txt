@@ -1,3 +1,5 @@
+com/epam/esm/controller/resource/certificate/GiftCertificateLinkModifier.java
+ com.epam.esm.controller.resource.certificate.GiftCertificateLinkModifier
 com/epam/esm/repository/specification/CertificatesByPartNameCriteriaSpecification.java
  com.epam.esm.repository.specification.CertificatesByPartNameCriteriaSpecification
 com/epam/esm/entity/GiftCertificate.java
@@ -36,6 +38,8 @@ com/epam/esm/entity/DateSortType.java
  com.epam.esm.entity.DateSortType
 com/epam/esm/entity/Tag.java
  com.epam.esm.entity.Tag
+com/epam/esm/controller/resource/order/OrderLinkModifier.java
+ com.epam.esm.controller.resource.order.OrderLinkModifier
 com/epam/esm/entity/dto/RequestParametersDto.java
  com.epam.esm.entity.dto.RequestParametersDto
 com/epam/esm/exception/ErrorResponse.java
@@ -48,6 +52,8 @@ com/epam/esm/controller/UserController.java
  com.epam.esm.controller.UserController
 com/epam/esm/exception/ServiceException.java
  com.epam.esm.exception.ServiceException
+com/epam/esm/controller/resource/DtoLinkModifier.java
+ com.epam.esm.controller.resource.DtoLinkModifier
 com/epam/esm/repository/CriteriaSpecification.java
  com.epam.esm.repository.CriteriaSpecification
 com/epam/esm/service/mapper/order/OrderMapper.java
@@ -96,6 +102,8 @@ com/epam/esm/repository/order/OrderRepository.java
  com.epam.esm.repository.order.OrderRepository
 com/epam/esm/repository/user/UserRepositoryImpl.java
  com.epam.esm.repository.user.UserRepositoryImpl
+com/epam/esm/controller/resource/tag/TagLinkModifier.java
+ com.epam.esm.controller.resource.tag.TagLinkModifier
 com/epam/esm/repository/certificate/CertificateRepositoryImpl.java
  com.epam.esm.repository.certificate.CertificateRepositoryImpl
 com/epam/esm/repository/tag/TagRepositoryImpl.java

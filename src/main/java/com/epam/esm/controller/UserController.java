@@ -1,5 +1,7 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.controller.resource.order.OrderLinkModifier;
+import com.epam.esm.controller.resource.user.UserLinkModifier;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.OrderDto;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+  private final UserLinkModifier linkModifier;
   private final UserService userService;
   private final OrderService orderService;
 
@@ -34,18 +38,6 @@ public class UserController {
     return userService.findUser(id);
   }
 
-
-  @RequestMapping(
-          value = "/{id}/orders/{orderId}",
-          method = RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public User findUser(@PathVariable("id") final long id,
-                       @PathVariable("id") final long orderId) {
-    log.info("find order by id {}", orderId);
-    return userService.findUser(id, order_id);
-  }
-
   @RequestMapping(
       value = "/{id}/orders",
       method = RequestMethod.POST,
@@ -57,6 +49,17 @@ public class UserController {
     log.info("add order {}", id);
     System.out.println("here");
     return orderService.createOrder(id, dto);
+  }
+
+  @RequestMapping(
+      value = "/{user_id}/orders/{order_id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<OrderDto> orderById(
+      @PathVariable("user_id") final long userId, @PathVariable("order_id") final long orderId) {
+    log.info("find user {} order by {}", userId, orderId);
+    return ResponseEntity.ok().body(orderService.findOrderById(userId, orderId));
   }
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

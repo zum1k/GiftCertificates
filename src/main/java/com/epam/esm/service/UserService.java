@@ -2,6 +2,7 @@ package com.epam.esm.service;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
+import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
 
 import java.util.List;

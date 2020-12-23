@@ -1,6 +1,7 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
@@ -52,9 +53,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDto> findAll() { //TODO
+    public List<TagDto> findAll(RequestParametersDto dto) {
         log.info("find tags ");
-        if (tagRepository.findAll(1, 3).isEmpty()) {
+        if (tagRepository.findAll(dto.getPage(), dto.getPageLimit()).isEmpty()) {
             throw new EntityNotFoundException(TAG, 0);
         }
         return tagMapper.toDtoList(tagRepository.findAll(1, 3));
@@ -75,5 +76,10 @@ public class TagServiceImpl implements TagService {
     public List<TagDto> findAllByCertificateId(long certificateId) {
         CriteriaSpecification<Tag> specification = new TagsByCertificateIdCriteriaSpecifications(certificateId);
         return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(specification));
+    }
+
+    @Override
+    public int count(int pageSize) {
+        return tagRepository.findAll().size();
     }
 }

@@ -1,18 +1,19 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.entity.dto.GiftCertificateDto;
+import com.epam.esm.controller.resource.tag.TagLinkModifier;
+import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.service.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -20,14 +21,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/tags")
 public class TagController {
-
+  private final TagLinkModifier linkModifier;
   private final TagService tagService;
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<List<TagDto>> findAll(@Validated @RequestBody GiftCertificateDto dto) {
+  public ResponseEntity<List<TagDto>> findAll(RequestParametersDto dto) {
     log.info("get tags");
-    return ResponseEntity.ok(tagService.findAll(dto));
+    List<TagDto> tagDtos = tagService.findAll(dto);
+    linkModifier.allWithPagination(tagDtos, dto);
+    return ResponseEntity.ok().body(tagDtos);
   }
 
   @RequestMapping(
@@ -35,9 +38,15 @@ public class TagController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public TagDto addTag(@RequestBody TagDto dto) {
+  public ResponseEntity<TagDto> addTag(@RequestBody TagDto dto) {
     log.info("add tag");
-    return tagService.addTagIfNotExist(dto);
+    TagDto tagDto = tagService.addTagIfNotExist(dto);
+    URI location =
+        ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(tagDto.getId())
+            .toUri();
+    return ResponseEntity.created(location).build();
   }
 
   @RequestMapping(
@@ -45,9 +54,11 @@ public class TagController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public TagDto findTagById(@PathVariable("id") final long id) {
+  public ResponseEntity<TagDto> findTagById(@PathVariable("id") final long id) {
     log.info("get tag {}", id);
-    return tagService.findOne(id);
+    TagDto dto = tagService.findOne(id);
+    linkModifier.withTagLocation(dto);
+    return ResponseEntity.ok().body(dto);
   }
 
   @RequestMapping(
@@ -55,8 +66,9 @@ public class TagController {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public TagDto deleteTagById(@PathVariable("id") final long id) {
+  public ResponseEntity<TagDto> deleteTagById(@PathVariable("id") final long id) {
     log.info("get tag {}", id);
-    return tagService.remove(id);
+    TagDto tagDto = tagService.remove(id);
+    return ResponseEntity.ok().body(tagDto);
   }
 }

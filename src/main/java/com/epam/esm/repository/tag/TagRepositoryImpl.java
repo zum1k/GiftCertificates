@@ -60,11 +60,7 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public List<Tag> findAll(int page, int pageSize) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tag> query = builder.createQuery(Tag.class);
-        Root<Tag> rootEntry = query.from(Tag.class);
-        CriteriaQuery<Tag> all = query.select(rootEntry);
-        TypedQuery<Tag> allQuery = entityManager.createQuery(all);
+        TypedQuery<Tag> allQuery = typedQuery();
         allQuery.setFirstResult((page - 1) * pageSize);
         allQuery.setMaxResults(pageSize);
         return allQuery.getResultList();
@@ -74,6 +70,20 @@ public class TagRepositoryImpl implements TagRepository {
     public List<Tag> findTagsByCertificateId(CriteriaSpecification<Tag> specification) {
         TypedQuery<Tag> query = entityManager.createQuery(mapQuery(specification));
         return query.getResultList();
+    }
+
+    @Override
+    public List<Tag> findAll() {
+        TypedQuery<Tag> allQuery = typedQuery();
+        return allQuery.getResultList();
+    }
+
+    private TypedQuery<Tag> typedQuery() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> query = builder.createQuery(Tag.class);
+        Root<Tag> rootEntry = query.from(Tag.class);
+        CriteriaQuery<Tag> all = query.select(rootEntry);
+        return  entityManager.createQuery(all);
     }
 
     private CriteriaQuery<Tag> mapQuery(CriteriaSpecification<Tag> specification) {
