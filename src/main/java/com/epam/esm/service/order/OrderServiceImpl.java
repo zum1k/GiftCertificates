@@ -2,20 +2,18 @@ package com.epam.esm.service.order;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
+import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
-import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.certificate.CertificateRepository;
 import com.epam.esm.repository.order.OrderRepository;
 import com.epam.esm.repository.specification.OrdersByUserIDCriteriaSpecification;
-import com.epam.esm.service.certificate.GiftService;
-import com.epam.esm.service.user.UserService;
-import com.epam.esm.service.mapper.certificate.CertificateMapper;
+import com.epam.esm.repository.user.UserRepository;
 import com.epam.esm.service.mapper.order.OrderMapper;
-import com.epam.esm.service.mapper.user.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,28 +32,21 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
   private static final String ORDER = "Order";
+  private static final String CERTIFICATE = "Certificate";
+  private static final String USER = "User";
+
   private final OrderRepository repository;
   private final OrderMapper mapper;
-  private final GiftService giftService;
-  private final CertificateMapper certificateMapper;
-  private final UserService userService;
-  private final UserMapper userMapper;
+  private final UserRepository userRepository;
+  private final CertificateRepository certificateRepository;
 
   @Transactional
   @Override
   public OrderDto createOrder(long id, OrderDto dto) {
     log.info("add order");
-    dto.setUserId(id);
-    Order order = mapper.toEntity(dto);
-    order.setPrice(calculateOrderCost(dto.getGifts()));
-    order.setPurchaseDate(ZonedDateTime.now().withFixedOffsetZone());
-    Set<GiftCertificate> certificates = new HashSet<>();
-    for (GiftCertificateDto gift : dto.getGifts()) {
-      certificates.add(certificateMapper.toEntity(giftService.findById(gift.getGiftId())));
-    }
-    order.setGifts(certificates);
-    UserDto user = userService.findUser(id);
-    order.setUser(userMapper.toEntity(user));
+    Order order = setOrder(id, dto);
+    User user = userRepository.find(id).orElseThrow(() -> new EntityNotFoundException(USER, id));
+    order.setUser(user);
     return mapper.toDto(
         repository.add(order).orElseThrow(() -> new EntityNotAddedException(ORDER)));
   }
@@ -89,5 +80,22 @@ public class OrderServiceImpl implements OrderService {
     List<BigDecimal> costs =
         gifts.stream().map(GiftCertificateDto::getPrice).collect(Collectors.toList());
     return costs.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+  }
+
+  private Order setOrder(long userId, OrderDto orderDto) {
+    orderDto.setUserId(userId);
+    Order order = mapper.toEntity(orderDto);
+    order.setPrice(calculateOrderCost(orderDto.getGifts()));
+    order.setPurchaseDate(ZonedDateTime.now().withFixedOffsetZone());
+    Set<GiftCertificate> certificates = new HashSet<>();
+    for (GiftCertificateDto gift : orderDto.getGifts()) {
+      long giftId = gift.getGiftId();
+      certificates.add(
+          certificateRepository
+              .findById(giftId)
+              .orElseThrow(() -> new EntityNotFoundException(CERTIFICATE, giftId)));
+    }
+    order.setGifts(certificates);
+    return order;
   }
 }

@@ -6,7 +6,7 @@ import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.user.UserRepository;
-import com.epam.esm.service.user.UserService;
+import com.epam.esm.service.mapper.order.OrderMapper;
 import com.epam.esm.service.mapper.user.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +21,16 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
   private static final String ENTITY_NAME = "USER";
+
   private final UserRepository repository;
-  private final UserMapper mapper;
+  private final UserMapper userMapper;
+  private final OrderMapper orderMapper;
 
   @Override
   public UserDto findUser(long id) {
     log.info("find user by id {}", id);
     Optional<User> userOptional = repository.find(id);
-    return mapper.toDto(
+    return userMapper.toDto(
         userOptional.orElseThrow(() -> new EntityNotFoundException(ENTITY_NAME, id)));
   }
 
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
   public List<UserDto> findAll(RequestParametersDto dto) {
     log.info("find users");
     List<User> users = repository.findAll(dto.getPage(), dto.getPageLimit());
-    return mapper.toDtoList(users);
+    return userMapper.toDtoList(users);
   }
 
   @Override
