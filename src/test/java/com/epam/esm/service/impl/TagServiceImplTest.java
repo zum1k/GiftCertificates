@@ -6,8 +6,8 @@ import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.specification.TagsByCertificateIdCriteriaSpecifications;
+import com.epam.esm.repository.specification.TagsByNameCriteriaSpecifications;
 import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.service.mapper.tag.TagMapper;
 import com.epam.esm.service.tag.TagServiceImpl;
@@ -18,7 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import springfox.documentation.service.Tags;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -134,55 +133,54 @@ class TagServiceImplTest {
     Assertions.assertEquals(expectedTags, resultTagList);
   }
 
-  //  @Test
-  //  void findByName_ShouldReturnTag_True_Test() {
-  //    String expectedName = "name1";
-  //    Tag tag = new Tag();
-  //    tag.setName("name1");
-  //    TagDto tagDto = new TagDto("name1");
-  //    CriteriaSpecification<Tag> specification = new
-  // TagsByNameCriteriaSpecifications(expectedName);
-  //
-  //    Mockito.when(repository.findTagByName(specification)).thenReturn(Optional.of(tag));
-  //    Mockito.when(tagMapper.toDto(tag)).thenReturn(tagDto);
-  //    String actualName = service.findByName(tagDto).get().getName();
-  //    Assertions.assertEquals(expectedName, actualName);
-  //  }
+  @Test
+  void findByName_ShouldReturnTag_True_Test() {
+    String expectedName = "name1";
+    Tag tag = new Tag();
+    tag.setName("name1");
+    TagDto tagDto = new TagDto("name1");
+    Mockito.when(repository.findTagByName(Mockito.any(TagsByNameCriteriaSpecifications.class)))
+        .thenReturn(Optional.of(tag));
+    Mockito.when(tagMapper.toDto(tag)).thenReturn(tagDto);
+    String actualName = service.findByName(tagDto).get().getName();
+    Assertions.assertEquals(expectedName, actualName);
+  }
 
-  //  @Test
-  //  void findByName_ShouldReturnEmpty_True_Test() {
-  //    String expectedName = "name1";
-  //    Tag tag = new Tag();
-  //    tag.setName("name1");
-  //    TagDto tagDto = new TagDto("name1");
-  //    CriteriaSpecification<Tag> specification = new
-  // TagsByNameCriteriaSpecifications(expectedName);
-  //    Mockito.when(repository.findTagByName(specification)).thenReturn(Optional.empty());
-  //    Mockito.when(tagMapper.toDto(tag)).thenReturn(tagDto);
-  //    Optional<TagDto> tagOptional = service.findByName(tagDto);
-  //    Assertions.assertNotNull(tagOptional);
-  //  }
+  @Test
+  void findByName_ShouldReturnEmpty_True_Test() {
+    Tag tag = new Tag();
+    tag.setName("name1");
+    TagDto tagDto = new TagDto("name1");
 
-//  @Test
-//  void findAllByCertificateId_ShouldReturnTags_True_Test() {
-//    long expectedCertificateId = 1;
-//    TagDto expectedTagDto = new TagDto("name1");
-//    List<Tag> allTags = new ArrayList<>();
-//    List<TagDto> allDtos = new ArrayList<>();
-//
-//    for (int i = 1; i < 4; i++) {
-//      String name = "name" + i;
-//      Tag tag = new Tag();
-//      TagDto tagDto = new TagDto(name);
-//      tag.setName(name);
-//      allTags.add(tag);
-//      allDtos.add(tagDto);
-//    }
-//    CriteriaSpecification<Tag> specification  = new TagsByCertificateIdCriteriaSpecifications(expectedCertificateId);
-//    Mockito.when(tagMapper.toDtoList(allTags)).thenReturn(allDtos);
-//    Mockito.when(repository.findTagsByCertificateId(specification)).thenReturn(allTags);
-//
-//    TagDto actualTagDto = service.findAllByCertificateId(expectedCertificateId).get(0);
-//    Assertions.assertEquals(expectedTagDto, actualTagDto);
-//  }
+    Mockito.when(repository.findTagByName(Mockito.any(TagsByNameCriteriaSpecifications.class)))
+        .thenReturn(Optional.empty());
+    Optional<TagDto> tagOptional = service.findByName(tagDto);
+    Assertions.assertNotNull(tagOptional);
+  }
+
+  @Test
+  void findAllByCertificateId_ShouldReturnTags_True_Test() {
+    long expectedCertificateId = 1;
+    TagDto expectedTagDto = new TagDto("name1");
+    List<Tag> allTags = new ArrayList<>();
+    List<TagDto> allDtos = new ArrayList<>();
+
+    for (int i = 1; i < 4; i++) {
+      String name = "name" + i;
+      Tag tag = new Tag();
+      TagDto tagDto = new TagDto(name);
+      tag.setName(name);
+      allTags.add(tag);
+      allDtos.add(tagDto);
+    }
+
+    Mockito.when(tagMapper.toDtoList(allTags)).thenReturn(allDtos);
+    Mockito.when(
+            repository.findTagsByCertificateId(
+                Mockito.any(TagsByCertificateIdCriteriaSpecifications.class)))
+        .thenReturn(allTags);
+
+    TagDto actualTagDto = service.findAllByCertificateId(expectedCertificateId).get(0);
+    Assertions.assertEquals(expectedTagDto, actualTagDto);
+  }
 }

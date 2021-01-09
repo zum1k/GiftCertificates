@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
     if (optionalOrder.isEmpty()) {
       throw new EntityNotFoundException(ORDER, orderId);
     }
-    return null;
+    return mapper.toDto(optionalOrder.get());
   }
 
   private BigDecimal calculateOrderCost(List<GiftCertificateDto> gifts) {
