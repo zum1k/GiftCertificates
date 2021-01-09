@@ -68,7 +68,7 @@ public class TagController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<TagDto> deleteTagById(@PathVariable("id") final long id) {
     log.info("get tag {}", id);
-    TagDto tagDto = tagService.remove(id);
-    return ResponseEntity.ok().body(tagDto);
+    tagService.remove(id);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -1,7 +1,6 @@
 package com.epam.esm.repository.user;
 
 import com.epam.esm.entity.User;
-import com.epam.esm.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +19,22 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserRepositoryImpl implements UserRepository {
-    @PersistenceContext
-    private final EntityManager entityManager;
+  @PersistenceContext private final EntityManager entityManager;
 
-    @Override
-    public Optional<User> find(long id) {
-        User user = entityManager.find(User.class, id);
-        if (user != null) {
-            entityManager.detach(user);
-            return Optional.of(user);
-        }
-        throw new EntityNotFoundException("Tag", id);
-    }
+  @Override
+  public Optional<User> find(long id) {
+    return Optional.ofNullable(entityManager.find(User.class, id));
+  }
 
-    @Override
-    public List<User> findAll(int page, int pageSize) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> query = builder.createQuery(User.class);
-        Root<User> rootEntry = query.from(User.class);
-        CriteriaQuery<User> all = query.select(rootEntry);
-        TypedQuery<User> allQuery = entityManager.createQuery(all);
-        allQuery.setFirstResult((page - 1) * pageSize);
-        allQuery.setMaxResults(pageSize);
-        return allQuery.getResultList();
-    }
+  @Override
+  public List<User> findAll(int page, int pageSize) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> query = builder.createQuery(User.class);
+    Root<User> rootEntry = query.from(User.class);
+    CriteriaQuery<User> all = query.select(rootEntry);
+    TypedQuery<User> allQuery = entityManager.createQuery(all);
+    allQuery.setFirstResult((page - 1) * pageSize);
+    allQuery.setMaxResults(pageSize);
+    return allQuery.getResultList();
+  }
 }

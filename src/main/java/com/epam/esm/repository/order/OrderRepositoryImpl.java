@@ -39,7 +39,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         Order order = entityManager.find(Order.class, id);
         if(order!=null) {
             entityManager.remove(order);
-            entityManager.getTransaction().commit();
             return Optional.of(order);
         }
         throw new EntityNotFoundException(ENTITY_NAME, id);

@@ -33,6 +33,7 @@ public class TagServiceImpl implements TagService {
     log.info("add tag");
     Optional<TagDto> tagOptional = findByName(tag);
     if (tagOptional.isEmpty()) {
+      tag.setId(0);
       return tagMapper.toDto(tagRepository.add(tagMapper.toEntity(tag)).get());
     }
     return tagOptional.get();
@@ -65,6 +66,7 @@ public class TagServiceImpl implements TagService {
     return tagMapper.toDtoList(tags);
   }
 
+  @Transactional
   @Override
   public Optional<TagDto> findByName(TagDto tagDto) {
     log.info("find by name {}", tagDto.getName());
@@ -81,7 +83,8 @@ public class TagServiceImpl implements TagService {
   public List<TagDto> findAllByCertificateId(long certificateId) {
     CriteriaSpecification<Tag> specification =
         new TagsByCertificateIdCriteriaSpecifications(certificateId);
-    return tagMapper.toDtoList(tagRepository.findTagsByCertificateId(specification));
+    List<Tag> tags = tagRepository.findTagsByCertificateId(specification);
+    return tagMapper.toDtoList(tags);
   }
 
   @Override

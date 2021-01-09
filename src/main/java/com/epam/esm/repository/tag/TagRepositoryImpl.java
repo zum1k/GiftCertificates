@@ -52,7 +52,7 @@ public class TagRepositoryImpl implements TagRepository {
     public Tag findById(long id) {
         Tag tag = entityManager.find(Tag.class, id);
         if (tag != null) {
-            entityManager.detach(tag);
+          //  entityManager.detach(tag);
             return tag;
         }
         throw new EntityNotFoundException(ENTITY_NAME, id);

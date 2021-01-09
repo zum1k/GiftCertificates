@@ -25,9 +25,17 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '2.4.1'
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.2'
+//    // https://mvnrepository.com/artifact/com.github.database-rider/rider-core
+//    compile group: 'com.github.database-rider', name: 'rider-core', version: '1.21.0'
+//    // https://mvnrepository.com/artifact/com.github.database-rider/rider-junit5
+//    compile group: 'com.github.database-rider', name: 'rider-junit5', version: '1.9.1'
+
     compile "org.mapstruct:mapstruct:1.2.0.Final"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
-    // If you are using mapstruct in test code
+
+
+
+
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.24.Final'
@@ -38,11 +46,14 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     // https://mvnrepository.com/artifact/org.jacoco/org.jacoco.agent
     testCompile group: 'org.jacoco', name: 'org.jacoco.agent', version: '0.8.6'
-    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.6.0'
-
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.5.15'
+
 
 }
 test {

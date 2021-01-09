@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TagController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">giftsertificates</a> &gt; <a href="index.source.html" class="el_package">com.epam.esm.controller</a> &gt; <span class="el_source">TagController.java</span></div><h1>TagController.java</h1><pre class="source lang-java linenums">package com.epam.esm.controller;
 
+import com.epam.esm.controller.resource.tag.TagLinkModifier;
+import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
-<span class="nc" id="L16">@Slf4j</span>
-<span class="nc" id="L17">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="fc" id="L19">@Slf4j</span>
+<span class="fc" id="L20">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 @RestController
 @RequestMapping(&quot;/tags&quot;)
 public class TagController {
-
+  private final TagLinkModifier linkModifier;
   private final TagService tagService;
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity&lt;List&lt;TagDto&gt;&gt; findAll() {
-<span class="nc" id="L27">    log.info(&quot;get tags&quot;);</span>
-<span class="nc" id="L28">    return ResponseEntity.ok(tagService.findAll());</span>
+  public ResponseEntity&lt;List&lt;TagDto&gt;&gt; findAll(RequestParametersDto dto) {
+<span class="nc" id="L30">    log.info(&quot;get tags&quot;);</span>
+<span class="nc" id="L31">    List&lt;TagDto&gt; tagDtos = tagService.findAll(dto);</span>
+<span class="nc" id="L32">    linkModifier.allWithPagination(tagDtos, dto);</span>
+<span class="nc" id="L33">    return ResponseEntity.ok().body(tagDtos);</span>
   }
 
   @RequestMapping(
@@ -33,9 +38,15 @@ public class TagController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public TagDto addTag(@RequestBody TagDto dto) {
-<span class="nc" id="L37">    log.info(&quot;add tag&quot;);</span>
-<span class="nc" id="L38">    return tagService.addTagIfNotExist(dto);</span>
+  public ResponseEntity&lt;TagDto&gt; addTag(@RequestBody TagDto dto) {
+<span class="nc" id="L42">    log.info(&quot;add tag&quot;);</span>
+<span class="nc" id="L43">    TagDto tagDto = tagService.addTagIfNotExist(dto);</span>
+    URI location =
+<span class="nc" id="L45">        ServletUriComponentsBuilder.fromCurrentRequest()</span>
+<span class="nc" id="L46">            .path(&quot;/{id}&quot;)</span>
+<span class="nc" id="L47">            .buildAndExpand(tagDto.getId())</span>
+<span class="nc" id="L48">            .toUri();</span>
+<span class="nc" id="L49">    return ResponseEntity.created(location).build();</span>
   }
 
   @RequestMapping(
@@ -43,9 +54,11 @@ public class TagController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public TagDto findTagById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L47">    log.info(&quot;get tag {}&quot;, id);</span>
-<span class="nc" id="L48">    return tagService.findOne(id);</span>
+  public ResponseEntity&lt;TagDto&gt; findTagById(@PathVariable(&quot;id&quot;) final long id) {
+<span class="nc" id="L58">    log.info(&quot;get tag {}&quot;, id);</span>
+<span class="nc" id="L59">    TagDto dto = tagService.findOne(id);</span>
+<span class="nc" id="L60">    linkModifier.withTagLocation(dto);</span>
+<span class="nc" id="L61">    return ResponseEntity.ok().body(dto);</span>
   }
 
   @RequestMapping(
@@ -53,9 +66,10 @@ public class TagController {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public TagDto deleteTagById(@PathVariable(&quot;id&quot;) final long id) {
-<span class="nc" id="L57">    log.info(&quot;get tag {}&quot;, id);</span>
-<span class="nc" id="L58">    return tagService.remove(id);</span>
+  public ResponseEntity&lt;TagDto&gt; deleteTagById(@PathVariable(&quot;id&quot;) final long id) {
+<span class="nc" id="L70">    log.info(&quot;get tag {}&quot;, id);</span>
+<span class="nc" id="L71">    tagService.remove(id);</span>
+<span class="nc" id="L72">    return ResponseEntity.noContent().build();</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

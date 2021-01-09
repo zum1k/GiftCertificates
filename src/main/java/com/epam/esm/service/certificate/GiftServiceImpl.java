@@ -51,6 +51,7 @@ public class GiftServiceImpl implements GiftService {
     return mapper.toDto(optional.orElseThrow(() -> new EntityNotAddedException(CERTIFICATE)));
   }
 
+  @Transactional
   @Override
   public GiftCertificateDto remove(long id) {
     log.info("remove certificate by id {}", id);
@@ -58,6 +59,7 @@ public class GiftServiceImpl implements GiftService {
     return mapper.toDto(optional.orElseThrow(() -> new EntityNotDeletedException(CERTIFICATE, id)));
   }
 
+  @Transactional
   @Override
   public GiftCertificateDto update(long certificateId, GiftCertificateDto giftCertificateDto) {
     log.info("update certificate");

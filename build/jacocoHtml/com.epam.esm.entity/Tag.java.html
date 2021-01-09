@@ -11,26 +11,26 @@ import java.util.Set;
 @Entity
 @Table(name = &quot;tags&quot;)
 <span class="nc" id="L13">@AllArgsConstructor</span>
-<span class="nc bnc" id="L14" title="All 32 branches missed.">@Data</span>
-<span class="nc" id="L15">@NoArgsConstructor</span>
+<span class="pc bpc" id="L14" title="27 of 32 branches missed.">@Data</span>
+<span class="fc" id="L15">@NoArgsConstructor</span>
 public class Tag implements AuditEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = &quot;tag_id&quot;)
-<span class="nc" id="L20">  private long tagId;</span>
+<span class="fc" id="L20">  private long tagId;</span>
 
   @Column(name = &quot;name&quot;)
-<span class="nc" id="L23">  private String name;</span>
+<span class="fc" id="L23">  private String name;</span>
 
   @Column(name = &quot;create_date&quot;)
-<span class="nc" id="L26">  private ZonedDateTime createDate;</span>
+<span class="fc" id="L26">  private ZonedDateTime createDate;</span>
 
   @Column(name = &quot;last_update_date&quot;)
-<span class="nc" id="L29">  private ZonedDateTime lastUpdateDate;</span>
+<span class="fc" id="L29">  private ZonedDateTime lastUpdateDate;</span>
 
-<span class="nc" id="L31">  @ToString.Exclude</span>
+<span class="pc" id="L31">  @ToString.Exclude</span>
   @EqualsAndHashCode.Exclude
-  @ManyToMany(fetch = FetchType.EAGER, mappedBy = &quot;tags&quot;)
-<span class="nc" id="L34">  private Set&lt;GiftCertificate&gt; certificate = new HashSet&lt;&gt;();</span>
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = &quot;tags&quot;)
+<span class="nc" id="L34">  private Set&lt;GiftCertificate&gt; gifts = new HashSet&lt;&gt;();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

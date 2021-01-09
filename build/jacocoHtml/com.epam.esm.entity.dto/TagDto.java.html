@@ -9,21 +9,21 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
-<span class="nc bnc" id="L12" title="All 34 branches missed.">@EqualsAndHashCode(callSuper = true)</span>
-<span class="nc" id="L13">@Data</span>
+<span class="pc bpc" id="L12" title="33 of 34 branches missed.">@EqualsAndHashCode(callSuper = true)</span>
+<span class="pc" id="L13">@Data</span>
 <span class="nc" id="L14">@NoArgsConstructor</span>
 public class TagDto extends RepresentationModel&lt;TagDto&gt; {
 <span class="nc" id="L16">  private int id;</span>
 
   @NotNull(message = &quot;Need to enter a name&quot;)
   @Size(min = 2, max = 45, message = &quot;Name size must over 2 and less than 45 symbols&quot;)
-<span class="nc" id="L20">  private String name;</span>
+<span class="fc" id="L20">  private String name;</span>
 
 <span class="nc" id="L22">  private ZonedDateTime createDate;</span>
 <span class="nc" id="L23">  private ZonedDateTime lastUpdateDate;</span>
 
-<span class="nc" id="L25">  public TagDto(String name) {</span>
-<span class="nc" id="L26">    this.name = name;</span>
-<span class="nc" id="L27">  }</span>
+<span class="fc" id="L25">  public TagDto(String name) {</span>
+<span class="fc" id="L26">    this.name = name;</span>
+<span class="fc" id="L27">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

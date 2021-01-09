@@ -33,7 +33,7 @@ public class Order implements AuditEntity {
   @Column(name = "last_update_date")
   private ZonedDateTime lastUpdateDate;
 
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   @EqualsAndHashCode.Exclude
   private User user;

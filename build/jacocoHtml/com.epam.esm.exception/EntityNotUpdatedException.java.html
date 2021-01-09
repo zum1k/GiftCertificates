@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public class EntityNotUpdatedException extends ServiceException {
-<span class="nc" id="L7">    private final int errorCode = 40004;</span>
+<span class="pc" id="L7">    private final int errorCode = 40004;</span>
 <span class="nc" id="L8">    private final long entityId;</span>
 
     public EntityNotUpdatedException(String entityName, long entityId) {
-<span class="nc" id="L11">        super(entityName);</span>
-<span class="nc" id="L12">        this.entityId = entityId;</span>
-<span class="nc" id="L13">    }</span>
+<span class="fc" id="L11">        super(entityName);</span>
+<span class="fc" id="L12">        this.entityId = entityId;</span>
+<span class="fc" id="L13">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

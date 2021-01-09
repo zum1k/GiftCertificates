@@ -12,40 +12,41 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 
-<span class="nc bnc" id="L15" title="All 58 branches missed.">@Data</span>
-public class GiftCertificateDto {
-<span class="nc" id="L17">  private long giftId;</span>
+<span class="pc bpc" id="L15" title="59 of 60 branches missed.">@EqualsAndHashCode(callSuper = true)</span>
+<span class="pc" id="L16">@Data</span>
+public class GiftCertificateDto extends RepresentationModel&lt;GiftCertificateDto&gt; {
+<span class="nc" id="L18">  private long giftId;</span>
 
   @NotNull(message = &quot;Need to enter name&quot;)
   @Size(min = 2, max = 45, message = &quot;Name size must be in 2 to 45 sumbols range&quot;)
-<span class="nc" id="L21">  private String name;</span>
+<span class="fc" id="L22">  private String name;</span>
 
   @NotNull(message = &quot;Need to enter description&quot;)
   @Size(min = 2, max = 45, message = &quot;Description size must be in 2 to 45 symbols range&quot;)
-<span class="nc" id="L25">  private String description;</span>
+<span class="nc" id="L26">  private String description;</span>
 
   @NotNull(message = &quot;Need to enter price&quot;)
   @Min(value = 1, message = &quot;Price can\'t be less than \'1\'&quot;)
-<span class="nc" id="L29">  private BigDecimal price;</span>
+<span class="nc" id="L30">  private BigDecimal price;</span>
 
-<span class="nc" id="L31">  private ZonedDateTime createDate;</span>
-<span class="nc" id="L32">  private ZonedDateTime lastUpdateDate;</span>
+<span class="nc" id="L32">  private ZonedDateTime createDate;</span>
+<span class="nc" id="L33">  private ZonedDateTime lastUpdateDate;</span>
 
   @NotNull
   @Min(1)
-<span class="nc" id="L36">  private long duration;</span>
+<span class="nc" id="L37">  private long duration;</span>
 
-<span class="nc" id="L38">  private List&lt;TagDto&gt; tags;</span>
+<span class="fc" id="L39">  private List&lt;TagDto&gt; tags;</span>
 
   public GiftCertificateDto(
-<span class="nc" id="L41">      String name, String description, BigDecimal price, long duration, List&lt;TagDto&gt; tags) {</span>
-<span class="nc" id="L42">    this.name = name;</span>
-<span class="nc" id="L43">    this.description = description;</span>
-<span class="nc" id="L44">    this.price = price;</span>
-<span class="nc" id="L45">    this.duration = duration;</span>
-<span class="nc" id="L46">    this.tags = tags;</span>
-<span class="nc" id="L47">  }</span>
+<span class="fc" id="L42">      String name, String description, BigDecimal price, long duration, List&lt;TagDto&gt; tags) {</span>
+<span class="fc" id="L43">    this.name = name;</span>
+<span class="fc" id="L44">    this.description = description;</span>
+<span class="fc" id="L45">    this.price = price;</span>
+<span class="fc" id="L46">    this.duration = duration;</span>
+<span class="fc" id="L47">    this.tags = tags;</span>
+<span class="fc" id="L48">  }</span>
 
-<span class="nc" id="L49">  public GiftCertificateDto() {}</span>
+<span class="nc" id="L50">  public GiftCertificateDto() {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

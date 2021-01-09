@@ -1,0 +1,22 @@
+gifts:
+  - gift_id: 1
+    name: "name1"
+    description: "description1"
+    price: 39.99
+    create_date: "2020-11-15T21:31:45.317+03:00"
+    last_update_date: "2020-11-15T21:31:45.317+03:00"
+    duration: 8
+  - gift_id: 2
+    name: "name2"
+    description: "description2"
+    price: 49.99
+    create_date: "2020-11-15T21:31:45.317+03:00"
+    last_update_date: "2020-11-15T21:31:45.317+03:00"
+    duration: 5
+  - gift_id: 3
+    name: "name3"
+    description: "description3"
+    price: 59.99
+    create_date: "2020-11-15T21:31:45.317+03:00"
+    last_update_date: "2020-11-15T21:31:45.317+03:00"
+    duration: 9

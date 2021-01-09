@@ -5,13 +5,13 @@ import lombok.Getter;
 
 @Getter
 public class EntityNotDeletedException extends ServiceException {
-<span class="nc" id="L8">    private final int errorCode = 40003;</span>
+<span class="fc" id="L8">    private final int errorCode = 40003;</span>
 <span class="nc" id="L9">    private final long entityId;</span>
 
     public EntityNotDeletedException(String entityName, long entityId) {
-<span class="nc" id="L12">        super(entityName);</span>
-<span class="nc" id="L13">        this.entityId = entityId;</span>
-<span class="nc" id="L14">    }</span>
+<span class="fc" id="L12">        super(entityName);</span>
+<span class="fc" id="L13">        this.entityId = entityId;</span>
+<span class="fc" id="L14">    }</span>
 
     public int getErrorCode() {
 <span class="nc" id="L17">        return this.errorCode;</span>

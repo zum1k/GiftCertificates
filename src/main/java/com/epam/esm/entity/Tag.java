@@ -30,6 +30,6 @@ public class Tag implements AuditEntity {
 
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
-  private Set<GiftCertificate> certificate = new HashSet<>();
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+  private Set<GiftCertificate> gifts = new HashSet<>();
 }

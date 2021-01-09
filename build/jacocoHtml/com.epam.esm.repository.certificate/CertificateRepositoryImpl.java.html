@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,76 +21,67 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-<span class="nc" id="L22">@Slf4j</span>
+<span class="fc" id="L24">@Slf4j</span>
 @Repository
-<span class="nc" id="L24">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="fc" id="L26">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 public class CertificateRepositoryImpl implements CertificateRepository {
-    private static final String ENTITY_NAME = &quot;Certificate&quot;;
-    @PersistenceContext
-    private final EntityManager entityManager;
+  private static final String ENTITY_NAME = &quot;Certificate&quot;;
+  @PersistenceContext private final EntityManager entityManager;
 
-    @Override
-    public Optional&lt;GiftCertificate&gt; add(GiftCertificate certificate) {
-<span class="nc" id="L32">        entityManager.persist(certificate);</span>
-<span class="nc" id="L33">        entityManager.flush();</span>
-<span class="nc" id="L34">        return Optional.of(certificate);</span>
-    }
+  @Override
+  public Optional&lt;GiftCertificate&gt; add(GiftCertificate certificate) {
+<span class="nc" id="L33">    entityManager.persist(certificate);</span>
+<span class="nc" id="L34">    entityManager.flush();</span>
+<span class="nc" id="L35">    return Optional.of(certificate);</span>
+  }
 
-    @Override
-    public Optional&lt;GiftCertificate&gt; remove(long id) {
-<span class="nc" id="L39">        GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        if(certificate!=null) {</span>
-<span class="nc" id="L41">            entityManager.remove(certificate);</span>
-<span class="nc" id="L42">            entityManager.getTransaction().commit();</span>
-<span class="nc" id="L43">            return Optional.of(certificate);</span>
-        }
-<span class="nc" id="L45">        throw new EntityNotFoundException(ENTITY_NAME, id);</span>
+  @Override
+  public Optional&lt;GiftCertificate&gt; remove(long id) {
+<span class="fc" id="L40">    GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">    if (certificate != null) {</span>
+<span class="fc" id="L42">      entityManager.remove(certificate);</span>
+<span class="fc" id="L43">      return Optional.of(certificate);</span>
     }
+<span class="nc" id="L45">    throw new EntityNotFoundException(ENTITY_NAME, id);</span>
+  }
 
-    @Override
-    public Optional&lt;GiftCertificate&gt; update(GiftCertificate giftCertificate) {
-<span class="nc" id="L50">        entityManager.detach(giftCertificate);</span>
-<span class="nc" id="L51">        entityManager.getTransaction().begin();</span>
-<span class="nc" id="L52">        entityManager.merge(giftCertificate);</span>
-<span class="nc" id="L53">        entityManager.getTransaction().commit();</span>
-<span class="nc" id="L54">        return Optional.of(giftCertificate);</span>
-    }
+  @Override
+  public Optional&lt;GiftCertificate&gt; update(GiftCertificate giftCertificate) {
+<span class="fc" id="L50">    entityManager.detach(giftCertificate);</span>
+<span class="fc" id="L51">    entityManager.merge(giftCertificate);</span>
+<span class="fc" id="L52">    return Optional.of(giftCertificate);</span>
+  }
 
-    @Override
-    public List&lt;GiftCertificate&gt; findAllBySpecification(List&lt;CriteriaSpecification&lt;GiftCertificate&gt;&gt; specifications, int page, int pageSize) {
-<span class="nc" id="L59">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
-<span class="nc" id="L60">        CriteriaQuery&lt;GiftCertificate&gt; criteriaQuery = builder.createQuery(GiftCertificate.class);</span>
-<span class="nc" id="L61">        Root&lt;GiftCertificate&gt; root = criteriaQuery.from(GiftCertificate.class);</span>
-<span class="nc" id="L62">        List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L63">        specifications.forEach(o -&gt; predicates.add(o.toPredicate(root, builder)));</span>
-<span class="nc" id="L64">        criteriaQuery.where(predicates.toArray(new Predicate[]{}));</span>
-<span class="nc" id="L65">        TypedQuery&lt;GiftCertificate&gt; query = entityManager.createQuery(criteriaQuery);</span>
-<span class="nc" id="L66">        query.setFirstResult((page - 1) * pageSize);</span>
-<span class="nc" id="L67">        query.setMaxResults(pageSize);</span>
-<span class="nc" id="L68">        return query.getResultList();</span>
-    }
+  @Override
+  public List&lt;GiftCertificate&gt; findAllBySpecification(
+      List&lt;CriteriaSpecification&lt;GiftCertificate&gt;&gt; specifications, int page, int pageSize) {
+<span class="fc" id="L58">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L59">    CriteriaQuery&lt;GiftCertificate&gt; criteriaQuery = builder.createQuery(GiftCertificate.class);</span>
+<span class="fc" id="L60">    Root&lt;GiftCertificate&gt; root = criteriaQuery.from(GiftCertificate.class);</span>
+<span class="fc" id="L61">    List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L62">    specifications.forEach(o -&gt; predicates.add(o.toPredicate(root, builder)));</span>
+<span class="fc" id="L63">    criteriaQuery.where(predicates.toArray(new Predicate[] {}));</span>
+<span class="fc" id="L64">    TypedQuery&lt;GiftCertificate&gt; query = entityManager.createQuery(criteriaQuery);</span>
+<span class="fc" id="L65">    query.setFirstResult((page - 1) * pageSize);</span>
+<span class="fc" id="L66">    query.setMaxResults(pageSize);</span>
+<span class="fc" id="L67">    return query.getResultList();</span>
+  }
 
-    @Override
-    public List&lt;GiftCertificate&gt; findAll(int page, int pageSize) {
-<span class="nc" id="L73">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
-<span class="nc" id="L74">        CriteriaQuery&lt;GiftCertificate&gt; query = builder.createQuery(GiftCertificate.class);</span>
-<span class="nc" id="L75">        Root&lt;GiftCertificate&gt; rootEntry = query.from(GiftCertificate.class);</span>
-<span class="nc" id="L76">        CriteriaQuery&lt;GiftCertificate&gt; all = query.select(rootEntry);</span>
-<span class="nc" id="L77">        TypedQuery&lt;GiftCertificate&gt; allQuery = entityManager.createQuery(all);</span>
-<span class="nc" id="L78">        allQuery.setFirstResult((page - 1) * pageSize);</span>
-<span class="nc" id="L79">        allQuery.setMaxResults(pageSize);</span>
-<span class="nc" id="L80">        return allQuery.getResultList();</span>
-    }
+  @Override
+  public List&lt;GiftCertificate&gt; findAll(int page, int pageSize) {
+<span class="fc" id="L72">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L73">    CriteriaQuery&lt;GiftCertificate&gt; query = builder.createQuery(GiftCertificate.class);</span>
+<span class="fc" id="L74">    Root&lt;GiftCertificate&gt; rootEntry = query.from(GiftCertificate.class);</span>
+<span class="fc" id="L75">    CriteriaQuery&lt;GiftCertificate&gt; all = query.select(rootEntry);</span>
+<span class="fc" id="L76">    TypedQuery&lt;GiftCertificate&gt; allQuery = entityManager.createQuery(all);</span>
+<span class="fc" id="L77">    allQuery.setFirstResult((page - 1) * pageSize);</span>
+<span class="fc" id="L78">    allQuery.setMaxResults(pageSize);</span>
+<span class="fc" id="L79">    return allQuery.getResultList();</span>
+  }
 
-    @Override
-    public Optional&lt;GiftCertificate&gt; findById(long id) {
-<span class="nc" id="L85">        GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (certificate != null) {</span>
-<span class="nc" id="L87">            entityManager.detach(certificate);</span>
-<span class="nc" id="L88">            return Optional.of(certificate);</span>
-        }
-<span class="nc" id="L90">        throw new EntityNotFoundException(&quot;Entity not found &quot;, id);</span>
-    }
+  @Override
+  public Optional&lt;GiftCertificate&gt; findById(long id) {
+<span class="fc" id="L84">    return Optional.ofNullable(entityManager.find(GiftCertificate.class, id));</span>
+  }
 }
-
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

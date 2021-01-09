@@ -13,17 +13,17 @@ import java.util.Set;
 
 @EntityListeners({AuditDateEntityListener.class})
 @Entity
-<span class="nc bnc" id="L16" title="All 50 branches missed.">@Data</span>
-<span class="nc" id="L17">@NoArgsConstructor</span>
+<span class="pc bpc" id="L16" title="49 of 50 branches missed.">@Data</span>
+<span class="fc" id="L17">@NoArgsConstructor</span>
 @Table(name = &quot;gifts&quot;)
 public class GiftCertificate implements AuditEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = &quot;gift_id&quot;)
-<span class="nc" id="L23">  private long giftId;</span>
+<span class="fc" id="L23">  private long giftId;</span>
 
   @Column(name = &quot;name&quot;)
-<span class="nc" id="L26">  private String name;</span>
+<span class="fc" id="L26">  private String name;</span>
 
   @Column(name = &quot;description&quot;)
 <span class="nc" id="L29">  private String description;</span>
@@ -40,18 +40,19 @@ public class GiftCertificate implements AuditEntity {
   @Column(name = &quot;duration&quot;)
 <span class="nc" id="L41">  private long duration;</span>
 
-<span class="nc" id="L43">  @EqualsAndHashCode.Exclude</span>
+<span class="fc" id="L43">  @EqualsAndHashCode.Exclude</span>
   @ToString.Exclude
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
+  //@ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = &quot;gifts_tags&quot;,
       joinColumns = @JoinColumn(name = &quot;gift_id&quot;),
       inverseJoinColumns = @JoinColumn(name = &quot;tag_id&quot;))
-<span class="nc" id="L50">  private Set&lt;Tag&gt; tags = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L51">  private Set&lt;Tag&gt; tags = new HashSet&lt;&gt;();</span>
 
-<span class="nc" id="L52">  @EqualsAndHashCode.Exclude</span>
+<span class="fc" id="L53">  @EqualsAndHashCode.Exclude</span>
   @ToString.Exclude
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = &quot;gifts&quot;)
-<span class="nc" id="L55">  private Set&lt;Order&gt; orders = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L56">  private Set&lt;Order&gt; orders = new HashSet&lt;&gt;();</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

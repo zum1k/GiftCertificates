@@ -12,7 +12,7 @@ import java.util.List;
 public interface TagMapper {
   @Mappings({
     @Mapping(target = "tagId", source = "dto.id"),
-    @Mapping(target = "certificate", ignore = true)
+    @Mapping(target = "gifts", ignore = true)
   })
   Tag toEntity(TagDto dto);
 

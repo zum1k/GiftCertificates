@@ -1,65 +1,79 @@
 package com.epam.esm.repository.certificate;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.specification.CertificatesByPartNameCriteriaSpecification;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-// @ContextConfiguration(classes = {DBTestConfig.class})
-@ExtendWith(SpringExtension.class)
+
+@SpringBootTest
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CertificateRepositoryImplTest {
-    /*private final CertificateRepository repository;
+  private final CertificateRepository repository;
 
-    @Test
-    void findAll_ShouldReturn_Five_True_Test() {
-        //TODO
-        int actualRows = repository.findAll().size();
-        assertTrue(actualRows > 0);
-    }
+  @Test
+  @Transactional
+  void findAll_ShouldReturn_Three_True_Test() {
+    int page = 1;
+    int pageSize = 5;
+    int expectedRows = 5;
 
-    @Test
-    void findAllCertificates_ShouldReturnSix_True_Test() {
-//        //TODO
-//        Specification specification = new CertificatesByPartNameSpecification("name");
-//        int actualRows = repository.findAllBySpecification(specification).size();
-//        assertTrue(actualRows > 0);
-    }
+    int actualRows = repository.findAll(page, pageSize).size();
+    assertEquals(expectedRows, actualRows);
+  }
 
-    @Test
-    void addCertificate_ShouldReturnIdSix_True_Test() {
-        final GiftCertificate expectedCertificate = new GiftCertificate("name11", "Description 11", new BigDecimal("100.10"), ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 8);
-        Optional<GiftCertificate> giftCertificate = repository.add(expectedCertificate);
-        String actualCertificateName = giftCertificate.get().getName();
-        assertEquals(expectedCertificate.getName(), actualCertificateName);
-    }
+  @Test
+  @Transactional
+  void findAllCertificates_ShouldReturnFive_True_Test() {
+    String name = "name";
+    CriteriaSpecification<GiftCertificate> specification =
+        new CertificatesByPartNameCriteriaSpecification(name);
+    List<CriteriaSpecification<GiftCertificate>> list = new ArrayList<>();
+    list.add(specification);
+    int page = 1;
+    int pageSize = 5;
+    int expectedRows = 5;
 
-    @Test
-    void removeCertificate_ShouldReturnFive_True_Test() {
-        long expectedRemovedCertificateId = 5;
-        long actualRemovedCertificateId = repository.remove(expectedRemovedCertificateId).get().getId();
-        assertEquals(expectedRemovedCertificateId, actualRemovedCertificateId);
-    }
+    int actualRows = repository.findAllBySpecification(list, page, pageSize).size();
+    assertEquals(expectedRows, actualRows);
+  }
 
-    @Test
-    void updateCertificate_ShouldReturnTrue_Test() {
-        String exceptedName = "name1updated";
-        final GiftCertificate expectedCertificate = new GiftCertificate(exceptedName, "Description 11", new BigDecimal("100.10"), ZonedDateTime.now().withFixedOffsetZone(), ZonedDateTime.now().withFixedOffsetZone(), 8);
-        expectedCertificate.setId(1);
-        String actualCertificateName = repository.update(expectedCertificate).get().getName();
-        assertEquals(exceptedName, actualCertificateName);
-    }
+  @Test
+  @Transactional
+  void removeCertificate_ShouldReturnFive_True_Test() {
+    long expected = 6;
+    long actualRemovedCertificateId = repository.remove(expected).get().getGiftId();
+    assertEquals(expected, actualRemovedCertificateId);
+  }
 
-    @Test
-    void findCertificateById_ShouldReturn_Two_True_Test() {
-        String expectedName = "name2";
-        long expectedCertificateId = 2;
-        String actualCertificateName = repository.findById(expectedCertificateId).get().getName();
-        assertEquals(expectedName, actualCertificateName);
-    }
-*/
+  @Test
+  @Transactional
+  void updateCertificate_ShouldReturnTrue_Test() {
+    GiftCertificate expectedCertificate = new GiftCertificate();
+    expectedCertificate.setGiftId(6);
+    expectedCertificate.setName("name1updated");
+    expectedCertificate.setDescription("Description 11");
+    expectedCertificate.setPrice(new BigDecimal("100.10"));
+
+    GiftCertificate actualCertificate = repository.update(expectedCertificate).get();
+    assertEquals(expectedCertificate, actualCertificate);
+  }
+
+  @Test
+  @Transactional
+  void findCertificateById_ShouldReturn_Two_True_Test() {
+    String expectedName = "name2";
+    long expectedCertificateId = 15;
+    String actualCertificateName = repository.findById(expectedCertificateId).get().getName();
+    assertEquals(expectedName, actualCertificateName);
+  }
 }

@@ -82,7 +82,7 @@ public class GiftsController {
   public ResponseEntity<GiftCertificateDto> deleteCertificateById(
       @PathVariable("id") final long id) {
     log.info("remove gift by {}", id);
-    GiftCertificateDto dto = giftService.remove(id);
-    return ResponseEntity.ok().body(dto);
+    giftService.remove(id);
+    return ResponseEntity.noContent().build();
   }
 }

@@ -42,7 +42,8 @@ public class GiftCertificate implements AuditEntity {
 
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
+  //@ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "gifts_tags",
       joinColumns = @JoinColumn(name = "gift_id"),
