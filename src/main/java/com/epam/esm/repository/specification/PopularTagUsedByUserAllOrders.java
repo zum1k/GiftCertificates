@@ -17,20 +17,8 @@ public class PopularTagUsedByUserAllOrders implements CriteriaSpecification<Tag>
   @Override
   public Predicate toPredicate(Root<Tag> root, CriteriaBuilder criteriaBuilder) {
     Join<Tag, GiftCertificate> join = root.join("gifts");
-    return null;
+    return null; // criteriaBuilder.equal(join.get("giftId"), certificateId);
   }
 }
-//  private static final String QUERY = "SELECT Tag.id, Tag.name\n" +
-//          "FROM \"Tag\" Tag\n" +
-//          "       JOIN \"GiftCertificateTag\" GCT ON tag.id = GCT.tag_id\n" +
-//          "       JOIN \"GiftCertificate\" GC on GCT.gift_certificate_id = GC.id\n" +
-//          "       JOIN \"Order\" O on GC.id = O.gift_certificate_id\n" +
-//          "       JOIN (SELECT user_id\n" +
-//          "             from \"Order\"\n" +
-//          "             group by user_id\n" +
-//          "             ORDER BY SUM(price) DESC\n" +
-//          "             LIMIT 1) as userId on O.user_id = userId.user_id\n" +
-//          "GROUP BY Tag.id\n" +
-//          "ORDER BY count(Tag.id) DESC\n" +
-//          "LIMIT 1;";
+
 

@@ -1,17 +1,25 @@
 package com.epam.esm.service.user;
 
+import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.NativeSpecification;
+import com.epam.esm.repository.certificate.CertificateRepository;
+import com.epam.esm.repository.specification.MostWidelyUsedTagByUserOrders;
+import com.epam.esm.repository.specification.PopularTagUsedByUserAllOrders;
+import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.repository.user.UserRepository;
-import com.epam.esm.service.mapper.order.OrderMapper;
+import com.epam.esm.service.mapper.tag.TagMapper;
 import com.epam.esm.service.mapper.user.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +32,8 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository repository;
   private final UserMapper userMapper;
-  private final OrderMapper orderMapper;
+  private final TagRepository tagRepository;
+  private final TagMapper tagMapper;
 
   @Override
   public UserDto findUser(long id) {
@@ -42,8 +51,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public TagDto findWidelyUsedTagByAllOrdersCost(long userId) {
-    log.info("find tag by user id {}", userId);
-    return null;
+    log.info("find popular tag by user id {}", userId);
+    NativeSpecification<Tag> specification = new MostWidelyUsedTagByUserOrders();
+    return tagMapper.toDto(tagRepository.findAll(specification).get(0));
   }
 }

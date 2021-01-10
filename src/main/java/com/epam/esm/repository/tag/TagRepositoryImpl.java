@@ -3,6 +3,7 @@ package com.epam.esm.repository.tag;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.NativeSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,12 @@ public class TagRepositoryImpl implements TagRepository {
     public List<Tag> findAll() {
         TypedQuery<Tag> allQuery = typedQuery();
         return allQuery.getResultList();
+    }
+
+    @Override
+    public List<Tag> findAll(NativeSpecification<Tag> specification) {
+        String nativeQuery = specification.getNativeQuery();
+        return entityManager.createNativeQuery(nativeQuery,Tag.class).getResultList();
     }
 
     private TypedQuery<Tag> typedQuery() {

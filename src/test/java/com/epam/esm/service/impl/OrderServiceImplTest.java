@@ -1,13 +1,10 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
-import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
-import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.certificate.CertificateRepository;
 import com.epam.esm.repository.order.OrderRepository;
 import com.epam.esm.repository.specification.OrdersByUserIDCriteriaSpecification;
@@ -23,9 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,38 +33,39 @@ class OrderServiceImplTest {
   @Mock private UserRepository userRepository;
   @Mock private CertificateRepository certificateRepository;
 
-//    @Test
-//    void createOrder_ShouldReturnOrder_True_Test() {
-//      TagDto tagDto = new TagDto("name1");
-//      tagDto.setId(1);
-//      List<TagDto> tagDtos = Collections.singletonList(tagDto);
-//
-//      GiftCertificateDto certificateDto =
-//          new GiftCertificateDto("name1", "description1", new BigDecimal("100.10"), 10, tagDtos);
-//      List<GiftCertificateDto> certificateDtoList = Collections.singletonList(certificateDto);
-//
-//      long userId = 1;
-//      User user = new User();
-//      user.setUserId(userId);
-//
-//      OrderDto orderDto = new OrderDto();
-//      orderDto.setUserId(userId);
-//      orderDto.setCreateDate(ZonedDateTime.now().withFixedOffsetZone());
-//      orderDto.setPurchaseDate(ZonedDateTime.now().withFixedOffsetZone());
-//      orderDto.setLastUpdateDate(ZonedDateTime.now().withFixedOffsetZone());
-//      orderDto.setGifts(certificateDtoList);
-//      Order order = new Order();
-//
-//      orderDto.setUserId(userId);
-//
-//      Mockito.when(userRepository.find(userId)).thenReturn(Optional.of(user));
-//      Mockito.when(repository.add(order)).thenReturn(Optional.of(order));
-//      Mockito.when(mapper.toDto(order)).thenReturn(orderDto);
-//
-//      OrderDto resultDto = service.createOrder(userId, orderDto);
-//
-//      Assertions.assertEquals(orderDto, resultDto);
-//    }
+  //    @Test
+  //    void createOrder_ShouldReturnOrder_True_Test() {
+  //      TagDto tagDto = new TagDto("name1");
+  //      tagDto.setId(1);
+  //      List<TagDto> tagDtos = Collections.singletonList(tagDto);
+  //
+  //      GiftCertificateDto certificateDto =
+  //          new GiftCertificateDto("name1", "description1", new BigDecimal("100.10"), 10,
+  // tagDtos);
+  //      List<GiftCertificateDto> certificateDtoList = Collections.singletonList(certificateDto);
+  //
+  //      long userId = 1;
+  //      User user = new User();
+  //      user.setUserId(userId);
+  //
+  //      OrderDto orderDto = new OrderDto();
+  //      orderDto.setUserId(userId);
+  //      orderDto.setCreateDate(ZonedDateTime.now().withFixedOffsetZone());
+  //      orderDto.setPurchaseDate(ZonedDateTime.now().withFixedOffsetZone());
+  //      orderDto.setLastUpdateDate(ZonedDateTime.now().withFixedOffsetZone());
+  //      orderDto.setGifts(certificateDtoList);
+  //      Order order = new Order();
+  //
+  //      orderDto.setUserId(userId);
+  //
+  //      Mockito.when(userRepository.find(userId)).thenReturn(Optional.of(user));
+  //      Mockito.when(repository.add(order)).thenReturn(Optional.of(order));
+  //      Mockito.when(mapper.toDto(order)).thenReturn(orderDto);
+  //
+  //      OrderDto resultDto = service.createOrder(userId, orderDto);
+  //
+  //      Assertions.assertEquals(orderDto, resultDto);
+  //    }
 
   @Test
   void createOrder_ShouldReturn_EntityNotFoundException_Test() {}
@@ -103,7 +99,11 @@ class OrderServiceImplTest {
       orderDto.setPrice(new BigDecimal("100" + 10 * i));
       orderDtos.add(orderDto);
     }
-    Mockito.when(repository.findAllBySpecification(Mockito.any(OrdersByUserIDCriteriaSpecification.class), Mockito.any(Integer.class),Mockito.any(Integer.class)))
+    Mockito.when(
+            repository.findAllBySpecification(
+                Mockito.any(OrdersByUserIDCriteriaSpecification.class),
+                Mockito.any(Integer.class),
+                Mockito.any(Integer.class)))
         .thenReturn(orders);
     Mockito.when(mapper.toDtos(orders)).thenReturn(orderDtos);
 
@@ -141,5 +141,49 @@ class OrderServiceImplTest {
 
     List<OrderDto> actualList = service.findAll(parametersDto);
     Assertions.assertEquals(orderDtos, actualList);
+  }
+  @Test
+  void findOrderById_ShouldReturn_Order_Test() {
+    long userId = 1;
+    long orderId = 1;
+    Order order = new Order();
+    order.setOrderId(orderId);
+    order.setPrice(new BigDecimal("100"));
+
+    User user = new User();
+    user.setUserId(userId);
+    order.setUser(user);
+
+    OrderDto orderDto = new OrderDto();
+    orderDto.setOrderId(orderId);
+    orderDto.setUserId(userId);
+
+    Mockito.when(repository.findOrder(orderId)).thenReturn(Optional.of(order));
+    Mockito.when(mapper.toDto(order)).thenReturn(orderDto);
+
+    OrderDto actualDto = service.findOrderById(userId, orderId);
+    Assertions.assertEquals(orderDto, actualDto);
+
+
+  }
+  @Test
+  void findOrderById_ShouldReturn_Exception_Test() {
+    long userId = 1;
+    long orderId = 1;
+    Order order = new Order();
+    order.setOrderId(orderId);
+    order.setPrice(new BigDecimal("100"));
+
+    User user = new User();
+    user.setUserId(userId);
+    order.setUser(user);
+
+    OrderDto orderDto = new OrderDto();
+    orderDto.setOrderId(orderId);
+    orderDto.setUserId(userId);
+
+    Mockito.when(repository.findOrder(orderId)).thenReturn(Optional.of(order));
+    Mockito.when(mapper.toDto(order)).thenReturn(orderDto);
+
   }
 }
