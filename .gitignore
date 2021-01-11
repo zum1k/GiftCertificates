@@ -4,7 +4,6 @@
 gradlew
 gradlew.bat
 settings.gradle
-/build/*
 /delombok/
 /.idea/
 /out/
