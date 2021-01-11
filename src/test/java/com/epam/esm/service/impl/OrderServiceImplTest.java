@@ -170,20 +170,12 @@ class OrderServiceImplTest {
   void findOrderById_ShouldReturn_Exception_Test() {
     long userId = 1;
     long orderId = 1;
-    Order order = new Order();
-    order.setOrderId(orderId);
-    order.setPrice(new BigDecimal("100"));
-
-    User user = new User();
-    user.setUserId(userId);
-    order.setUser(user);
-
-    OrderDto orderDto = new OrderDto();
-    orderDto.setOrderId(orderId);
-    orderDto.setUserId(userId);
-
-    Mockito.when(repository.findOrder(orderId)).thenReturn(Optional.of(order));
-    Mockito.when(mapper.toDto(order)).thenReturn(orderDto);
-
+    Mockito.when(repository.findOrder(orderId)).thenReturn(Optional.empty());
+    Assertions.assertThrows(
+            EntityNotFoundException.class,
+            () -> {
+              service.findOrderById(userId, orderId);
+            });
+    Mockito.verify(repository).findOrder(Mockito.eq(orderId));
   }
 }

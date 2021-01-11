@@ -28,10 +28,14 @@ com/epam/esm/repository/order/OrderRepositoryImpl.java
  com.epam.esm.repository.order.OrderRepositoryImpl
 com/epam/esm/service/mapper/user/UserMapper.java
  com.epam.esm.service.mapper.user.UserMapper
+com/epam/esm/repository/specification/PopularTagUsedByUserAllOrders.java
+ com.epam.esm.repository.specification.PopularTagUsedByUserAllOrders
 com/epam/esm/repository/certificate/CertificateRepository.java
  com.epam.esm.repository.certificate.CertificateRepository
 com/epam/esm/entity/AuditDateEntityListener.java
  com.epam.esm.entity.AuditDateEntityListener
+com/epam/esm/repository/specification/MostWidelyUsedTagByUserOrders.java
+ com.epam.esm.repository.specification.MostWidelyUsedTagByUserOrders
 com/epam/esm/exception/EntityNotUpdatedException.java
  com.epam.esm.exception.EntityNotUpdatedException
 com/epam/esm/entity/DateSortType.java
@@ -78,6 +82,8 @@ com/epam/esm/service/user/UserService.java
  com.epam.esm.service.user.UserService
 com/epam/esm/controller/TagController.java
  com.epam.esm.controller.TagController
+com/epam/esm/repository/NativeSpecification.java
+ com.epam.esm.repository.NativeSpecification
 com/epam/esm/exception/EntityAlreadyExists.java
  com.epam.esm.exception.EntityAlreadyExists
 com/epam/esm/Application.java

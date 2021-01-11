@@ -80,7 +80,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public List<Tag> findAll(NativeSpecification<Tag> specification) {
+    public List findAll(NativeSpecification<Tag> specification) {
         String nativeQuery = specification.getNativeQuery();
         return entityManager.createNativeQuery(nativeQuery,Tag.class).getResultList();
     }

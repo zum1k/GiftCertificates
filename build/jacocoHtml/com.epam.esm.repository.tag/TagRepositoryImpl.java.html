@@ -3,6 +3,7 @@
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.NativeSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
-<span class="fc" id="L20">@Slf4j</span>
+<span class="fc" id="L21">@Slf4j</span>
 @Repository
-<span class="fc" id="L22">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="fc" id="L23">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 public class TagRepositoryImpl implements TagRepository {
     private final static String ENTITY_NAME = &quot;Tag&quot;;
     @PersistenceContext
@@ -27,70 +28,76 @@ public class TagRepositoryImpl implements TagRepository {
 
     @Override
     public Optional&lt;Tag&gt; add(Tag tag) {
-<span class="fc" id="L30">        entityManager.persist(tag);</span>
-<span class="fc" id="L31">        entityManager.flush();</span>
-<span class="fc" id="L32">        return Optional.of(tag);</span>
+<span class="fc" id="L31">        entityManager.persist(tag);</span>
+<span class="fc" id="L32">        entityManager.flush();</span>
+<span class="fc" id="L33">        return Optional.of(tag);</span>
     }
 
     @Override
     public Optional&lt;Tag&gt; remove(long id) {
-<span class="fc" id="L37">        Tag tag = entityManager.find(Tag.class, id);</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if(tag!=null) {</span>
-<span class="fc" id="L39">            entityManager.remove(tag);</span>
-<span class="fc" id="L40">            return Optional.of(tag);</span>
+<span class="fc" id="L38">        Tag tag = entityManager.find(Tag.class, id);</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if(tag!=null) {</span>
+<span class="fc" id="L40">            entityManager.remove(tag);</span>
+<span class="fc" id="L41">            return Optional.of(tag);</span>
         }
-<span class="nc" id="L42">        throw new EntityNotFoundException(ENTITY_NAME,id);</span>
+<span class="nc" id="L43">        throw new EntityNotFoundException(ENTITY_NAME,id);</span>
     }
 
     @Override
     public Optional&lt;Tag&gt; findTagByName(CriteriaSpecification&lt;Tag&gt; specification) {
-<span class="fc" id="L47">        TypedQuery&lt;Tag&gt; query = entityManager.createQuery(mapQuery(specification));</span>
-<span class="fc" id="L48">        return query.getResultStream().findFirst();</span>
+<span class="fc" id="L48">        TypedQuery&lt;Tag&gt; query = entityManager.createQuery(mapQuery(specification));</span>
+<span class="fc" id="L49">        return query.getResultStream().findFirst();</span>
     }
 
     @Override
     public Tag findById(long id) {
-<span class="fc" id="L53">        Tag tag = entityManager.find(Tag.class, id);</span>
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (tag != null) {</span>
+<span class="fc" id="L54">        Tag tag = entityManager.find(Tag.class, id);</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (tag != null) {</span>
           //  entityManager.detach(tag);
-<span class="fc" id="L56">            return tag;</span>
+<span class="fc" id="L57">            return tag;</span>
         }
-<span class="nc" id="L58">        throw new EntityNotFoundException(ENTITY_NAME, id);</span>
+<span class="nc" id="L59">        throw new EntityNotFoundException(ENTITY_NAME, id);</span>
     }
 
     @Override
     public List&lt;Tag&gt; findAll(int page, int pageSize) {
-<span class="nc" id="L63">        TypedQuery&lt;Tag&gt; allQuery = typedQuery();</span>
-<span class="nc" id="L64">        allQuery.setFirstResult((page - 1) * pageSize);</span>
-<span class="nc" id="L65">        allQuery.setMaxResults(pageSize);</span>
-<span class="nc" id="L66">        return allQuery.getResultList();</span>
+<span class="nc" id="L64">        TypedQuery&lt;Tag&gt; allQuery = typedQuery();</span>
+<span class="nc" id="L65">        allQuery.setFirstResult((page - 1) * pageSize);</span>
+<span class="nc" id="L66">        allQuery.setMaxResults(pageSize);</span>
+<span class="nc" id="L67">        return allQuery.getResultList();</span>
     }
 
     @Override
     public List&lt;Tag&gt; findTagsByCertificateId(CriteriaSpecification&lt;Tag&gt; specification) {
-<span class="fc" id="L71">        TypedQuery&lt;Tag&gt; query = entityManager.createQuery(mapQuery(specification));</span>
-<span class="fc" id="L72">        return query.getResultList();</span>
+<span class="fc" id="L72">        TypedQuery&lt;Tag&gt; query = entityManager.createQuery(mapQuery(specification));</span>
+<span class="fc" id="L73">        return query.getResultList();</span>
     }
 
     @Override
     public List&lt;Tag&gt; findAll() {
-<span class="fc" id="L77">        TypedQuery&lt;Tag&gt; allQuery = typedQuery();</span>
-<span class="fc" id="L78">        return allQuery.getResultList();</span>
+<span class="fc" id="L78">        TypedQuery&lt;Tag&gt; allQuery = typedQuery();</span>
+<span class="fc" id="L79">        return allQuery.getResultList();</span>
+    }
+
+    @Override
+    public List findAll(NativeSpecification&lt;Tag&gt; specification) {
+<span class="nc" id="L84">        String nativeQuery = specification.getNativeQuery();</span>
+<span class="nc" id="L85">        return entityManager.createNativeQuery(nativeQuery,Tag.class).getResultList();</span>
     }
 
     private TypedQuery&lt;Tag&gt; typedQuery() {
-<span class="fc" id="L82">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
-<span class="fc" id="L83">        CriteriaQuery&lt;Tag&gt; query = builder.createQuery(Tag.class);</span>
-<span class="fc" id="L84">        Root&lt;Tag&gt; rootEntry = query.from(Tag.class);</span>
-<span class="fc" id="L85">        CriteriaQuery&lt;Tag&gt; all = query.select(rootEntry);</span>
-<span class="fc" id="L86">        return  entityManager.createQuery(all);</span>
+<span class="fc" id="L89">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L90">        CriteriaQuery&lt;Tag&gt; query = builder.createQuery(Tag.class);</span>
+<span class="fc" id="L91">        Root&lt;Tag&gt; rootEntry = query.from(Tag.class);</span>
+<span class="fc" id="L92">        CriteriaQuery&lt;Tag&gt; all = query.select(rootEntry);</span>
+<span class="fc" id="L93">        return  entityManager.createQuery(all);</span>
     }
 
     private CriteriaQuery&lt;Tag&gt; mapQuery(CriteriaSpecification&lt;Tag&gt; specification) {
-<span class="fc" id="L90">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
-<span class="fc" id="L91">        CriteriaQuery&lt;Tag&gt; criteriaQuery = builder.createQuery(Tag.class);</span>
-<span class="fc" id="L92">        Root&lt;Tag&gt; tagRoot = criteriaQuery.from(Tag.class);</span>
-<span class="fc" id="L93">        return criteriaQuery.where(specification.toPredicate(tagRoot, builder));</span>
+<span class="fc" id="L97">        CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L98">        CriteriaQuery&lt;Tag&gt; criteriaQuery = builder.createQuery(Tag.class);</span>
+<span class="fc" id="L99">        Root&lt;Tag&gt; tagRoot = criteriaQuery.from(Tag.class);</span>
+<span class="fc" id="L100">        return criteriaQuery.where(specification.toPredicate(tagRoot, builder));</span>
     }
 }
 
