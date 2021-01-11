@@ -1,7 +1,9 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.order;
 
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
+import com.epam.esm.entity.dto.GiftCertificateDto;
 import com.epam.esm.entity.dto.OrderDto;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.exception.EntityNotFoundException;
@@ -10,7 +12,6 @@ import com.epam.esm.repository.order.OrderRepository;
 import com.epam.esm.repository.specification.OrdersByUserIDCriteriaSpecification;
 import com.epam.esm.repository.user.UserRepository;
 import com.epam.esm.service.mapper.order.OrderMapper;
-import com.epam.esm.service.order.OrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,9 +21,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
@@ -142,6 +141,7 @@ class OrderServiceImplTest {
     List<OrderDto> actualList = service.findAll(parametersDto);
     Assertions.assertEquals(orderDtos, actualList);
   }
+
   @Test
   void findOrderById_ShouldReturn_Order_Test() {
     long userId = 1;
@@ -163,19 +163,86 @@ class OrderServiceImplTest {
 
     OrderDto actualDto = service.findOrderById(userId, orderId);
     Assertions.assertEquals(orderDto, actualDto);
-
-
   }
+
   @Test
   void findOrderById_ShouldReturn_Exception_Test() {
     long userId = 1;
     long orderId = 1;
     Mockito.when(repository.findOrder(orderId)).thenReturn(Optional.empty());
     Assertions.assertThrows(
-            EntityNotFoundException.class,
-            () -> {
-              service.findOrderById(userId, orderId);
-            });
+        EntityNotFoundException.class,
+        () -> {
+          service.findOrderById(userId, orderId);
+        });
     Mockito.verify(repository).findOrder(Mockito.eq(orderId));
+  }
+
+  @Test
+  void setOrder_ShouldReturn_Order_Test() {
+    long userId = 1;
+    User user = new User();
+    user.setUserId(userId);
+
+    List<GiftCertificateDto> dtos = new ArrayList<>();
+    BigDecimal price = new BigDecimal("100");
+    GiftCertificate giftCertificate = new GiftCertificate();
+    giftCertificate.setGiftId(1);
+
+    GiftCertificateDto dto = new GiftCertificateDto();
+    dto.setGiftId(1);
+    dto.setDuration(10);
+    dto.setPrice(new BigDecimal(100));
+    dtos.add(dto);
+
+    Set<GiftCertificate> gifts = new HashSet<>();
+    gifts.add(giftCertificate);
+    OrderDto orderDto = new OrderDto();
+    orderDto.setUserId(userId);
+    orderDto.setGifts(dtos);
+
+    Order order = new Order();
+    order.setPrice(price);
+    order.setGifts(gifts);
+    Mockito.when(mapper.toEntity(orderDto)).thenReturn(order);
+    Mockito.when(certificateRepository.findById(1)).thenReturn(Optional.of(giftCertificate));
+
+    Order actualOrder = service.setOrder(userId, orderDto);
+    Assertions.assertEquals(order, actualOrder);
+  }
+
+  @Test
+  void setOrder_ShouldReturn_Exception_Test() {
+    long userId = 1;
+    User user = new User();
+    user.setUserId(userId);
+
+    List<GiftCertificateDto> dtos = new ArrayList<>();
+    BigDecimal price = new BigDecimal("100");
+    GiftCertificate giftCertificate = new GiftCertificate();
+    giftCertificate.setGiftId(1);
+
+    GiftCertificateDto dto = new GiftCertificateDto();
+    dto.setGiftId(1);
+    dto.setDuration(10);
+    dto.setPrice(new BigDecimal(100));
+    dtos.add(dto);
+
+    Set<GiftCertificate> gifts = new HashSet<>();
+    gifts.add(giftCertificate);
+    OrderDto orderDto = new OrderDto();
+    orderDto.setUserId(userId);
+    orderDto.setGifts(dtos);
+
+    Order order = new Order();
+    order.setPrice(price);
+    order.setGifts(gifts);
+    Mockito.when(mapper.toEntity(orderDto)).thenReturn(order);
+    Mockito.when(certificateRepository.findById(1)).thenReturn(Optional.empty());
+    Assertions.assertThrows(
+        EntityNotFoundException.class,
+        () -> {
+          service.setOrder(userId, orderDto);
+        });
   }
 }
