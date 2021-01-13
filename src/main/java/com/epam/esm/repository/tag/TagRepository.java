@@ -1,5 +1,6 @@
 package com.epam.esm.repository.tag;
 
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.NativeSpecification;
@@ -23,4 +24,10 @@ public interface TagRepository {
   List<Tag> findAll();
 
   List<Tag> findAll(NativeSpecification<Tag> specification);
+
+  long count();
+
+  long count(CriteriaSpecification<Tag> specification);
+
+  long count(List<CriteriaSpecification<Tag>> specifications);
 }

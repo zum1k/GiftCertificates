@@ -1,5 +1,6 @@
 package com.epam.esm.repository.order;
 
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.repository.CriteriaSpecification;
 
@@ -16,5 +17,11 @@ public interface OrderRepository {
     List<Order> findAll(int page, int pageSize);
 
     List<Order> findAllBySpecification(CriteriaSpecification<Order> specification, int page, int pageSize);
+
+    long count();
+
+    long count(CriteriaSpecification<Order> specification);
+
+    long count(List<CriteriaSpecification<Order>> specifications);
 
 }

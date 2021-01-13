@@ -54,7 +54,13 @@ public interface TagService {
    */
   List<TagDto> findAllByCertificateId(long certificateId);
 
-  int count(int pageSize);
-  }
+  /**
+   * Count tags amount by specific query.
+   *
+   * @param dto {@code RequestParametersDto}'s with query values.
+   * @return the number of pages depending on the request parameters
+   */
+  long count(RequestParametersDto dto);
+}
 
 

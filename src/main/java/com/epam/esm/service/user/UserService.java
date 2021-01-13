@@ -12,4 +12,6 @@ public interface UserService {
   List<UserDto> findAll(RequestParametersDto dto);
 
   TagDto findWidelyUsedTagByAllOrdersCost(long userId);
+
+  long count(RequestParametersDto dto);
 }

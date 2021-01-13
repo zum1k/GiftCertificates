@@ -1,6 +1,7 @@
 package com.epam.esm.repository.tag;
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.entity.User;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.NativeSpecification;
@@ -14,7 +15,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +86,49 @@ public class TagRepositoryImpl implements TagRepository {
     public List findAll(NativeSpecification<Tag> specification) {
         String nativeQuery = specification.getNativeQuery();
         return entityManager.createNativeQuery(nativeQuery,Tag.class).getResultList();
+    }
+
+    @Override
+    public long count() {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        Root<Tag> rootEntry = query.from(Tag.class);
+        query.select(builder.count(rootEntry));
+        TypedQuery<Long> allQuery = entityManager.createQuery(query);
+        return allQuery.getSingleResult();
+    }
+
+    @Override
+    public long count(CriteriaSpecification<Tag> specification) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<Tag> root = criteriaQuery.from(Tag.class);
+        criteriaQuery.select(criteriaBuilder.count(root));
+
+        Predicate predicate = specification.toPredicate(root, criteriaBuilder);
+        criteriaQuery.where(predicate);
+        TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        return typedQuery.getSingleResult();
+    }
+
+    @Override
+    public long count(List<CriteriaSpecification<Tag>> specifications) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<Tag> root = criteriaQuery.from(Tag.class);
+        criteriaQuery.select(criteriaBuilder.count(root));
+
+        List<Predicate> predicates = new ArrayList<>();
+        specifications.stream()
+            .map(o -> o.toPredicate(root, criteriaBuilder))
+            .forEach(predicates::add);
+
+        criteriaQuery.where(predicates.toArray(new Predicate[0]));
+        TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
+        return typedQuery.getSingleResult();
     }
 
     private TypedQuery<Tag> typedQuery() {

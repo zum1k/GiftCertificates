@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,7 +24,8 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CertificateRepositoryImpl implements CertificateRepository {
   private static final String ENTITY_NAME = "Certificate";
-  @PersistenceContext private final EntityManager entityManager;
+  @PersistenceContext
+  private final EntityManager entityManager;
 
   @Override
   public Optional<GiftCertificate> add(GiftCertificate certificate) {
@@ -60,7 +59,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
     Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
     List<Predicate> predicates = new ArrayList<>();
     specifications.forEach(o -> predicates.add(o.toPredicate(root, builder)));
-    criteriaQuery.where(predicates.toArray(new Predicate[] {}));
+    criteriaQuery.where(predicates.toArray(new Predicate[]{}));
     TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
     query.setFirstResult((page - 1) * pageSize);
     query.setMaxResults(pageSize);
@@ -82,5 +81,48 @@ public class CertificateRepositoryImpl implements CertificateRepository {
   @Override
   public Optional<GiftCertificate> findById(long id) {
     return Optional.ofNullable(entityManager.find(GiftCertificate.class, id));
+  }
+
+  @Override
+  public long count() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> query = builder.createQuery(Long.class);
+    Root<GiftCertificate> rootEntry = query.from(GiftCertificate.class);
+    query.select(builder.count(rootEntry));
+    TypedQuery<Long> allQuery = entityManager.createQuery(query);
+    return allQuery.getSingleResult();
+  }
+
+  @Override
+  public long count(CriteriaSpecification<GiftCertificate> specification) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+    Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
+    criteriaQuery.select(criteriaBuilder.count(root));
+
+    Predicate predicate = specification.toPredicate(root, criteriaBuilder);
+    criteriaQuery.where(predicate);
+    TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
+
+    return typedQuery.getSingleResult();
+  }
+
+  @Override
+  public long count(List<CriteriaSpecification<GiftCertificate>> specifications) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+    Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
+    criteriaQuery.select(criteriaBuilder.count(root));
+
+    List<Predicate> predicates = new ArrayList<>();
+    specifications.stream()
+        .map(o -> o.toPredicate(root, criteriaBuilder))
+        .forEach(predicates::add);
+
+    criteriaQuery.where(predicates.toArray(new Predicate[0]));
+    TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
+    return typedQuery.getSingleResult();
   }
 }

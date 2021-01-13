@@ -87,4 +87,15 @@ public class GiftServiceImpl implements GiftService {
     Optional<GiftCertificate> optional = repository.findById(id);
     return mapper.toDto(optional.orElseThrow(() -> new EntityNotFoundException(CERTIFICATE, id)));
   }
+
+  @Override
+  public long count(RequestParametersDto dto) {
+    log.info("count certificate pages");
+    int pageSize = dto.getPageLimit();
+    List<CriteriaSpecification<GiftCertificate>> specifications = creator.createSpecifications(dto);
+    long elementsAmount = specifications.isEmpty() ? repository.count() : repository.count(specifications);
+    return elementsAmount % pageSize == 0
+        ? elementsAmount / pageSize
+        : elementsAmount / pageSize + 1;
+  }
 }

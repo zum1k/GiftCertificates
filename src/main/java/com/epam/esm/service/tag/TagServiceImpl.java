@@ -88,7 +88,13 @@ public class TagServiceImpl implements TagService {
   }
 
   @Override
-  public int count(int pageSize) {
-    return tagRepository.findAll().size();
+  public long count(RequestParametersDto dto) {
+    log.info("count tag pages");
+    int pageSize = dto.getPageLimit();
+    long elementsAmount = tagRepository.count();
+    return elementsAmount % pageSize == 0
+        ? elementsAmount / pageSize
+        : elementsAmount / pageSize + 1;
   }
+
 }

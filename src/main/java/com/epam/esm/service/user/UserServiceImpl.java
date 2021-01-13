@@ -6,11 +6,8 @@ import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.exception.EntityNotFoundException;
-import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.NativeSpecification;
-import com.epam.esm.repository.certificate.CertificateRepository;
 import com.epam.esm.repository.specification.MostWidelyUsedTagByUserOrders;
-import com.epam.esm.repository.specification.PopularTagUsedByUserAllOrders;
 import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.repository.user.UserRepository;
 import com.epam.esm.service.mapper.tag.TagMapper;
@@ -56,5 +53,15 @@ public class UserServiceImpl implements UserService {
     log.info("find popular tag by user id {}", userId);
     NativeSpecification<Tag> specification = new MostWidelyUsedTagByUserOrders();
     return tagMapper.toDto(tagRepository.findAll(specification).get(0));
+  }
+
+  @Override
+  public long count(RequestParametersDto dto) {
+    log.info("count user pages");
+    int pageSize = dto.getPageLimit();
+    long elementsAmount = tagRepository.count();
+    return elementsAmount % pageSize == 0
+        ? elementsAmount / pageSize
+        : elementsAmount / pageSize + 1;
   }
 }

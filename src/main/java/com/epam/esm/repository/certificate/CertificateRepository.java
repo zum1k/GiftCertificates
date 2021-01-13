@@ -19,4 +19,10 @@ public interface CertificateRepository {
   List<GiftCertificate> findAll(int page, int pageSize);
 
   Optional<GiftCertificate> findById(long id);
+
+  long count();
+
+  long count(CriteriaSpecification<GiftCertificate> specification);
+
+  long count(List<CriteriaSpecification<GiftCertificate>> specifications);
 }

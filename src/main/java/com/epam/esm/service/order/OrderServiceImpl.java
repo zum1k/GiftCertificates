@@ -76,6 +76,16 @@ public class OrderServiceImpl implements OrderService {
     return mapper.toDto(optionalOrder.get());
   }
 
+  @Override
+  public long count(RequestParametersDto dto) {
+    log.info("count order pages");
+    int pageSize = dto.getPageLimit();
+    long elementsAmount = repository.count();
+    return elementsAmount % pageSize == 0
+        ? elementsAmount / pageSize
+        : elementsAmount / pageSize + 1;
+  }
+
   BigDecimal calculateOrderCost(List<GiftCertificateDto> gifts) {
     List<BigDecimal> costs =
         gifts.stream().map(GiftCertificateDto::getPrice).collect(Collectors.toList());
