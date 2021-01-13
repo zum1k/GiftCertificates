@@ -76,13 +76,13 @@ public class OrderServiceImpl implements OrderService {
     return mapper.toDto(optionalOrder.get());
   }
 
-  private BigDecimal calculateOrderCost(List<GiftCertificateDto> gifts) {
+  BigDecimal calculateOrderCost(List<GiftCertificateDto> gifts) {
     List<BigDecimal> costs =
         gifts.stream().map(GiftCertificateDto::getPrice).collect(Collectors.toList());
     return costs.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
-  private Order setOrder(long userId, OrderDto orderDto) {
+  Order setOrder(long userId, OrderDto orderDto) {
     orderDto.setUserId(userId);
     Order order = mapper.toEntity(orderDto);
     order.setPrice(calculateOrderCost(orderDto.getGifts()));

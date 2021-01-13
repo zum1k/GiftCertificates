@@ -15,26 +15,26 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class GiftCertificateLinkModifier implements DtoLinkModifier<GiftCertificateDto> {
-  private static final GiftsController controller =
-      WebMvcLinkBuilder.methodOn(GiftsController.class);
-  private final TagLinkModifier tagLinkModifier;
+    private static final GiftsController controller =
+            WebMvcLinkBuilder.methodOn(GiftsController.class);
+    private final TagLinkModifier tagLinkModifier;
 
-  @Override
-  public GiftCertificateDto withTagLocation(GiftCertificateDto giftCertificateDto) {
-    long dtoId = giftCertificateDto.getGiftId();
-    Link dtoLink = WebMvcLinkBuilder.linkTo(controller.findCertificateById(dtoId)).withSelfRel();
-    Link deleteLink =
-        WebMvcLinkBuilder.linkTo(controller.deleteCertificateById(dtoId)).withRel("delete gift");
-    Link allLink = WebMvcLinkBuilder.linkTo(controller).withRel("gifts");
-    giftCertificateDto.add(dtoLink, deleteLink, allLink);
-    giftCertificateDto.getTags().forEach(tagLinkModifier::withTagLocation);
-    return giftCertificateDto;
-  }
+    @Override
+    public GiftCertificateDto withTagLocation(GiftCertificateDto giftCertificateDto) {
+        long dtoId = giftCertificateDto.getGiftId();
+        Link dtoLink = WebMvcLinkBuilder.linkTo(controller.findCertificateById(dtoId)).withSelfRel();
+        Link deleteLink =
+                WebMvcLinkBuilder.linkTo(controller.deleteCertificateById(dtoId)).withRel("delete gift");
+        Link allLink = WebMvcLinkBuilder.linkTo(controller).withRel("gifts");
+        giftCertificateDto.add(dtoLink, deleteLink, allLink);
+        giftCertificateDto.getTags().forEach(tagLinkModifier::withTagLocation);
+        return giftCertificateDto;
+    }
 
-  @Override
-  public List<GiftCertificateDto> allWithPagination(
-      List<GiftCertificateDto> dtos, RequestParametersDto dto) {
-    dtos.forEach(this::withTagLocation);
-    return dtos;
-  }
+    @Override
+    public List<GiftCertificateDto> allWithPagination(
+            List<GiftCertificateDto> dtos, RequestParametersDto dto) {
+        dtos.forEach(this::withTagLocation);
+        return dtos;
+    }
 }

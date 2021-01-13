@@ -22,67 +22,67 @@ import java.util.List;
 @RestController
 @RequestMapping("/certificates")
 public class GiftsController {
-  private final GiftCertificateLinkModifier linkModifier;
-  private final GiftService giftService;
+    private final GiftCertificateLinkModifier linkModifier;
+    private final GiftService giftService;
 
-  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<List<GiftCertificateDto>> findAll(RequestParametersDto dto) {
-    log.info("find all certificates");
-    List<GiftCertificateDto> resultList = giftService.findAll(dto);
-    linkModifier.allWithPagination(resultList, dto);
-    return ResponseEntity.ok().body(resultList);
-  }
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<GiftCertificateDto>> findAll(RequestParametersDto dto) {
+        log.info("find all certificates");
+        List<GiftCertificateDto> resultList = giftService.findAll(dto);
+        linkModifier.allWithPagination(resultList, dto);
+        return ResponseEntity.ok().body(resultList);
+    }
 
-  @RequestMapping(
-      consumes = MediaType.APPLICATION_JSON_VALUE,
-      method = RequestMethod.POST,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<GiftCertificateDto> addCertificate(
-      @Validated @RequestBody GiftCertificateDto dto) {
-    log.info("add certificate");
-    GiftCertificateDto giftCertificateDto = giftService.add(dto);
-    long dtoId = giftCertificateDto.getGiftId();
-    URI resourceUri =
-        ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
-    return ResponseEntity.created(resourceUri).build();
-  }
+    @RequestMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<GiftCertificateDto> addCertificate(
+            @Validated @RequestBody GiftCertificateDto dto) {
+        log.info("add certificate");
+        GiftCertificateDto giftCertificateDto = giftService.add(dto);
+        long dtoId = giftCertificateDto.getGiftId();
+        URI resourceUri =
+                ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
+        return ResponseEntity.created(resourceUri).build();
+    }
 
-  @RequestMapping(
-      value = "/{id}",
-      method = RequestMethod.GET,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<GiftCertificateDto> findCertificateById(@PathVariable("id") final long id) {
-    log.info("get certificate {}", id);
-    GiftCertificateDto dto = giftService.findById(id);
-    linkModifier.withTagLocation(dto);
-    return ResponseEntity.ok().body(dto);
-  }
+    @RequestMapping(
+            value = "/{id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GiftCertificateDto> findCertificateById(@PathVariable("id") final long id) {
+        log.info("get certificate {}", id);
+        GiftCertificateDto dto = giftService.findById(id);
+        linkModifier.withTagLocation(dto);
+        return ResponseEntity.ok().body(dto);
+    }
 
-  @RequestMapping(
-      value = "/{id}",
-      method = RequestMethod.PUT,
-      consumes = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<GiftCertificateDto> updateGiftCertificates(
-      @PathVariable("id") final long id,
-      @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
-    log.info("update gift {}", id);
-    GiftCertificateDto dto = giftService.update(id, certificateDto);
-    linkModifier.withTagLocation(dto);
-    return ResponseEntity.ok().body(dto);
-  }
+    @RequestMapping(
+            value = "/{id}",
+            method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GiftCertificateDto> updateGiftCertificates(
+            @PathVariable("id") final long id,
+            @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
+        log.info("update gift {}", id);
+        GiftCertificateDto dto = giftService.update(id, certificateDto);
+        linkModifier.withTagLocation(dto);
+        return ResponseEntity.ok().body(dto);
+    }
 
-  @RequestMapping(
-      value = "/{id}",
-      method = RequestMethod.DELETE,
-      consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<GiftCertificateDto> deleteCertificateById(
-      @PathVariable("id") final long id) {
-    log.info("remove gift by {}", id);
-    giftService.remove(id);
-    return ResponseEntity.noContent().build();
-  }
+    @RequestMapping(
+            value = "/{id}",
+            method = RequestMethod.DELETE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GiftCertificateDto> deleteCertificateById(
+            @PathVariable("id") final long id) {
+        log.info("remove gift by {}", id);
+        giftService.remove(id);
+        return ResponseEntity.noContent().build();
+    }
 }

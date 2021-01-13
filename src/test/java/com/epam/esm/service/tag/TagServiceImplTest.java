@@ -1,4 +1,4 @@
-package com.epam.esm.service.impl;
+package com.epam.esm.service.tag;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.dto.RequestParametersDto;

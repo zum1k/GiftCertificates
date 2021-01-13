@@ -12,82 +12,82 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-  private final MessageSource messageSource;
+    private final MessageSource messageSource;
 
-  @ExceptionHandler(EntityAlreadyExists.class)
-  protected ResponseEntity<Object> handleEntityAlreadyExists(
-      EntityAlreadyExists exception, WebRequest request) {
-    String message =
-        messageSource.getMessage(
-            "exception.entity-already-exists", new Object[] {}, request.getLocale());
-    ErrorResponse errorResponse =
-        new ErrorResponse(exception.getMessage() + " " + message, exception.getError_code());
-    return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(EntityAlreadyExists.class)
+    protected ResponseEntity<Object> handleEntityAlreadyExists(
+            EntityAlreadyExists exception, WebRequest request) {
+        String message =
+                messageSource.getMessage(
+                        "exception.entity-already-exists", new Object[]{}, request.getLocale());
+        ErrorResponse errorResponse =
+                new ErrorResponse(exception.getMessage() + " " + message, exception.getError_code());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(EntityNotAddedException.class)
-  protected ResponseEntity<Object> handleEntityNotAdded(
-      EntityNotAddedException exception, WebRequest request) {
-    String message =
-        messageSource.getMessage(
-            "exception.entity-not-added", new Object[] {}, request.getLocale());
-    ErrorResponse errorResponse =
-        new ErrorResponse(exception.getMessage() + " " + message, exception.getErrorCode());
-    return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(EntityNotAddedException.class)
+    protected ResponseEntity<Object> handleEntityNotAdded(
+            EntityNotAddedException exception, WebRequest request) {
+        String message =
+                messageSource.getMessage(
+                        "exception.entity-not-added", new Object[]{}, request.getLocale());
+        ErrorResponse errorResponse =
+                new ErrorResponse(exception.getMessage() + " " + message, exception.getErrorCode());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(EntityNotDeletedException.class)
-  protected ResponseEntity<Object> handleEntityNotDeleted(
-      EntityNotDeletedException exception, WebRequest request) {
-    String message =
-        messageSource.getMessage(
-            "exception.entity-not-deleted", new Object[] {}, request.getLocale());
-    ErrorResponse errorResponse =
-        new ErrorResponse(
-            exception.getMessage() + " " + exception.getEntityId() + " " + message,
-            exception.getErrorCode());
-    return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(EntityNotDeletedException.class)
+    protected ResponseEntity<Object> handleEntityNotDeleted(
+            EntityNotDeletedException exception, WebRequest request) {
+        String message =
+                messageSource.getMessage(
+                        "exception.entity-not-deleted", new Object[]{}, request.getLocale());
+        ErrorResponse errorResponse =
+                new ErrorResponse(
+                        exception.getMessage() + " " + exception.getEntityId() + " " + message,
+                        exception.getErrorCode());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(EntityNotFoundException.class)
-  protected ResponseEntity<Object> handleEntityNotFound(
-      EntityNotFoundException exception, WebRequest request) {
-    String message =
-        messageSource.getMessage(
-            "exception.entity-not-found", new Object[] {}, request.getLocale());
-    ErrorResponse errorResponse =
-        new ErrorResponse(
-            exception.getMessage() + " " + exception.getEntityId() + " " + message,
-            exception.getErrorCode());
-    return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
-  }
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(
+            EntityNotFoundException exception, WebRequest request) {
+        String message =
+                messageSource.getMessage(
+                        "exception.entity-not-found", new Object[]{}, request.getLocale());
+        ErrorResponse errorResponse =
+                new ErrorResponse(
+                        exception.getMessage() + " " + exception.getEntityId() + " " + message,
+                        exception.getErrorCode());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
 
-  @ExceptionHandler(EntityNotUpdatedException.class)
-  protected ResponseEntity<Object> handleEntityNotUpdated(
-      EntityNotUpdatedException exception, WebRequest request) {
-    String message =
-        messageSource.getMessage(
-            "exception.entity-not-updated", new Object[] {}, request.getLocale());
-    ErrorResponse errorResponse =
-        new ErrorResponse(
-            exception.getMessage() + " " + exception.getEntityId() + " " + message,
-            exception.getErrorCode());
-    return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-  }
+    @ExceptionHandler(EntityNotUpdatedException.class)
+    protected ResponseEntity<Object> handleEntityNotUpdated(
+            EntityNotUpdatedException exception, WebRequest request) {
+        String message =
+                messageSource.getMessage(
+                        "exception.entity-not-updated", new Object[]{}, request.getLocale());
+        ErrorResponse errorResponse =
+                new ErrorResponse(
+                        exception.getMessage() + " " + exception.getEntityId() + " " + message,
+                        exception.getErrorCode());
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 
-  @ExceptionHandler(Throwable.class)
-  public ResponseEntity<Object> handleRuntimeException(
-      RuntimeException exception, WebRequest request) {
-    String message =
-        messageSource.getMessage("exception.something-wrong", new Object[] {}, request.getLocale());
-    ErrorResponse response = new ErrorResponse(message, 50001);
-    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<Object> handleRuntimeException(
+            RuntimeException exception, WebRequest request) {
+        String message =
+                messageSource.getMessage("exception.something-wrong", new Object[]{}, request.getLocale());
+        ErrorResponse response = new ErrorResponse(message, 50001);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-  // <editor-fold defaultstate="collapsed" desc="delombok">
-  @SuppressWarnings("all")
-  public RestExceptionHandler(final MessageSource messageSource) {
-    this.messageSource = messageSource;
-  }
-  // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="delombok">
+    @SuppressWarnings("all")
+    public RestExceptionHandler(final MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+    // </editor-fold>
 }
