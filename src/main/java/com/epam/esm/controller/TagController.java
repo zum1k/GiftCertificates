@@ -7,12 +7,16 @@ import com.epam.esm.service.tag.TagService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.net.URI;
 import java.util.List;
 
@@ -26,11 +30,20 @@ public class TagController {
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<List<TagDto>> findAll(RequestParametersDto dto) {
+  public ResponseEntity<CollectionModel<TagDto>> findAll(@RequestParam(required = false, defaultValue = "1")
+                                                         @Min(value = 1, message = "page must be positive") Integer page,
+                                                         @Min(value = 1, message = "page should be positive")
+                                                         @Max(value = 100, message = "page size must not be greater than 100")
+                                                         @RequestParam(required = false, defaultValue = "50") Integer pageSize
+
+  ) {
     log.info("get tags");
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPage(page);
+    dto.setPageLimit(pageSize);
+
     List<TagDto> tagDtos = tagService.findAll(dto);
-    linkModifier.allWithPagination(tagDtos, dto);
-    return ResponseEntity.ok().body(tagDtos);
+    return ResponseEntity.ok().body(linkModifier.allWithPagination(tagDtos, dto));
   }
 
   @RequestMapping(
@@ -38,7 +51,7 @@ public class TagController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<TagDto> addTag(@RequestBody TagDto dto) {
+  public ResponseEntity<TagDto> addTag(@Valid @RequestBody TagDto dto) {
     log.info("add tag");
     TagDto tagDto = tagService.addTagIfNotExist(dto);
     URI location =

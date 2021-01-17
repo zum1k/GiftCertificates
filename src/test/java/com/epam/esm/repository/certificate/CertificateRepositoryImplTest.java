@@ -71,7 +71,7 @@ public class CertificateRepositoryImplTest {
   @Test
   @Transactional
   void findCertificateById_ShouldReturn_Two_True_Test() {
-    String expectedName = "name2";
+    String expectedName = "name14";
     long expectedCertificateId = 15;
     String actualCertificateName = repository.findById(expectedCertificateId).get().getName();
     assertEquals(expectedName, actualCertificateName);

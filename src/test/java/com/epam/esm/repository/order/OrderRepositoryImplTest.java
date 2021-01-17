@@ -62,7 +62,7 @@ class OrderRepositoryImplTest {
   @Test
   @Transactional
   void findAll_ShouldReturn_Three_True() {
-    int expectedSize = 3;
+    int expectedSize = 5;
     int page = 1;
     int pageSize = 5;
 
@@ -76,7 +76,7 @@ class OrderRepositoryImplTest {
     long userId = 4;
     int page = 1;
     int pageSize = 5;
-    int expectedSize = 1;
+    int expectedSize = 4;
     CriteriaSpecification<Order> specification = new OrdersByUserIDCriteriaSpecification(userId);
 
     int actualSize = repository.findAllBySpecification(specification, page, pageSize).size();

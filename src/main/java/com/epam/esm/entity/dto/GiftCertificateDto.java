@@ -18,15 +18,13 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
   private long giftId;
 
   @NotNull(message = "Need to enter name")
-  @Size(min = 2, max = 45, message = "Name size must be in 2 to 45 sumbols range")
+  @Size(min = 2, max = 45, message = "Name size must be in 2 to 45 symbols range")
   private String name;
-
   @NotNull(message = "Need to enter description")
   @Size(min = 2, max = 45, message = "Description size must be in 2 to 45 symbols range")
   private String description;
-
   @NotNull(message = "Need to enter price")
-  @Min(value = 1, message = "Price can\'t be less than \'1\'")
+  @Min(value = 1, message = "Price can't be less than 1")
   private BigDecimal price;
 
   private ZonedDateTime createDate;
@@ -47,5 +45,6 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     this.tags = tags;
   }
 
-  public GiftCertificateDto() {}
+  public GiftCertificateDto() {
+  }
 }

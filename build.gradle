@@ -25,16 +25,9 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.4.1.Final'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '2.4.1'
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.2'
-//    // https://mvnrepository.com/artifact/com.github.database-rider/rider-core
-//    compile group: 'com.github.database-rider', name: 'rider-core', version: '1.21.0'
-//    // https://mvnrepository.com/artifact/com.github.database-rider/rider-junit5
-//    compile group: 'com.github.database-rider', name: 'rider-junit5', version: '1.9.1'
 
     compile "org.mapstruct:mapstruct:1.2.0.Final"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
-
-
-
 
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.2.0.Final"
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
@@ -54,7 +47,6 @@ dependencies {
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.5.15'
 
-
 }
 test {
     useJUnitPlatform()
@@ -72,6 +64,13 @@ jacocoTestReport {
         xml.enabled false
         csv.enabled false
         html.destination file("build/jacocoHtml")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['com/epam/esm/entity', 'com/epam/esm/controller', 'com/epam/esm/configuration',
+                            'com/epam/esm/service/mapper','com/epam/esm/exception'   ])
+        }))
     }
 }
 jacocoTestCoverageVerification {

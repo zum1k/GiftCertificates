@@ -11,13 +11,16 @@ import com.epam.esm.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.net.URI;
 import java.util.List;
 
@@ -26,82 +29,94 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserLinkModifier linkModifier;
-    private final OrderLinkModifier orderLinkModifier;
-    private final UserService userService;
-    private final OrderService orderService;
+  private final UserLinkModifier linkModifier;
+  private final OrderLinkModifier orderLinkModifier;
+  private final UserService userService;
+  private final OrderService orderService;
 
-    @RequestMapping(
-            value = "/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UserDto> findUser(@PathVariable("id") final long id) {
-        log.info("find user {}", id);
-        UserDto userDto = userService.findUser(id);
-        linkModifier.withTagLocation(userDto);
-        return ResponseEntity.ok().body(userDto);
-    }
+  @RequestMapping(
+      value = "/{id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<UserDto> findUser(@PathVariable("id") final long id) {
+    log.info("find user {}", id);
+    UserDto userDto = userService.findUser(id);
+    linkModifier.withTagLocation(userDto);
+    return ResponseEntity.ok().body(userDto);
+  }
 
-    @RequestMapping(
-            value = "/{id}/orders",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<OrderDto> addOrder(
-            @PathVariable("id") final long id, @Validated @RequestBody OrderDto dto) {
-        log.info("add order {}", id);
-        OrderDto orderDto = orderService.createOrder(id, dto);
-        long dtoId = orderDto.getOrderId();
-        URI resourceUri =
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
-        return ResponseEntity.created(resourceUri).build();
-    }
+  @RequestMapping(
+      value = "/{id}/orders",
+      method = RequestMethod.POST,
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<OrderDto> addOrder(
+      @PathVariable("id") final long id, @Valid @RequestBody OrderDto dto) {
+    log.info("add order {}", id);
+    OrderDto orderDto = orderService.createOrder(id, dto);
+    long dtoId = orderDto.getOrderId();
+    URI resourceUri =
+        ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
+    return ResponseEntity.created(resourceUri).build();
+  }
 
-    @RequestMapping(
-            value = "/{user_id}/orders/{order_id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<OrderDto> orderById(
-            @PathVariable("user_id") final long userId, @PathVariable("order_id") final long orderId) {
-        log.info("find user {} order by {}", userId, orderId);
-        OrderDto orderDto = orderService.findOrderById(userId, orderId);
-        orderLinkModifier.withTagLocation(orderDto);
-        return ResponseEntity.ok().body(orderDto);
-    }
+  @RequestMapping(
+      value = "/{user_id}/orders/{order_id}",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<OrderDto> orderById(
+      @PathVariable("user_id") final long userId, @PathVariable("order_id") final long orderId) {
+    log.info("find user {} order by {}", userId, orderId);
+    OrderDto orderDto = orderService.findOrderById(userId, orderId);
+    orderLinkModifier.withTagLocation(orderDto);
+    return ResponseEntity.ok().body(orderDto);
+  }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<UserDto>> findAll(RequestParametersDto dto) {
-        log.info("find all users");
-        List<UserDto> userDtos = userService.findAll(dto);
-        linkModifier.allWithPagination(userDtos, dto);
-        return ResponseEntity.ok().body(userDtos);
-    }
+  @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<UserDto>> findAll(@RequestParam(required = false, defaultValue = "1")
+                                                          @Min(value = 1, message = "page must be positive") Integer page,
+                                                          @Min(value = 1, message = "page should be positive")
+                                                          @Max(value = 100, message = "page size must not be greater than 100")
+                                                          @RequestParam(required = false, defaultValue = "50") Integer pageSize) {
+    log.info("find all users");
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPage(page);
+    dto.setPageLimit(pageSize);
+    List<UserDto> userDtos = userService.findAll(dto);
+    return ResponseEntity.ok().body(linkModifier.allWithPagination(userDtos, dto));
+  }
 
-    @RequestMapping(
-            value = "/{id}/orders",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<OrderDto>> ordersByUserId(
-            @PathVariable("id") final long id, RequestParametersDto dto) {
-        log.info("find all orders by user id {}", id);
-        List<OrderDto> orderDtos = orderService.findUserOrders(id, dto);
-        orderLinkModifier.allWithPagination(orderDtos, dto);
-        return ResponseEntity.ok().body(orderDtos);
-    }
+  @RequestMapping(
+      value = "/{id}/orders",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseEntity<CollectionModel<OrderDto>> ordersByUserId(@PathVariable("id") final long id,
+                                                                  @RequestParam(required = false, defaultValue = "1")
+                                                                  @Min(value = 1, message = "page must be positive") Integer page,
+                                                                  @Min(value = 1, message = "page should be positive")
+                                                                  @Max(value = 100, message = "page size must not be greater than 100")
+                                                                  @RequestParam(required = false, defaultValue = "50") Integer pageSize) {
+    log.info("find all orders by user id {}", id);
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPage(page);
+    dto.setPageLimit(pageSize);
+    List<OrderDto> orderDtos = orderService.findUserOrders(id, dto);
+    return ResponseEntity.ok().body(orderLinkModifier.allWithPagination(orderDtos, dto));
+  }
 
-    @RequestMapping(
-            value = "/{id}/tag",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(
-            @PathVariable("id") long id) {
-        log.info("find most widely used tag");
-        return userService.findWidelyUsedTagByAllOrdersCost(id);
-    }
+  @RequestMapping(
+      value = "/{id}/tag",
+      method = RequestMethod.GET,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(
+      @PathVariable("id") long id) {
+    log.info("find most widely used tag");
+    return userService.findWidelyUsedTagByAllOrdersCost(id);
+  }
 }

@@ -22,10 +22,10 @@ class UserRepositoryImplTest {
 
     @Test
     @Transactional
-    void findAll_ShouldReturn_Three_True() {
-        int expectedSize = 3;
+    void findAll_ShouldReturn_Five_True() {
+        int expectedSize = 10;
         int page = 1;
-        int pageSize = 5;
+        int pageSize = 10;
         int actualSize = repository.findAll(page, pageSize).size();
         assertEquals(expectedSize, actualSize);
     }

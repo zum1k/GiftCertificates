@@ -41,7 +41,7 @@ class TagRepositoryImplTest {
   @Test
   @Transactional
   void findByName_ShouldReturn_True_Test() {
-    String expectedTagName = "test22";
+    String expectedTagName = "name22";
     CriteriaSpecification<Tag> specification =
         new TagsByNameCriteriaSpecifications(expectedTagName);
     String actualTagName = tagRepository.findTagByName(specification).get().getName();
