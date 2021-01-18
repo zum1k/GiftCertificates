@@ -182,6 +182,8 @@ class TagServiceImplTest {
 
     TagDto actualTagDto = service.findAllByCertificateId(expectedCertificateId).get(0);
     Assertions.assertEquals(expectedTagDto, actualTagDto);
+
+    Mockito.verify(tagMapper).toDtoList(allTags);
   }
   @Test
   void count_ShouldReturn_10Pages_Test() {
@@ -193,5 +195,6 @@ class TagServiceImplTest {
     long actualCount = service.count(dto);
     Assertions.assertEquals(expectedCount, actualCount);
 
+    Mockito.verify(repository).count();
   }
 }
