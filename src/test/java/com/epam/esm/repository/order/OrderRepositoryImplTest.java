@@ -82,4 +82,14 @@ class OrderRepositoryImplTest {
     int actualSize = repository.findAllBySpecification(specification, page, pageSize).size();
     assertEquals(expectedSize, actualSize);
   }
+
+  @Test
+  @Transactional
+  void count_ShouldReturn_Six_Test() {
+    long expectedSize = 4;
+    long userId = 1;
+    CriteriaSpecification<Order> specification = new OrdersByUserIDCriteriaSpecification(userId);
+    long actualSize = repository.count(specification);
+    assertEquals(expectedSize, actualSize);
+  }
 }

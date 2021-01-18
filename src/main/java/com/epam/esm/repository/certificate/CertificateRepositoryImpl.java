@@ -94,21 +94,6 @@ public class CertificateRepositoryImpl implements CertificateRepository {
   }
 
   @Override
-  public long count(CriteriaSpecification<GiftCertificate> specification) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-
-    Root<GiftCertificate> root = criteriaQuery.from(GiftCertificate.class);
-    criteriaQuery.select(criteriaBuilder.count(root));
-
-    Predicate predicate = specification.toPredicate(root, criteriaBuilder);
-    criteriaQuery.where(predicate);
-    TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
-
-    return typedQuery.getSingleResult();
-  }
-
-  @Override
   public long count(List<CriteriaSpecification<GiftCertificate>> specifications) {
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
@@ -121,7 +106,7 @@ public class CertificateRepositoryImpl implements CertificateRepository {
         .map(o -> o.toPredicate(root, criteriaBuilder))
         .forEach(predicates::add);
 
-    criteriaQuery.where(predicates.toArray(new Predicate[0]));
+    criteriaQuery.where(predicates.toArray(new Predicate[]{}));
     TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
     return typedQuery.getSingleResult();
   }

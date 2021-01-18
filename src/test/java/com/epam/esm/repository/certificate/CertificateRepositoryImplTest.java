@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,5 +77,27 @@ public class CertificateRepositoryImplTest {
     long expectedCertificateId = 15;
     String actualCertificateName = repository.findById(expectedCertificateId).get().getName();
     assertEquals(expectedName, actualCertificateName);
+  }
+
+  @Test
+  @Transactional
+  void count_ShouldReturn_TenThousand_True(){
+    long expectedRows = 10002;
+    long actualRows = repository.count();
+    assertEquals(expectedRows, actualRows);
+
+
+  }
+  @Test
+  @Transactional
+  void countBySpecifications_ShouldReturn_Ten(){
+    long expectedRows = 1;
+    String partName = "t";
+    CriteriaSpecification<GiftCertificate> specification = new CertificatesByPartNameCriteriaSpecification(partName);
+    List<CriteriaSpecification<GiftCertificate>> specifications = Collections.singletonList(specification);
+    long actualRows = repository.count(specifications);
+    assertEquals(expectedRows, actualRows);
+
+
   }
 }

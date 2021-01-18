@@ -1,12 +1,16 @@
 package com.epam.esm.service.user;
 
+import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.RequestParametersDto;
+import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.repository.specification.MostWidelyUsedTagByUserOrders;
+import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.repository.user.UserRepository;
+import com.epam.esm.service.mapper.tag.TagMapper;
 import com.epam.esm.service.mapper.user.UserMapper;
-import com.epam.esm.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,15 +20,24 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
-  @InjectMocks private UserServiceImpl service;
-
-  @Mock private UserRepository repository;
-  @Mock private UserMapper userMapper;
+  @InjectMocks
+  private UserServiceImpl service;
+  @Mock
+  private UserRepository repository;
+  @Mock
+  private TagRepository tagRepository;
+  @Mock
+  private UserMapper userMapper;
+  @Mock
+  private TagMapper tagMapper;
 
   @Test
   void findUser_ShouldReturn_User_Test() {
@@ -88,5 +101,30 @@ class UserServiceImplTest {
 
     List<UserDto> actualUserDtos = service.findAll(parametersDto);
     Assertions.assertEquals(userDtos, actualUserDtos);
+  }
+
+  @Test
+  void count_ShouldReturn_Ten_Test() {
+    long expectedAmount = 1000;
+    long expectedCount = 10;
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPageLimit(100);
+    Mockito.when(repository.count()).thenReturn(expectedAmount);
+    long actualCount = service.count(dto);
+    Assertions.assertEquals(expectedCount, actualCount);
+
+  }
+
+  @Test
+  void findWidelyUsedTagByAllOrdersCost_ShouldReturn_Tag_Test() {
+    long expectedTagId = 475;
+    long userId = 1;
+    TagDto tagDto = new TagDto();
+    tagDto.setId((int) expectedTagId);
+    List<Tag> tags = Collections.singletonList(new Tag());
+    Mockito.when(tagRepository.findAll(Mockito.any(MostWidelyUsedTagByUserOrders.class))).thenReturn(tags);
+    Mockito.when(tagMapper.toDto(Mockito.any(Tag.class))).thenReturn(tagDto);
+    long actualTagId = service.findWidelyUsedTagByAllOrdersCost(userId).getId();
+    assertEquals(expectedTagId, actualTagId);
   }
 }

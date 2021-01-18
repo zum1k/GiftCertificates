@@ -22,7 +22,5 @@ public interface CertificateRepository {
 
   long count();
 
-  long count(CriteriaSpecification<GiftCertificate> specification);
-
   long count(List<CriteriaSpecification<GiftCertificate>> specifications);
 }

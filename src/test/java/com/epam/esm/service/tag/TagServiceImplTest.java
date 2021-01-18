@@ -183,4 +183,15 @@ class TagServiceImplTest {
     TagDto actualTagDto = service.findAllByCertificateId(expectedCertificateId).get(0);
     Assertions.assertEquals(expectedTagDto, actualTagDto);
   }
+  @Test
+  void count_ShouldReturn_Ten_Test() {
+    long expectedAmount = 1000;
+    long expectedCount = 10;
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPageLimit(100);
+    Mockito.when(repository.count()).thenReturn(expectedAmount);
+    long actualCount = service.count(dto);
+    Assertions.assertEquals(expectedCount, actualCount);
+
+  }
 }

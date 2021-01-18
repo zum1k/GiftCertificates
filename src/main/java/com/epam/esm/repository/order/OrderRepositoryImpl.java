@@ -1,7 +1,6 @@
 package com.epam.esm.repository.order;
 
 import com.epam.esm.entity.Order;
-import com.epam.esm.entity.User;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.repository.CriteriaSpecification;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,16 +78,6 @@ public class OrderRepositoryImpl implements OrderRepository {
   }
 
   @Override
-  public long count() {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Long> query = builder.createQuery(Long.class);
-    Root<Order> rootEntry = query.from(Order.class);
-    query.select(builder.count(rootEntry));
-    TypedQuery<Long> allQuery = entityManager.createQuery(query);
-    return allQuery.getSingleResult();
-  }
-
-  @Override
   public long count(CriteriaSpecification<Order> specification) {
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
@@ -101,24 +89,6 @@ public class OrderRepositoryImpl implements OrderRepository {
     criteriaQuery.where(predicate);
     TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
 
-    return typedQuery.getSingleResult();
-  }
-
-  @Override
-  public long count(List<CriteriaSpecification<Order>> specifications) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-
-    Root<Order> root = criteriaQuery.from(Order.class);
-    criteriaQuery.select(criteriaBuilder.count(root));
-
-    List<Predicate> predicates = new ArrayList<>();
-    specifications.stream()
-        .map(o -> o.toPredicate(root, criteriaBuilder))
-        .forEach(predicates::add);
-
-    criteriaQuery.where(predicates.toArray(new Predicate[0]));
-    TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
     return typedQuery.getSingleResult();
   }
 }

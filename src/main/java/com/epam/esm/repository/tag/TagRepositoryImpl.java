@@ -25,126 +25,93 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TagRepositoryImpl implements TagRepository {
-    private final static String ENTITY_NAME = "Tag";
-    @PersistenceContext
-    private final EntityManager entityManager;
+  private final static String ENTITY_NAME = "Tag";
+  @PersistenceContext
+  private final EntityManager entityManager;
 
-    @Override
-    public Optional<Tag> add(Tag tag) {
-        entityManager.persist(tag);
-        entityManager.flush();
-        return Optional.of(tag);
+  @Override
+  public Optional<Tag> add(Tag tag) {
+    entityManager.persist(tag);
+    entityManager.flush();
+    return Optional.of(tag);
+  }
+
+  @Override
+  public Optional<Tag> remove(long id) {
+    Tag tag = entityManager.find(Tag.class, id);
+    if (tag != null) {
+      entityManager.remove(tag);
+      return Optional.of(tag);
     }
+    throw new EntityNotFoundException(ENTITY_NAME, id);
+  }
 
-    @Override
-    public Optional<Tag> remove(long id) {
-        Tag tag = entityManager.find(Tag.class, id);
-        if(tag!=null) {
-            entityManager.remove(tag);
-            return Optional.of(tag);
-        }
-        throw new EntityNotFoundException(ENTITY_NAME,id);
+  @Override
+  public Optional<Tag> findTagByName(CriteriaSpecification<Tag> specification) {
+    TypedQuery<Tag> query = entityManager.createQuery(mapQuery(specification));
+    return query.getResultStream().findFirst();
+  }
+
+  @Override
+  public Tag findById(long id) {
+    Tag tag = entityManager.find(Tag.class, id);
+    if (tag != null) {
+      //  entityManager.detach(tag);
+      return tag;
     }
+    throw new EntityNotFoundException(ENTITY_NAME, id);
+  }
 
-    @Override
-    public Optional<Tag> findTagByName(CriteriaSpecification<Tag> specification) {
-        TypedQuery<Tag> query = entityManager.createQuery(mapQuery(specification));
-        return query.getResultStream().findFirst();
-    }
+  @Override
+  public List<Tag> findAll(int page, int pageSize) {
+    TypedQuery<Tag> allQuery = typedQuery();
+    allQuery.setFirstResult((page - 1) * pageSize);
+    allQuery.setMaxResults(pageSize);
+    return allQuery.getResultList();
+  }
 
-    @Override
-    public Tag findById(long id) {
-        Tag tag = entityManager.find(Tag.class, id);
-        if (tag != null) {
-          //  entityManager.detach(tag);
-            return tag;
-        }
-        throw new EntityNotFoundException(ENTITY_NAME, id);
-    }
+  @Override
+  public List<Tag> findTagsByCertificateId(CriteriaSpecification<Tag> specification) {
+    TypedQuery<Tag> query = entityManager.createQuery(mapQuery(specification));
+    return query.getResultList();
+  }
 
-    @Override
-    public List<Tag> findAll(int page, int pageSize) {
-        TypedQuery<Tag> allQuery = typedQuery();
-        allQuery.setFirstResult((page - 1) * pageSize);
-        allQuery.setMaxResults(pageSize);
-        return allQuery.getResultList();
-    }
+  @Override
+  public List<Tag> findAll() {
+    TypedQuery<Tag> allQuery = typedQuery();
+    return allQuery.getResultList();
+  }
 
-    @Override
-    public List<Tag> findTagsByCertificateId(CriteriaSpecification<Tag> specification) {
-        TypedQuery<Tag> query = entityManager.createQuery(mapQuery(specification));
-        return query.getResultList();
-    }
+  @Override
+  public List findAll(NativeSpecification<Tag> specification) {
+    String nativeQuery = specification.getNativeQuery();
+    return entityManager.createNativeQuery(nativeQuery, Tag.class).getResultList();
+  }
 
-    @Override
-    public List<Tag> findAll() {
-        TypedQuery<Tag> allQuery = typedQuery();
-        return allQuery.getResultList();
-    }
+  @Override
+  public long count() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> query = builder.createQuery(Long.class);
+    Root<Tag> rootEntry = query.from(Tag.class);
+    query.select(builder.count(rootEntry));
+    TypedQuery<Long> allQuery = entityManager.createQuery(query);
+    return allQuery.getSingleResult();
+  }
 
-    @Override
-    public List findAll(NativeSpecification<Tag> specification) {
-        String nativeQuery = specification.getNativeQuery();
-        return entityManager.createNativeQuery(nativeQuery,Tag.class).getResultList();
-    }
+  private TypedQuery<Tag> typedQuery() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Tag> query = builder.createQuery(Tag.class);
+    Root<Tag> rootEntry = query.from(Tag.class);
+    CriteriaQuery<Tag> all = query.select(rootEntry);
+    return entityManager.createQuery(all);
+  }
 
-    @Override
-    public long count() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> query = builder.createQuery(Long.class);
-        Root<Tag> rootEntry = query.from(Tag.class);
-        query.select(builder.count(rootEntry));
-        TypedQuery<Long> allQuery = entityManager.createQuery(query);
-        return allQuery.getSingleResult();
-    }
-
-    @Override
-    public long count(CriteriaSpecification<Tag> specification) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-
-        Root<Tag> root = criteriaQuery.from(Tag.class);
-        criteriaQuery.select(criteriaBuilder.count(root));
-
-        Predicate predicate = specification.toPredicate(root, criteriaBuilder);
-        criteriaQuery.where(predicate);
-        TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
-
-        return typedQuery.getSingleResult();
-    }
-
-    @Override
-    public long count(List<CriteriaSpecification<Tag>> specifications) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-
-        Root<Tag> root = criteriaQuery.from(Tag.class);
-        criteriaQuery.select(criteriaBuilder.count(root));
-
-        List<Predicate> predicates = new ArrayList<>();
-        specifications.stream()
-            .map(o -> o.toPredicate(root, criteriaBuilder))
-            .forEach(predicates::add);
-
-        criteriaQuery.where(predicates.toArray(new Predicate[0]));
-        TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
-        return typedQuery.getSingleResult();
-    }
-
-    private TypedQuery<Tag> typedQuery() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tag> query = builder.createQuery(Tag.class);
-        Root<Tag> rootEntry = query.from(Tag.class);
-        CriteriaQuery<Tag> all = query.select(rootEntry);
-        return  entityManager.createQuery(all);
-    }
-
-    private CriteriaQuery<Tag> mapQuery(CriteriaSpecification<Tag> specification) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Tag> criteriaQuery = builder.createQuery(Tag.class);
-        Root<Tag> tagRoot = criteriaQuery.from(Tag.class);
-        return criteriaQuery.where(specification.toPredicate(tagRoot, builder));
-    }
+  private CriteriaQuery<Tag> mapQuery(CriteriaSpecification<Tag> specification) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Tag> criteriaQuery = builder.createQuery(Tag.class);
+    Root<Tag> tagRoot = criteriaQuery.from(Tag.class);
+    return criteriaQuery.where(specification.toPredicate(tagRoot, builder));
+  }
 }
 
 

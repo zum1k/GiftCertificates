@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,67 +19,96 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-<span class="fc" id="L24">@Slf4j</span>
+<span class="fc" id="L22">@Slf4j</span>
 @Repository
-<span class="fc" id="L26">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
+<span class="fc" id="L24">@RequiredArgsConstructor(onConstructor = @__(@Autowired))</span>
 public class CertificateRepositoryImpl implements CertificateRepository {
   private static final String ENTITY_NAME = &quot;Certificate&quot;;
-  @PersistenceContext private final EntityManager entityManager;
+  @PersistenceContext
+  private final EntityManager entityManager;
 
   @Override
   public Optional&lt;GiftCertificate&gt; add(GiftCertificate certificate) {
-<span class="nc" id="L33">    entityManager.persist(certificate);</span>
-<span class="nc" id="L34">    entityManager.flush();</span>
-<span class="nc" id="L35">    return Optional.of(certificate);</span>
+<span class="nc" id="L32">    entityManager.persist(certificate);</span>
+<span class="nc" id="L33">    entityManager.flush();</span>
+<span class="nc" id="L34">    return Optional.of(certificate);</span>
   }
 
   @Override
   public Optional&lt;GiftCertificate&gt; remove(long id) {
-<span class="fc" id="L40">    GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">    if (certificate != null) {</span>
-<span class="fc" id="L42">      entityManager.remove(certificate);</span>
-<span class="fc" id="L43">      return Optional.of(certificate);</span>
+<span class="fc" id="L39">    GiftCertificate certificate = entityManager.find(GiftCertificate.class, id);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">    if (certificate != null) {</span>
+<span class="fc" id="L41">      entityManager.remove(certificate);</span>
+<span class="fc" id="L42">      return Optional.of(certificate);</span>
     }
-<span class="nc" id="L45">    throw new EntityNotFoundException(ENTITY_NAME, id);</span>
+<span class="nc" id="L44">    throw new EntityNotFoundException(ENTITY_NAME, id);</span>
   }
 
   @Override
   public Optional&lt;GiftCertificate&gt; update(GiftCertificate giftCertificate) {
-<span class="fc" id="L50">    entityManager.detach(giftCertificate);</span>
-<span class="fc" id="L51">    entityManager.merge(giftCertificate);</span>
-<span class="fc" id="L52">    return Optional.of(giftCertificate);</span>
+<span class="fc" id="L49">    entityManager.detach(giftCertificate);</span>
+<span class="fc" id="L50">    entityManager.merge(giftCertificate);</span>
+<span class="fc" id="L51">    return Optional.of(giftCertificate);</span>
   }
 
   @Override
   public List&lt;GiftCertificate&gt; findAllBySpecification(
       List&lt;CriteriaSpecification&lt;GiftCertificate&gt;&gt; specifications, int page, int pageSize) {
-<span class="fc" id="L58">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
-<span class="fc" id="L59">    CriteriaQuery&lt;GiftCertificate&gt; criteriaQuery = builder.createQuery(GiftCertificate.class);</span>
-<span class="fc" id="L60">    Root&lt;GiftCertificate&gt; root = criteriaQuery.from(GiftCertificate.class);</span>
-<span class="fc" id="L61">    List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L62">    specifications.forEach(o -&gt; predicates.add(o.toPredicate(root, builder)));</span>
-<span class="fc" id="L63">    criteriaQuery.where(predicates.toArray(new Predicate[] {}));</span>
-<span class="fc" id="L64">    TypedQuery&lt;GiftCertificate&gt; query = entityManager.createQuery(criteriaQuery);</span>
-<span class="fc" id="L65">    query.setFirstResult((page - 1) * pageSize);</span>
-<span class="fc" id="L66">    query.setMaxResults(pageSize);</span>
-<span class="fc" id="L67">    return query.getResultList();</span>
+<span class="fc" id="L57">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L58">    CriteriaQuery&lt;GiftCertificate&gt; criteriaQuery = builder.createQuery(GiftCertificate.class);</span>
+<span class="fc" id="L59">    Root&lt;GiftCertificate&gt; root = criteriaQuery.from(GiftCertificate.class);</span>
+<span class="fc" id="L60">    List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L61">    specifications.forEach(o -&gt; predicates.add(o.toPredicate(root, builder)));</span>
+<span class="fc" id="L62">    criteriaQuery.where(predicates.toArray(new Predicate[]{}));</span>
+<span class="fc" id="L63">    TypedQuery&lt;GiftCertificate&gt; query = entityManager.createQuery(criteriaQuery);</span>
+<span class="fc" id="L64">    query.setFirstResult((page - 1) * pageSize);</span>
+<span class="fc" id="L65">    query.setMaxResults(pageSize);</span>
+<span class="fc" id="L66">    return query.getResultList();</span>
   }
 
   @Override
   public List&lt;GiftCertificate&gt; findAll(int page, int pageSize) {
-<span class="fc" id="L72">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
-<span class="fc" id="L73">    CriteriaQuery&lt;GiftCertificate&gt; query = builder.createQuery(GiftCertificate.class);</span>
-<span class="fc" id="L74">    Root&lt;GiftCertificate&gt; rootEntry = query.from(GiftCertificate.class);</span>
-<span class="fc" id="L75">    CriteriaQuery&lt;GiftCertificate&gt; all = query.select(rootEntry);</span>
-<span class="fc" id="L76">    TypedQuery&lt;GiftCertificate&gt; allQuery = entityManager.createQuery(all);</span>
-<span class="fc" id="L77">    allQuery.setFirstResult((page - 1) * pageSize);</span>
-<span class="fc" id="L78">    allQuery.setMaxResults(pageSize);</span>
-<span class="fc" id="L79">    return allQuery.getResultList();</span>
+<span class="fc" id="L71">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L72">    CriteriaQuery&lt;GiftCertificate&gt; query = builder.createQuery(GiftCertificate.class);</span>
+<span class="fc" id="L73">    Root&lt;GiftCertificate&gt; rootEntry = query.from(GiftCertificate.class);</span>
+<span class="fc" id="L74">    CriteriaQuery&lt;GiftCertificate&gt; all = query.select(rootEntry);</span>
+<span class="fc" id="L75">    TypedQuery&lt;GiftCertificate&gt; allQuery = entityManager.createQuery(all);</span>
+<span class="fc" id="L76">    allQuery.setFirstResult((page - 1) * pageSize);</span>
+<span class="fc" id="L77">    allQuery.setMaxResults(pageSize);</span>
+<span class="fc" id="L78">    return allQuery.getResultList();</span>
   }
 
   @Override
   public Optional&lt;GiftCertificate&gt; findById(long id) {
-<span class="fc" id="L84">    return Optional.ofNullable(entityManager.find(GiftCertificate.class, id));</span>
+<span class="fc" id="L83">    return Optional.ofNullable(entityManager.find(GiftCertificate.class, id));</span>
+  }
+
+  @Override
+  public long count() {
+<span class="fc" id="L88">    CriteriaBuilder builder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L89">    CriteriaQuery&lt;Long&gt; query = builder.createQuery(Long.class);</span>
+<span class="fc" id="L90">    Root&lt;GiftCertificate&gt; rootEntry = query.from(GiftCertificate.class);</span>
+<span class="fc" id="L91">    query.select(builder.count(rootEntry));</span>
+<span class="fc" id="L92">    TypedQuery&lt;Long&gt; allQuery = entityManager.createQuery(query);</span>
+<span class="fc" id="L93">    return allQuery.getSingleResult();</span>
+  }
+
+  @Override
+  public long count(List&lt;CriteriaSpecification&lt;GiftCertificate&gt;&gt; specifications) {
+<span class="fc" id="L98">    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L99">    CriteriaQuery&lt;Long&gt; criteriaQuery = criteriaBuilder.createQuery(Long.class);</span>
+
+<span class="fc" id="L101">    Root&lt;GiftCertificate&gt; root = criteriaQuery.from(GiftCertificate.class);</span>
+<span class="fc" id="L102">    criteriaQuery.select(criteriaBuilder.count(root));</span>
+
+<span class="fc" id="L104">    List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L105">    specifications.stream()</span>
+<span class="fc" id="L106">        .map(o -&gt; o.toPredicate(root, criteriaBuilder))</span>
+<span class="fc" id="L107">        .forEach(predicates::add);</span>
+
+<span class="fc" id="L109">    criteriaQuery.where(predicates.toArray(new Predicate[]{}));</span>
+<span class="fc" id="L110">    TypedQuery&lt;Long&gt; typedQuery = entityManager.createQuery(criteriaQuery);</span>
+<span class="fc" id="L111">    return typedQuery.getSingleResult();</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

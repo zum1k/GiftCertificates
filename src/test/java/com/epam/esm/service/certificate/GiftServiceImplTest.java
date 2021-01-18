@@ -10,7 +10,9 @@ import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotDeletedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.exception.EntityNotUpdatedException;
+import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.certificate.CertificateRepositoryImpl;
+import com.epam.esm.repository.specification.CertificatesByTagNameCriteriaSpecification;
 import com.epam.esm.repository.specification.SpecificationCreator;
 import com.epam.esm.service.mapper.certificate.CertificateMapper;
 import com.epam.esm.service.mapper.tag.TagMapper;
@@ -31,12 +33,18 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class GiftServiceImplTest {
-  @InjectMocks private GiftServiceImpl service;
-  @Mock private CertificateRepositoryImpl repository;
-  @Mock private CertificateMapper mapper;
-  @Mock private TagMapper tagMapper;
-  @Mock private TagServiceImpl tagService;
-  @Mock private SpecificationCreator creator;
+  @InjectMocks
+  private GiftServiceImpl service;
+  @Mock
+  private CertificateRepositoryImpl repository;
+  @Mock
+  private CertificateMapper mapper;
+  @Mock
+  private TagMapper tagMapper;
+  @Mock
+  private TagServiceImpl tagService;
+  @Mock
+  private SpecificationCreator creator;
 
   @Test
   void addCertificate_ShouldReturnCertificate_True_test() {
@@ -256,5 +264,31 @@ class GiftServiceImplTest {
           service.findById(expectedCertificateID);
         });
     Mockito.verify(repository).findById(Mockito.eq(expectedCertificateID));
+  }
+
+  @Test
+  void count_ShouldReturn_Ten_Test() {
+    long expectedAmount = 1000;
+    long expectedCount = 10;
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPageLimit(100);
+    Mockito.when(repository.count()).thenReturn(expectedAmount);
+    long actualCount = service.count(dto);
+    Assertions.assertEquals(expectedCount, actualCount);
+
+  }
+
+  @Test
+  void count_BySpecifications_ShouldReturn_Ten_Test() {
+    long expectedAmount = 100;
+    long expectedCount = 1;
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPageLimit(100);
+    CriteriaSpecification<GiftCertificate> specification = new CertificatesByTagNameCriteriaSpecification("name");
+    List<CriteriaSpecification<GiftCertificate>> specifications = Collections.singletonList(specification);
+    Mockito.when(creator.createSpecifications(dto)).thenReturn(specifications);
+    Mockito.when(repository.count(specifications)).thenReturn(expectedAmount);
+    long actualCount = service.count(dto);
+    Assertions.assertEquals(expectedCount, actualCount);
   }
 }

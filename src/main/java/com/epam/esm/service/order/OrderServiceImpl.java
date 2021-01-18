@@ -77,10 +77,11 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public long count(RequestParametersDto dto) {
+  public long count(long userId, RequestParametersDto dto) {
     log.info("count order pages");
     int pageSize = dto.getPageLimit();
-    long elementsAmount = repository.count();
+    CriteriaSpecification<Order> specification = new OrdersByUserIDCriteriaSpecification(userId);
+    long elementsAmount = repository.count(specification);
     return elementsAmount % pageSize == 0
         ? elementsAmount / pageSize
         : elementsAmount / pageSize + 1;

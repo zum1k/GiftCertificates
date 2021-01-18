@@ -13,7 +13,7 @@ import java.util.Set;
 
 @EntityListeners({AuditDateEntityListener.class})
 @Entity
-<span class="pc bpc" id="L16" title="49 of 50 branches missed.">@Data</span>
+<span class="pc bpc" id="L16" title="44 of 50 branches missed.">@Data</span>
 <span class="fc" id="L17">@NoArgsConstructor</span>
 @Table(name = &quot;gifts&quot;)
 public class GiftCertificate implements AuditEntity {
@@ -26,19 +26,19 @@ public class GiftCertificate implements AuditEntity {
 <span class="fc" id="L26">  private String name;</span>
 
   @Column(name = &quot;description&quot;)
-<span class="nc" id="L29">  private String description;</span>
+<span class="fc" id="L29">  private String description;</span>
 
   @Column(name = &quot;price&quot;)
-<span class="nc" id="L32">  private BigDecimal price;</span>
+<span class="fc" id="L32">  private BigDecimal price;</span>
 
   @Column(name = &quot;create_date&quot;)
-<span class="nc" id="L35">  private ZonedDateTime createDate;</span>
+<span class="fc" id="L35">  private ZonedDateTime createDate;</span>
 
   @Column(name = &quot;last_update_date&quot;)
-<span class="nc" id="L38">  private ZonedDateTime lastUpdateDate;</span>
+<span class="fc" id="L38">  private ZonedDateTime lastUpdateDate;</span>
 
   @Column(name = &quot;duration&quot;)
-<span class="nc" id="L41">  private long duration;</span>
+<span class="fc" id="L41">  private long duration;</span>
 
 <span class="fc" id="L43">  @EqualsAndHashCode.Exclude</span>
   @ToString.Exclude

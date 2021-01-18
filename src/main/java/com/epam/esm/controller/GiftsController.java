@@ -23,20 +23,21 @@ import java.net.URI;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
+@Validated
 @RequestMapping("/certificates")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class GiftsController {
   private final GiftCertificateLinkModifier linkModifier;
   private final GiftService giftService;
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CollectionModel<GiftCertificateDto>> findAll(@RequestParam(required = false, defaultValue = "1")
+  public ResponseEntity<CollectionModel<GiftCertificateDto>> findAll(@RequestParam(name = "page", required = false, defaultValue = "1")
                                                                      @Min(value = 1, message = "page must be positive") Integer page,
                                                                      @Min(value = 1, message = "page should be positive")
                                                                      @Max(value = 100, message = "page size must not be greater than 100")
-                                                                     @RequestParam(required = false, defaultValue = "50") Integer pageSize,
+                                                                     @RequestParam(name = "pageSize", required = false, defaultValue = "50") Integer pageSize,
                                                                      @RequestParam(required = false) String tagName,
                                                                      @RequestParam(required = false) String partName,
                                                                      @RequestParam(required = false) String partDescription,

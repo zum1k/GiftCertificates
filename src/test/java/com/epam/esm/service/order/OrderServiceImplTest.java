@@ -25,12 +25,17 @@ import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
-  @InjectMocks private OrderServiceImpl service;
+  @InjectMocks
+  private OrderServiceImpl service;
 
-  @Mock private OrderRepository repository;
-  @Mock private OrderMapper mapper;
-  @Mock private UserRepository userRepository;
-  @Mock private CertificateRepository certificateRepository;
+  @Mock
+  private OrderRepository repository;
+  @Mock
+  private OrderMapper mapper;
+  @Mock
+  private UserRepository userRepository;
+  @Mock
+  private CertificateRepository certificateRepository;
 
   @Test
   void findUserOrders_ShouldReturn_Users_Test() {
@@ -59,10 +64,10 @@ class OrderServiceImplTest {
       orderDtos.add(orderDto);
     }
     Mockito.when(
-            repository.findAllBySpecification(
-                Mockito.any(OrdersByUserIDCriteriaSpecification.class),
-                Mockito.any(Integer.class),
-                Mockito.any(Integer.class)))
+        repository.findAllBySpecification(
+            Mockito.any(OrdersByUserIDCriteriaSpecification.class),
+            Mockito.any(Integer.class),
+            Mockito.any(Integer.class)))
         .thenReturn(orders);
     Mockito.when(mapper.toDtos(orders)).thenReturn(orderDtos);
 
@@ -204,5 +209,17 @@ class OrderServiceImplTest {
         () -> {
           service.setOrder(userId, orderDto);
         });
+  }
+
+  @Test
+  void count_BySpecification_ShouldReturn_Ten_Test() {
+    long expectedAmount = 100;
+    long expectedCount = 1;
+    long userId = 1;
+    RequestParametersDto dto = new RequestParametersDto();
+    dto.setPageLimit(100);
+    Mockito.when(repository.count(Mockito.any(OrdersByUserIDCriteriaSpecification.class))).thenReturn(expectedAmount);
+    long actualCount = service.count(userId, dto);
+    Assertions.assertEquals(expectedCount, actualCount);
   }
 }

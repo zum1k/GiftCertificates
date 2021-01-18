@@ -40,9 +40,12 @@ public class OrderLinkModifier implements DtoLinkModifier<OrderDto> {
   @Override
   public CollectionModel<OrderDto> allWithPagination(List<OrderDto> dtos, RequestParametersDto dto) {
     CollectionModel<OrderDto> model = CollectionModel.of(dtos);
-
+    if (dtos.isEmpty()) {
+      return model;
+    }
+    long userId = dtos.get(0).getUserId();
     int page = dto.getPage();
-    int pageAmount = (int) service.count(dto);
+    int pageAmount = (int) service.count(userId, dto);
     if (pageAmount != 0) {
       dto.setPage(FIRST_PAGE);
       Link firstPage = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).
@@ -51,20 +54,20 @@ public class OrderLinkModifier implements DtoLinkModifier<OrderDto> {
 
       dto.setPage(pageAmount);
       Link lastPage = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).
-          ordersByUserId(dtos.get(FIRST_PAGE).getOrderId(), dto.getPage(), dto.getPageLimit())).withRel("first");
+          ordersByUserId(dtos.get(FIRST_PAGE).getOrderId(), dto.getPage(), dto.getPageLimit())).withRel("last");
       model.add(lastPage.expand());
 
       if (dto.getPage() != 1) {
         dto.setPage(dto.getPage() - 1);
         Link prevPage = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).
-            ordersByUserId(dtos.get(FIRST_PAGE).getOrderId(), dto.getPage(), dto.getPageLimit())).withRel("first");
+            ordersByUserId(dtos.get(FIRST_PAGE).getOrderId(), dto.getPage(), dto.getPageLimit())).withRel("prev");
         model.add(prevPage.expand());
       }
 
       if (page != pageAmount) {
         dto.setPage(page + 1);
         Link nextPage = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).
-            ordersByUserId(dtos.get(FIRST_PAGE).getOrderId(), dto.getPage(), dto.getPageLimit())).withRel("first");
+            ordersByUserId(dtos.get(FIRST_PAGE).getOrderId(), dto.getPage(), dto.getPageLimit())).withRel("next");
         model.add(nextPage.expand());
       }
     }

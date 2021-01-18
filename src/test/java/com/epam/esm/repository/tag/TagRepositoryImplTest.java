@@ -2,6 +2,8 @@ package com.epam.esm.repository.tag;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.repository.CriteriaSpecification;
+import com.epam.esm.repository.NativeSpecification;
+import com.epam.esm.repository.specification.MostWidelyUsedTagByUserOrders;
 import com.epam.esm.repository.specification.TagsByCertificateIdCriteriaSpecifications;
 import com.epam.esm.repository.specification.TagsByNameCriteriaSpecifications;
 import lombok.RequiredArgsConstructor;
@@ -71,5 +73,32 @@ class TagRepositoryImplTest {
         new TagsByCertificateIdCriteriaSpecifications(certificateId);
     int actualSizeOfTags = tagRepository.findTagsByCertificateId(specification).size();
     Assertions.assertTrue(actualSizeOfTags > 0);
+  }
+
+  @Test
+  @Transactional
+  void count_ShouldReturn_AllTags_Test() {
+    long expectedSize = 1005;
+    long actualSize = tagRepository.count();
+    assertEquals(expectedSize, actualSize);
+  }
+
+  @Test
+  @Transactional
+  void findAll_ByLimitOffset_ShouldReturn_Ten_Test() {
+    int expectedSize = 10;
+    int page = 1;
+    int pageSize = 10;
+    int actualSize = tagRepository.findAll(page, pageSize).size();
+    assertEquals(expectedSize, actualSize);
+  }
+
+  @Test
+  @Transactional
+  void findAll_ByNativeSpecification_ShouldReturn_One_Test() {
+    long expectedId = 475;
+    NativeSpecification<Tag> specification = new MostWidelyUsedTagByUserOrders();
+    long actualId = tagRepository.findAll(specification).get(0).getTagId();
+    assertEquals(expectedId, actualId);
   }
 }

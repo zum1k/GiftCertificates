@@ -69,7 +69,8 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it,
                     exclude: ['com/epam/esm/entity', 'com/epam/esm/controller', 'com/epam/esm/configuration',
-                            'com/epam/esm/service/mapper','com/epam/esm/exception'   ])
+                            'com/epam/esm/service/mapper','com/epam/esm/exception',
+                              'com/epam/esm/repository/specification', 'com/epam/esm/application'])
         }))
     }
 }

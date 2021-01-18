@@ -27,5 +27,5 @@ public interface OrderService {
    * @param dto {@code RequestParametersDto}'s with query values.
    * @return the number of pages depending on the request parameters
    */
-  long count(RequestParametersDto dto);
+  long count(long userId, RequestParametersDto dto);
 }

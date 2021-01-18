@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
   public long count(RequestParametersDto dto) {
     log.info("count user pages");
     int pageSize = dto.getPageLimit();
-    long elementsAmount = tagRepository.count();
+    long elementsAmount = repository.count();
     return elementsAmount % pageSize == 0
         ? elementsAmount / pageSize
         : elementsAmount / pageSize + 1;

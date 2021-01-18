@@ -12,8 +12,4 @@ public interface UserRepository {
   List<User> findAll(int page, int pageSize);
 
   long count();
-
-  long count(CriteriaSpecification<User> specification);
-
-  long count(List<CriteriaSpecification<User>> specifications);
 }

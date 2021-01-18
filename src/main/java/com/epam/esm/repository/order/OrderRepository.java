@@ -18,10 +18,5 @@ public interface OrderRepository {
 
     List<Order> findAllBySpecification(CriteriaSpecification<Order> specification, int page, int pageSize);
 
-    long count();
-
     long count(CriteriaSpecification<Order> specification);
-
-    long count(List<CriteriaSpecification<Order>> specifications);
-
 }
