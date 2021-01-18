@@ -212,7 +212,7 @@ class OrderServiceImplTest {
   }
 
   @Test
-  void count_BySpecification_ShouldReturn_Ten_Test() {
+  void count_BySpecification_ShouldReturn_10Pages_Test() {
     long expectedAmount = 100;
     long expectedCount = 1;
     long userId = 1;

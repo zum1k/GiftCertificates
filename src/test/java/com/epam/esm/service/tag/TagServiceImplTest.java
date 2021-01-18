@@ -184,7 +184,7 @@ class TagServiceImplTest {
     Assertions.assertEquals(expectedTagDto, actualTagDto);
   }
   @Test
-  void count_ShouldReturn_Ten_Test() {
+  void count_ShouldReturn_10Pages_Test() {
     long expectedAmount = 1000;
     long expectedCount = 10;
     RequestParametersDto dto = new RequestParametersDto();

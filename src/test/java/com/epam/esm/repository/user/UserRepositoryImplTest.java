@@ -1,10 +1,13 @@
 package com.epam.esm.repository.user;
 
+import com.epam.esm.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,8 +20,17 @@ class UserRepositoryImplTest {
   @Transactional
   void find_ShouldReturn_User_True() {
     long expectedId = 4;
-    long actualId = repository.find(expectedId).get().getUserId();
+    Optional<User> optionalUser = repository.find(expectedId);
+    long actualId = optionalUser.get().getUserId();
     assertEquals(expectedId, actualId);
+  }
+
+  @Test
+  @Transactional
+  void find_ShouldReturn_Empty_Test() {
+    long expectedId = 300000000;
+    Optional<User> optionalUser = repository.find(expectedId);
+    assertEquals(Optional.empty(), optionalUser);
   }
 
   @Test

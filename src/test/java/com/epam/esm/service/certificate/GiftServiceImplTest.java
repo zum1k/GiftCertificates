@@ -75,6 +75,11 @@ class GiftServiceImplTest {
     String actualName = service.add(certificateDto).getName();
 
     Assertions.assertEquals(expectedName, actualName);
+
+    Mockito.verify(repository).add(Mockito.eq(certificate));
+    Mockito.verify(mapper).toEntity(Mockito.eq(certificateDto));
+    Mockito.verify(tagService).addTagIfNotExist(Mockito.eq(tagDto));
+    Mockito.verify(tagMapper).toEntity(tagDto);
   }
 
   @Test()
@@ -103,6 +108,7 @@ class GiftServiceImplTest {
           service.add(certificateDto);
         });
     Mockito.verify(repository).add(Mockito.eq(certificate));
+    Mockito.verify(mapper).toEntity(Mockito.eq(certificateDto));
   }
 
   @Test
@@ -126,7 +132,9 @@ class GiftServiceImplTest {
 
     GiftCertificateDto actualTagDto = service.remove(expectedCertificateID);
     Assertions.assertEquals(certificateDto, actualTagDto);
+
     Mockito.verify(repository).remove(Mockito.eq(expectedCertificateID));
+    Mockito.verify(mapper).toDto(Mockito.eq(certificate));
   }
 
   @Test
@@ -165,6 +173,11 @@ class GiftServiceImplTest {
 
     GiftCertificateDto actualDto = service.update(expectedCertificateId, certificateDto);
     Assertions.assertEquals(certificateDto, actualDto);
+
+    Mockito.verify(repository).update(Mockito.eq(certificate));
+    Mockito.verify(mapper).toEntity(Mockito.eq(certificateDto));
+    Mockito.verify(mapper).toDto(Mockito.eq(certificate));
+
   }
 
   @Test
@@ -193,6 +206,8 @@ class GiftServiceImplTest {
           service.update(expectedCertificateId, certificateDto);
         });
     Mockito.verify(repository).update(Mockito.eq(certificate));
+    Mockito.verify(mapper).toEntity(Mockito.eq(certificateDto));
+
   }
 
   @Test
@@ -227,6 +242,10 @@ class GiftServiceImplTest {
 
     List<GiftCertificateDto> actualList = service.findAll(parametersDto);
     Assertions.assertEquals(certificateDtoList, actualList);
+
+    Mockito.verify(repository).findAll(Mockito.anyInt(), Mockito.anyInt());
+    Mockito.verify(mapper).toDtos(Mockito.eq(certificateList));
+    Mockito.verify(creator).createSpecifications(parametersDto);
   }
 
   @Test
@@ -252,6 +271,9 @@ class GiftServiceImplTest {
     GiftCertificateDto actualCertificateDto = service.findById(expectedCertificateId);
 
     Assertions.assertEquals(giftCertificateDto, actualCertificateDto);
+
+    Mockito.verify(repository).findById(Mockito.eq(expectedCertificateId));
+    Mockito.verify(mapper).toDto(Mockito.eq(certificate));
   }
 
   @Test
@@ -267,7 +289,7 @@ class GiftServiceImplTest {
   }
 
   @Test
-  void count_ShouldReturn_Ten_Test() {
+  void count_ShouldReturn_10Pages_Test() {
     long expectedAmount = 1000;
     long expectedCount = 10;
     RequestParametersDto dto = new RequestParametersDto();
@@ -276,10 +298,11 @@ class GiftServiceImplTest {
     long actualCount = service.count(dto);
     Assertions.assertEquals(expectedCount, actualCount);
 
+    Mockito.verify(repository).count();
   }
 
   @Test
-  void count_BySpecifications_ShouldReturn_Ten_Test() {
+  void count_BySpecifications_ShouldReturn_10Pages_Test() {
     long expectedAmount = 100;
     long expectedCount = 1;
     RequestParametersDto dto = new RequestParametersDto();
@@ -290,5 +313,8 @@ class GiftServiceImplTest {
     Mockito.when(repository.count(specifications)).thenReturn(expectedAmount);
     long actualCount = service.count(dto);
     Assertions.assertEquals(expectedCount, actualCount);
+
+    Mockito.verify(repository).count(specifications);
+    Mockito.verify(creator).createSpecifications(dto);
   }
 }
