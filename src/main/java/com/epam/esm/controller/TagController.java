@@ -69,7 +69,8 @@ public class TagController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<TagDto> findTagById(@PathVariable("id") final long id) {
+  public ResponseEntity<TagDto> findTagById(@PathVariable("id")
+                                            @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get tag {}", id);
     TagDto dto = tagService.findOne(id);
     linkModifier.withTagLocation(dto);
@@ -81,7 +82,8 @@ public class TagController {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<TagDto> deleteTagById(@PathVariable("id") final long id) {
+  public ResponseEntity<TagDto> deleteTagById(@PathVariable("id")
+                                              @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get tag {}", id);
     tagService.remove(id);
     return ResponseEntity.noContent().build();

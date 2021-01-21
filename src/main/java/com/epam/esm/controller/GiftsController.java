@@ -75,7 +75,8 @@ public class GiftsController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<GiftCertificateDto> findCertificateById(@PathVariable("id") final long id) {
+  public ResponseEntity<GiftCertificateDto> findCertificateById(@PathVariable("id")
+                                                                @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get certificate {}", id);
     GiftCertificateDto dto = giftService.findById(id);
     linkModifier.withTagLocation(dto);
@@ -87,9 +88,9 @@ public class GiftsController {
       method = RequestMethod.PUT,
       consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<GiftCertificateDto> updateGiftCertificates(
-      @PathVariable("id") final long id,
-      @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
+  public ResponseEntity<GiftCertificateDto> updateGiftCertificates(@PathVariable("id")
+                                                                   @Min(value = 1, message = "id must be positive") final long id,
+                                                                   @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
     log.info("update gift {}", id);
     GiftCertificateDto dto = giftService.update(id, certificateDto);
     linkModifier.withTagLocation(dto);
@@ -100,8 +101,8 @@ public class GiftsController {
       value = "/{id}",
       method = RequestMethod.DELETE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<GiftCertificateDto> deleteCertificateById(
-      @PathVariable("id") final long id) {
+  public ResponseEntity<GiftCertificateDto> deleteCertificateById(@PathVariable("id")
+                                                                  @Min(value = 1, message = "id must be positive")final long id) {
     log.info("remove gift by {}", id);
     giftService.remove(id);
     return ResponseEntity.noContent().build();

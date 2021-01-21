@@ -41,7 +41,8 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<UserDto> findUser(@PathVariable("id") final long id) {
+  public ResponseEntity<UserDto> findUser(@PathVariable("id")
+                                          @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find user {}", id);
     UserDto userDto = userService.findUser(id);
     linkModifier.withTagLocation(userDto);
@@ -54,8 +55,8 @@ public class UserController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<OrderDto> addOrder(
-      @PathVariable("id") final long id, @Valid @RequestBody OrderDto dto) {
+  public ResponseEntity<OrderDto> addOrder(@PathVariable("id")
+                                           @Min(value = 1, message = "id must be positive") final long id, @Valid @RequestBody OrderDto dto) {
     log.info("add order {}", id);
     OrderDto orderDto = orderService.createOrder(id, dto);
     long dtoId = orderDto.getOrderId();
@@ -81,8 +82,8 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<UserDto>> findAll(@RequestParam(required = false, defaultValue = "1")
                                                           @Min(value = 1, message = "page must be positive") Integer page,
-                                                          @Min(value = 1, message = "page should be positive")
-                                                          @Max(value = 100, message = "page size must not be greater than 100")
+                                                          @Min(value = 1, message = "pageSize should be positive")
+                                                          @Max(value = 100, message = "pageSize must not be greater than 100")
                                                           @RequestParam(required = false, defaultValue = "50") Integer pageSize) {
     log.info("find all users");
     RequestParametersDto dto = new RequestParametersDto();
@@ -97,11 +98,12 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<CollectionModel<OrderDto>> ordersByUserId(@PathVariable("id") final long id,
+  public ResponseEntity<CollectionModel<OrderDto>> ordersByUserId(@PathVariable("id")
+                                                                  @Min(value = 1, message = "id must be positive") final long id,
                                                                   @RequestParam(required = false, defaultValue = "1")
                                                                   @Min(value = 1, message = "page must be positive") Integer page,
-                                                                  @Min(value = 1, message = "page should be positive")
-                                                                  @Max(value = 100, message = "page size must not be greater than 100")
+                                                                  @Min(value = 1, message = "pageSize should be positive")
+                                                                  @Max(value = 100, message = "pageSize must not be greater than 100")
                                                                   @RequestParam(required = false, defaultValue = "50") Integer pageSize) {
     log.info("find all orders by user id {}", id);
     RequestParametersDto dto = new RequestParametersDto();
@@ -116,8 +118,8 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(
-      @PathVariable("id") long id) {
+  public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(@PathVariable("id")
+                                                                           @Min(value = 1, message = "id must be positive") long id) {
     log.info("find most widely used tag");
     return userService.findWidelyUsedTagByAllOrdersCost(id);
   }
