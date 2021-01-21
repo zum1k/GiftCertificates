@@ -35,8 +35,8 @@ public class GiftsController {
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<CollectionModel<GiftCertificateDto>> findAll(@RequestParam(name = "page", required = false, defaultValue = "1")
                                                                      @Min(value = 1, message = "page must be positive") Integer page,
-                                                                     @Min(value = 1, message = "page should be positive")
-                                                                     @Max(value = 100, message = "page size must not be greater than 100")
+                                                                     @Min(value = 1, message = "pageSize must be positive")
+                                                                     @Max(value = 100, message = "pageSize size must not be greater than 100")
                                                                      @RequestParam(name = "pageSize", required = false, defaultValue = "50") Integer pageSize,
                                                                      @RequestParam(required = false) String tagName,
                                                                      @RequestParam(required = false) String partName,

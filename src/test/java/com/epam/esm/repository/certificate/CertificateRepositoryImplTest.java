@@ -82,7 +82,7 @@ public class CertificateRepositoryImplTest {
   @Test
   @Transactional
   void count_ShouldReturn_TenThousand_True(){
-    long expectedRows = 10002;
+    long expectedRows = 10005;
     long actualRows = repository.count();
     assertEquals(expectedRows, actualRows);
 
@@ -91,7 +91,7 @@ public class CertificateRepositoryImplTest {
   @Test
   @Transactional
   void countBySpecifications_ShouldReturn_Ten(){
-    long expectedRows = 1;
+    long expectedRows = 4;
     String partName = "t";
     CriteriaSpecification<GiftCertificate> specification = new CertificatesByPartNameCriteriaSpecification(partName);
     List<CriteriaSpecification<GiftCertificate>> specifications = Collections.singletonList(specification);

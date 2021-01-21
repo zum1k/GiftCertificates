@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 @AllArgsConstructor
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -84,5 +89,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         messageSource.getMessage("exception.something-wrong", new Object[]{}, request.getLocale());
     ErrorResponse response = new ErrorResponse(message, 50001);
     return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
+    List<String> messages =
+        e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+    ErrorResponse response = new ErrorResponse(String.join(", " +
+        "", messages), 40001);
+    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
   }
 }

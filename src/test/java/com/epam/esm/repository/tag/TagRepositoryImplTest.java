@@ -78,7 +78,7 @@ class TagRepositoryImplTest {
   @Test
   @Transactional
   void count_ShouldReturn_AllTags_Test() {
-    long expectedSize = 1005;
+    long expectedSize = 1004;
     long actualSize = tagRepository.count();
     assertEquals(expectedSize, actualSize);
   }

@@ -25,7 +25,7 @@ public class TagLinkModifier implements DtoLinkModifier<TagDto> {
   public void withTagLocation(TagDto tagDto) {
     long dtoId = tagDto.getId();
     Link dtoLink = WebMvcLinkBuilder.linkTo(controller.findTagById(dtoId)).withSelfRel();
-    Link deleteLink = WebMvcLinkBuilder.linkTo(controller.deleteTagById(dtoId)).withRel("delete tag");
+    Link deleteLink = WebMvcLinkBuilder.linkTo(controller.deleteTagById(dtoId)).withRel("delete_tag");
     tagDto.add(dtoLink, deleteLink);
   }
 

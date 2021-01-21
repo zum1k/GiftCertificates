@@ -32,7 +32,7 @@ public class OrderLinkModifier implements DtoLinkModifier<OrderDto> {
         WebMvcLinkBuilder.linkTo(controller.ordersByUserId(userId, parametersDto.getPage(), parametersDto.getPageLimit()))
             .withRel("orders");
     Link addOrderLink =
-        WebMvcLinkBuilder.linkTo(controller.addOrder(userId, dto)).withRel("add order");
+        WebMvcLinkBuilder.linkTo(controller.addOrder(userId, dto)).withRel("add_order");
     dto.add(dtoLink, addOrderLink, ordersLink);
     dto.getGifts().forEach(giftCertificateLinkModifier::withTagLocation);
   }
