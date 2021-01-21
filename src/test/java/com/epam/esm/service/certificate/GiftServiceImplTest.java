@@ -289,7 +289,7 @@ class GiftServiceImplTest {
   }
 
   @Test
-  void count_ShouldReturn_10Pages_Test() {
+  void count_ShouldReturn_CorrectValue_Test() {
     long expectedAmount = 1000;
     long expectedCount = 10;
     RequestParametersDto dto = new RequestParametersDto();
@@ -302,7 +302,7 @@ class GiftServiceImplTest {
   }
 
   @Test
-  void count_BySpecifications_ShouldReturn_10Pages_Test() {
+  void count_BySpecifications_ShouldReturn_CorrectValue_Test() {
     long expectedAmount = 100;
     long expectedCount = 1;
     RequestParametersDto dto = new RequestParametersDto();

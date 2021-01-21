@@ -186,7 +186,7 @@ class TagServiceImplTest {
     Mockito.verify(tagMapper).toDtoList(allTags);
   }
   @Test
-  void count_ShouldReturn_10Pages_Test() {
+  void count_ShouldReturn_CorrectValue_Test() {
     long expectedAmount = 1000;
     long expectedCount = 10;
     RequestParametersDto dto = new RequestParametersDto();

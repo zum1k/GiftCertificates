@@ -66,7 +66,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  void findAll() {
+  void findAll_ShouldReturn_CorrectValue_Test() {
     String password = "password";
     String email = "email";
     String firstName = "firstName";
@@ -104,7 +104,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  void count_ShouldReturn_Ten_Test() {
+  void count_ShouldReturn_CorrectValue_Test() {
     long expectedAmount = 1000;
     long expectedCount = 10;
     RequestParametersDto dto = new RequestParametersDto();
