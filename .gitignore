@@ -4,3 +4,11 @@
 gradlew
 gradlew.bat
 settings.gradle
+/build/*
+/delombok/
+/.idea/*
+/out/
+/build/
+/.idea/
+/build/
+/.idea/
