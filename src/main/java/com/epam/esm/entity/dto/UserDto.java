@@ -3,6 +3,7 @@ package com.epam.esm.entity.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotNull;
@@ -37,5 +38,7 @@ public class UserDto extends RepresentationModel<UserDto> {
 
   private ZonedDateTime lastUpdateDate;
 
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<OrderDto> orders = new HashSet<>();
 }

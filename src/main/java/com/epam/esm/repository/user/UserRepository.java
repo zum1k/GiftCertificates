@@ -11,5 +11,7 @@ public interface UserRepository {
 
   List<User> findAll(int page, int pageSize);
 
+  Optional<User> findByEmail(CriteriaSpecification<User> specification);
+
   long count();
 }

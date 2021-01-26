@@ -118,9 +118,31 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
-  public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(@PathVariable("id")
-                                                                           @Min(value = 1, message = "id must be positive") long id) {
+  public TagDto mostPopularTagFromRichestUser(@PathVariable("id")
+                                              @Min(value = 1, message = "id must be positive") long id) {
     log.info("find most widely used tag");
     return userService.findWidelyUsedTagByAllOrdersCost(id);
+  }
+
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  void signUp() {
+  }
+
+  @RequestMapping(
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  void logIn(@RequestParam final String email, final String password) {
+    log.info("log in" + email);
+
+  }
+
+  void logOut() {
+
   }
 }

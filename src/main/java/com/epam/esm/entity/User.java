@@ -34,6 +34,9 @@ public class User implements AuditEntity {
   @Column(name = "last_name")
   private String lastName;
 
+  @Column(name = "role")
+  private Role role;
+
   @Column(name = "create_date")
   private ZonedDateTime createDate;
 

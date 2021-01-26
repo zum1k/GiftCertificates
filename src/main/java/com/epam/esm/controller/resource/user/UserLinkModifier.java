@@ -31,7 +31,7 @@ public class UserLinkModifier implements DtoLinkModifier<UserDto> {
         WebMvcLinkBuilder.linkTo(controller.ordersByUserId(userId, dto.getPage(), dto.getPageLimit())).withRel("orders");
     Link userTagLink =
         WebMvcLinkBuilder.linkTo(
-            controller.getTheMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrders(userId))
+            controller.mostPopularTagFromRichestUser(userId))
             .withRel("most_used_tag");
     userDto.add(dtoLink, ordersLink, userTagLink);
     userDto.getOrders().forEach(orderLinkModifier::withTagLocation);

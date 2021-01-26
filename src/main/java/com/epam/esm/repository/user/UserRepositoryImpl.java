@@ -1,6 +1,7 @@
 package com.epam.esm.repository.user;
 
 import com.epam.esm.entity.User;
+import com.epam.esm.repository.CriteriaSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,16 @@ public class UserRepositoryImpl implements UserRepository {
 
   @Override
   public List<User> findAll(int page, int pageSize) {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<User> query = builder.createQuery(User.class);
-    Root<User> rootEntry = query.from(User.class);
-    CriteriaQuery<User> all = query.select(rootEntry);
-    TypedQuery<User> allQuery = entityManager.createQuery(all);
+    TypedQuery<User> allQuery = typedQuery();
     allQuery.setFirstResult((page - 1) * pageSize);
     allQuery.setMaxResults(pageSize);
     return allQuery.getResultList();
+  }
+
+  @Override
+  public Optional<User> findByEmail(CriteriaSpecification<User> specification) {
+    TypedQuery<User> query = entityManager.createQuery(mapQuery(specification));
+    return query.getResultStream().findFirst();
   }
 
   @Override
@@ -47,5 +50,20 @@ public class UserRepositoryImpl implements UserRepository {
     query.select(builder.count(rootEntry));
     TypedQuery<Long> allQuery = entityManager.createQuery(query);
     return allQuery.getSingleResult();
+  }
+
+  private TypedQuery<User> typedQuery() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> query = builder.createQuery(User.class);
+    Root<User> rootEntry = query.from(User.class);
+    CriteriaQuery<User> all = query.select(rootEntry);
+    return entityManager.createQuery(all);
+  }
+
+  private CriteriaQuery<User> mapQuery(CriteriaSpecification<User> specification) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
+    Root<User> tagRoot = criteriaQuery.from(User.class);
+    return criteriaQuery.where(specification.toPredicate(tagRoot, builder));
   }
 }
