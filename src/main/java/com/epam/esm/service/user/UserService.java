@@ -7,6 +7,8 @@ import com.epam.esm.entity.dto.UserDto;
 import java.util.List;
 
 public interface UserService {
+  UserDto addUser(UserDto userDto);
+
   UserDto findUser(long userId);
 
   List<UserDto> findAll(RequestParametersDto dto);

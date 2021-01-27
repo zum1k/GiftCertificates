@@ -5,9 +5,13 @@ import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.RequestParametersDto;
 import com.epam.esm.entity.dto.TagDto;
 import com.epam.esm.entity.dto.UserDto;
+import com.epam.esm.exception.EntityAlreadyExists;
+import com.epam.esm.exception.EntityNotAddedException;
 import com.epam.esm.exception.EntityNotFoundException;
+import com.epam.esm.repository.CriteriaSpecification;
 import com.epam.esm.repository.NativeSpecification;
 import com.epam.esm.repository.specification.MostWidelyUsedTagByUserOrders;
+import com.epam.esm.repository.specification.UsersByEmailCriteriaSpecification;
 import com.epam.esm.repository.tag.TagRepository;
 import com.epam.esm.repository.user.UserRepository;
 import com.epam.esm.service.mapper.tag.TagMapper;
@@ -31,6 +35,20 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
   private final TagRepository tagRepository;
   private final TagMapper tagMapper;
+
+  @Override
+  @Transactional
+  public UserDto addUser(UserDto userDto) {
+    User user = userMapper.toEntity(userDto);
+    String email = user.getEmail();
+    CriteriaSpecification<User> specification = new UsersByEmailCriteriaSpecification(email);
+    Optional<User> optionalUser = repository.findByEmail(specification);
+    if (optionalUser.isPresent()) {
+      throw new EntityAlreadyExists("Choose a different email address");
+    }
+    User addedUser = repository.add(user).orElseThrow(() -> new EntityNotAddedException(ENTITY_NAME));
+    return userMapper.toDto(addedUser);
+  }
 
   @Override
   public UserDto findUser(long id) {

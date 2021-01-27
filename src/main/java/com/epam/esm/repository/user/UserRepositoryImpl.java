@@ -24,6 +24,13 @@ public class UserRepositoryImpl implements UserRepository {
   private final EntityManager entityManager;
 
   @Override
+  public Optional<User> add(User user) {
+    entityManager.persist(user);
+    entityManager.flush();
+    return Optional.of(user);
+  }
+
+  @Override
   public Optional<User> find(long id) {
     return Optional.ofNullable(entityManager.find(User.class, id));
   }

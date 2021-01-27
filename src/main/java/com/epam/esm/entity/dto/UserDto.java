@@ -24,6 +24,7 @@ public class UserDto extends RepresentationModel<UserDto> {
 
   @NotNull(message = "Need to enter password")
   @Size(min = 9, max = 23, message = "Password size must be in 9 to 23 symbols range")
+  @ToString.Exclude
   private String password;
 
   @NotNull(message = "Need to enter first name")

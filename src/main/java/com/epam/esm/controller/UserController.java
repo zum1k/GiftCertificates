@@ -2,10 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.controller.resource.order.OrderLinkModifier;
 import com.epam.esm.controller.resource.user.UserLinkModifier;
-import com.epam.esm.entity.dto.OrderDto;
-import com.epam.esm.entity.dto.RequestParametersDto;
-import com.epam.esm.entity.dto.TagDto;
-import com.epam.esm.entity.dto.UserDto;
+import com.epam.esm.entity.dto.*;
 import com.epam.esm.service.order.OrderService;
 import com.epam.esm.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -129,7 +126,14 @@ public class UserController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  void signUp() {
+  public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserDto dto) {
+    log.info("register user {}", dto.getEmail());
+////    UserDto userDto =userService.add(dto);
+////    long dtoId = giftCertificateDto.getGiftId();
+//    URI resourceUri =
+//        ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
+//    return ResponseEntity.created(resourceUri).build();)
+    return null;
   }
 
 //  @RequestMapping(
