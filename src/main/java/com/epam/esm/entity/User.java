@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import com.epam.esm.entity.utils.RoleConverter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,7 +36,7 @@ public class User implements AuditEntity {
   private String lastName;
 
   @Column(name = "role")
-  @Enumerated(EnumType.STRING)
+  @Convert(converter = RoleConverter.class)
   private Role role;
 
   @Column(name = "create_date")
