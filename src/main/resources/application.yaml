@@ -3,7 +3,7 @@ spring:
     port: 8080
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gift_certificate_v2
+    url: jdbc:mysql://localhost:3306/gift_certificate_v3
     username: root
     password: 2584170
 

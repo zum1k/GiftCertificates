@@ -9,7 +9,20 @@ public enum Role {
     this.value = value;
   }
 
-  String getValue() {
+  public String getValue() {
     return value;
+  }
+
+  public static Role getRole(String value) {
+    if (value == null) {
+      return null;
+    }
+
+    for (Role role : Role.values()) {
+      if (value.equalsIgnoreCase(role.value)) {
+        return role;
+      }
+    }
+    return null;
   }
 }

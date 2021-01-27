@@ -132,17 +132,17 @@ public class UserController {
   void signUp() {
   }
 
-  @RequestMapping(
-      consumes = MediaType.APPLICATION_JSON_VALUE,
-      method = RequestMethod.POST,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  void logIn(@RequestParam final String email, final String password) {
-    log.info("log in" + email);
-
-  }
-
-  void logOut() {
-
-  }
+//  @RequestMapping(
+//      consumes = MediaType.APPLICATION_JSON_VALUE,
+//      method = RequestMethod.POST,
+//      produces = MediaType.APPLICATION_JSON_VALUE)
+//  @ResponseStatus(HttpStatus.OK)
+//  void logIn(@RequestParam final String email, final String password) {
+//    log.info("log in" + email);
+//
+//  }
+//
+//  void logOut() {
+//
+//  }
 }

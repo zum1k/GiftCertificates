@@ -35,6 +35,7 @@ public class User implements AuditEntity {
   private String lastName;
 
   @Column(name = "role")
+  @Enumerated(EnumType.STRING)
   private Role role;
 
   @Column(name = "create_date")
