@@ -12,6 +12,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -60,6 +61,7 @@ public class GiftsController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<GiftCertificateDto> addCertificate(
       @Valid @RequestBody GiftCertificateDto dto) {
     log.info("add certificate");
@@ -88,6 +90,7 @@ public class GiftsController {
       method = RequestMethod.PUT,
       consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<GiftCertificateDto> updateGiftCertificates(@PathVariable("id")
                                                                    @Min(value = 1, message = "id must be positive") final long id,
                                                                    @RequestBody @Validated(GiftCertificateDto.class) GiftCertificateDto certificateDto) {
@@ -101,8 +104,9 @@ public class GiftsController {
       value = "/{id}",
       method = RequestMethod.DELETE,
       consumes = MediaType.APPLICATION_JSON_VALUE)
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<GiftCertificateDto> deleteCertificateById(@PathVariable("id")
-                                                                  @Min(value = 1, message = "id must be positive")final long id) {
+                                                                  @Min(value = 1, message = "id must be positive") final long id) {
     log.info("remove gift by {}", id);
     giftService.remove(id);
     return ResponseEntity.noContent().build();

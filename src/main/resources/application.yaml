@@ -14,3 +14,13 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
       hibernate.temp.use_jdbc_metadata_defaults: false
+  security:
+    oauth2:
+      grant-types: password, implicit
+      scopes: read, write
+      authorities: admin, user
+      access-token-validity-seconds: 260000
+      signing-key: as466gf
+      client:
+        id: client
+        secret: password

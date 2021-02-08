@@ -1,5 +1,6 @@
 package com.epam.esm.service.user;
 
+import com.epam.esm.entity.Role;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.entity.dto.RequestParametersDto;
@@ -19,6 +20,7 @@ import com.epam.esm.service.mapper.user.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,17 +37,22 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
   private final TagRepository tagRepository;
   private final TagMapper tagMapper;
+  private final BCryptPasswordEncoder passwordEncoder;
 
   @Override
   @Transactional
   public UserDto addUser(UserDto userDto) {
-    User user = userMapper.toEntity(userDto);
-    String email = user.getEmail();
-    CriteriaSpecification<User> specification = new UsersByEmailCriteriaSpecification(email);
+    CriteriaSpecification<User> specification = new UsersByEmailCriteriaSpecification(userDto.getEmail());
     Optional<User> optionalUser = repository.findByEmail(specification);
     if (optionalUser.isPresent()) {
       throw new EntityAlreadyExists("Choose a different email address");
     }
+    User user = userMapper.toEntity(userDto);
+    user.setUserId(0);
+    user.setRole(Role.USER);
+    String encodedPassword = passwordEncoder.encode(user.getPassword());
+    user.setPassword(encodedPassword);
+
     User addedUser = repository.add(user).orElseThrow(() -> new EntityNotAddedException(ENTITY_NAME));
     return userMapper.toDto(addedUser);
   }

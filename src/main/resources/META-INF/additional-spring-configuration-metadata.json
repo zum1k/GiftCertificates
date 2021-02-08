@@ -4,5 +4,15 @@
       "name": "spring.server.servlet.context-path=/certificates",
       "type": "java.lang.String",
       "description": "Description for spring.server.servlet.context-path=/certificates."
-  }
-] }
+    },
+    {
+      "name": "spring.security.oauth2.client.secret",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.oauth2.client.secret."
+    },
+    {
+      "name": "spring.security.oauth2.grant-types",
+      "type": "java.lang.String",
+      "description": "Description for spring.security.oauth2.grant-types."
+    }
+  ] }

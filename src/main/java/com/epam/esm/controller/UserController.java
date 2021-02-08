@@ -2,7 +2,10 @@ package com.epam.esm.controller;
 
 import com.epam.esm.controller.resource.order.OrderLinkModifier;
 import com.epam.esm.controller.resource.user.UserLinkModifier;
-import com.epam.esm.entity.dto.*;
+import com.epam.esm.entity.dto.OrderDto;
+import com.epam.esm.entity.dto.RequestParametersDto;
+import com.epam.esm.entity.dto.TagDto;
+import com.epam.esm.entity.dto.UserDto;
 import com.epam.esm.service.order.OrderService;
 import com.epam.esm.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,6 +42,7 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admin') or hasAuthority('user')")
   public ResponseEntity<UserDto> findUser(@PathVariable("id")
                                           @Min(value = 1, message = "id must be positive") final long id) {
     log.info("find user {}", id);
@@ -52,6 +57,7 @@ public class UserController {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('user')")
   public ResponseEntity<OrderDto> addOrder(@PathVariable("id")
                                            @Min(value = 1, message = "id must be positive") final long id, @Valid @RequestBody OrderDto dto) {
     log.info("add order {}", id);
@@ -67,6 +73,7 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+ @PreAuthorize("hasAuthority('user')")
   public ResponseEntity<OrderDto> orderById(
       @PathVariable("user_id") final long userId, @PathVariable("order_id") final long orderId) {
     log.info("find user {} order by {}", userId, orderId);
@@ -77,6 +84,7 @@ public class UserController {
 
   @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<CollectionModel<UserDto>> findAll(@RequestParam(required = false, defaultValue = "1")
                                                           @Min(value = 1, message = "page must be positive") Integer page,
                                                           @Min(value = 1, message = "pageSize should be positive")
@@ -95,6 +103,7 @@ public class UserController {
       method = RequestMethod.GET,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('user')")
   public ResponseEntity<CollectionModel<OrderDto>> ordersByUserId(@PathVariable("id")
                                                                   @Min(value = 1, message = "id must be positive") final long id,
                                                                   @RequestParam(required = false, defaultValue = "1")
@@ -120,33 +129,4 @@ public class UserController {
     log.info("find most widely used tag");
     return userService.findWidelyUsedTagByAllOrdersCost(id);
   }
-
-  @RequestMapping(
-      consumes = MediaType.APPLICATION_JSON_VALUE,
-      method = RequestMethod.POST,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<UserDto> signUp(@Valid @RequestBody UserDto dto) {
-    log.info("register user {}", dto.getEmail());
-////    UserDto userDto =userService.add(dto);
-////    long dtoId = giftCertificateDto.getGiftId();
-//    URI resourceUri =
-//        ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + dtoId).build().toUri();
-//    return ResponseEntity.created(resourceUri).build();)
-    return null;
-  }
-
-//  @RequestMapping(
-//      consumes = MediaType.APPLICATION_JSON_VALUE,
-//      method = RequestMethod.POST,
-//      produces = MediaType.APPLICATION_JSON_VALUE)
-//  @ResponseStatus(HttpStatus.OK)
-//  void logIn(@RequestParam final String email, final String password) {
-//    log.info("log in" + email);
-//
-//  }
-//
-//  void logOut() {
-//
-//  }
 }

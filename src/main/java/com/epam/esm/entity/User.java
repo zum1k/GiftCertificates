@@ -1,5 +1,7 @@
 package com.epam.esm.entity;
 
+import com.epam.esm.entity.utils.AuditDateEntityListener;
+import com.epam.esm.entity.utils.AuditEntity;
 import com.epam.esm.entity.utils.RoleConverter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
@@ -12,11 +14,12 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@EntityListeners({AuditDateEntityListener.class})
+
 @Data
 @NoArgsConstructor
-@Table(name = "users")
 @Entity
+@Table(name = "users")
+@EntityListeners({AuditDateEntityListener.class})
 public class User implements AuditEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

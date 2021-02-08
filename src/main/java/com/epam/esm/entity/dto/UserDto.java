@@ -19,11 +19,11 @@ public class UserDto extends RepresentationModel<UserDto> {
   private long userId;
 
   @NotNull(message = "Need to enter email")
-  @Size(min = 15, max = 45, message = "Email size must be in 13 to 45 symbols range")
+  @Size(min = 5, max = 45, message = "Email size must be in 13 to 45 symbols range")
   private String email;
 
   @NotNull(message = "Need to enter password")
-  @Size(min = 9, max = 23, message = "Password size must be in 9 to 23 symbols range")
+  @Size(min = 2, max = 23, message = "Password size must be in 9 to 23 symbols range")
   @ToString.Exclude
   private String password;
 

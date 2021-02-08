@@ -17,9 +17,19 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'
     implementation 'org.projectlombok:lombok:1.18.16'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.0.14.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt
+    compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.10.RELEASE'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+
+
+
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
     testImplementation 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'

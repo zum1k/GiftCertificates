@@ -1,11 +1,10 @@
-package com.epam.esm.entity;
+package com.epam.esm.entity.utils;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.ZonedDateTime;
 
 public class AuditDateEntityListener {
-
   @PrePersist
   public void onCreate(AuditEntity auditEntity) {
     ZonedDateTime currentTime = ZonedDateTime.now().withFixedOffsetZone();

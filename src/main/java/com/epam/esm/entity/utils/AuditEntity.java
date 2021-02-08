@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.entity.utils;
 
 import java.time.ZonedDateTime;
 

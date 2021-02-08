@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -53,6 +54,7 @@ public class TagController {
       method = RequestMethod.POST,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<TagDto> addTag(@Valid @RequestBody TagDto dto) {
     log.info("add tag");
     TagDto tagDto = tagService.addTagIfNotExist(dto);
@@ -82,6 +84,7 @@ public class TagController {
       method = RequestMethod.DELETE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasAuthority('admin')")
   public ResponseEntity<TagDto> deleteTagById(@PathVariable("id")
                                               @Min(value = 1, message = "id must be positive") final long id) {
     log.info("get tag {}", id);
